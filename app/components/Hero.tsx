@@ -52,23 +52,23 @@ export default function Hero() {
 
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <h3 className="text-2xl font-semibold text-[#C8A75B]">500+</h3>
-                <p className="text-sm text-gray-400">Banks Researched</p>
+                <h3 className="text-2xl font-semibold text-[#C8A75B]">3000+</h3>
+                <p className="text-sm text-gray-400">USA Banks</p>
               </div>
 
               <div>
-                <h3 className="text-2xl font-semibold text-[#C8A75B]">10+</h3>
+                <h3 className="text-2xl font-semibold text-[#C8A75B]">10</h3>
                 <p className="text-sm text-gray-400">Rabbanim on Call</p>
               </div>
 
               <div>
-                <h3 className="text-2xl font-semibold text-[#C8A75B]">100s</h3>
-                <p className="text-sm text-gray-400">Shiurim Available</p>
+                <h3 className="text-2xl font-semibold text-[#C8A75B]">100+</h3>
+                <p className="text-sm text-gray-400">Hours Reachered</p>
               </div>
 
               <div>
-                <h3 className="text-2xl font-semibold text-[#C8A75B]">24/7</h3>
-                <p className="text-sm text-gray-400">Hotline Access</p>
+                <h3 className="text-2xl font-semibold text-[#C8A75B]">1000+</h3>
+                <p className="text-sm text-gray-400">People Serviced</p>
               </div>
             </div>
           </div>
