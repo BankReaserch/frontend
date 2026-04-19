@@ -58,12 +58,12 @@ export default function Hero() {
 
               <div>
                 <h3 className="text-2xl font-semibold text-[#C8A75B]">10</h3>
-                <p className="text-sm text-gray-400">Rabbanim on Call</p>
+                <p className="text-sm text-gray-400">Poskim Available</p>
               </div>
 
               <div>
                 <h3 className="text-2xl font-semibold text-[#C8A75B]">1000+</h3>
-                <p className="text-sm text-gray-400">Hours Reachered</p>
+                <p className="text-sm text-gray-400">Hours Researched</p>
               </div>
 
               <div>
