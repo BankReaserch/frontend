@@ -77,12 +77,12 @@ export default function Hero() {
           <div className="bg-white/5 backdrop-blur-lg border border-[#C8A75B]/40 rounded-xl p-6 text-gray-300 italic text-sm">
             <p>
               ""ומי האיש החפץ חיים ולקום בתחיית המתים ישאל פי חכם בעשותו הלואה כזו וימלט נפשו הרע."
-              — יערות דבש, חלק ב דרוש ה
+             
               "
             </p>
 
             <p className="mt-4 text-[#C8A75B] not-italic">
-              — Harav Moshe Shternbuch shlit"a
+               — יערות דבש, חלק ב דרוש ה
             </p>
           </div>
 
