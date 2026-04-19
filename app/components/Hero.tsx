@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center bg-[#0B1C2C] overflow-hidden">
-      
+
       {/* GRID BACKGROUND */}
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:60px_60px]" />
 
@@ -76,9 +76,9 @@ export default function Hero() {
           {/* QUOTE CARD */}
           <div className="bg-white/5 backdrop-blur-lg border border-[#C8A75B]/40 rounded-xl p-6 text-gray-300 italic text-sm">
             <p>
-              "The need for a heter iska for shopkeepers and businesspeople is
-              extremely great, and it is fitting for Rabbanim to institute in all
-              communities that every merchant signs a heter iska..."
+              ""ומי האיש החפץ חיים ולקום בתחיית המתים ישאל פי חכם בעשותו הלואה כזו וימלט נפשו הרע."
+              — יערות דבש, חלק ב דרוש ה
+              "
             </p>
 
             <p className="mt-4 text-[#C8A75B] not-italic">
