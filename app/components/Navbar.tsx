@@ -63,7 +63,7 @@ export default function Navbar() {
             ר
           </div>
           <span className="text-white text-lg font-semibold">
-            Ribis.org
+            Ribis
           </span>
         </div>
 

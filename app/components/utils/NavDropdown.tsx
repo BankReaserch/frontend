@@ -37,7 +37,7 @@ const NavDropdown=({ item }: Props)=> {
             {item.children.map((child) => (
               <Link
                 key={child.name}
-                href={child.href || "#"}
+                href={child.href || "/"}
                 className="flex items-center justify-between px-4 py-3 text-sm text-gray-300 
                 rounded-lg hover:bg-white/5 hover:text-white transition group/item"
               >
