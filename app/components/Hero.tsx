@@ -74,16 +74,16 @@ export default function Hero() {
           </div>
 
           {/* QUOTE CARD */}
-          <div className="bg-white/5 backdrop-blur-lg border border-[#C8A75B]/40 rounded-xl p-6 text-gray-300 italic text-sm">
-            <p>
-              ""ומי האיש החפץ חיים ולקום בתחיית המתים ישאל פי חכם בעשותו הלואה כזו וימלט נפשו הרע."
-             
-              "
+          <div className="bg-white/5 backdrop-blur-lg border border-[#C8A75B]/40 rounded-xl p-6 text-gray-300 text-sm" dir="rtl">
+
+            <p className="italic text-right leading-relaxed">
+              "ומי האיש החפץ חיים ולקום בתחיית המתים ישאל פי חכם בעשותו הלואה כזו וימלט נפשו הרע."
             </p>
 
-            <p className="mt-4 text-[#C8A75B] not-italic">
-               — יערות דבש, חלק ב דרוש ה
+            <p className="mt-4 text-[#C8A75B] not-italic text-right">
+              — יערות דבש, חלק ב דרוש ה
             </p>
+
           </div>
 
         </div>
