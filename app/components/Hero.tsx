@@ -12,7 +12,7 @@ export default function Hero() {
 
         {/* LEFT CONTENT */}
         <div>
-          <div className="inline-block border border-[#C8A75B] text-[#C8A75B] text-xs px-4 py-1 rounded-full mb-6 uppercase">
+          <div className="inline-block border border-[#C8A75B] text-[#C8A75B] text-xs px-4 py-1 rounded-full mb-6">
             Welcome To RIBIS
           </div>
 
@@ -47,7 +47,7 @@ export default function Hero() {
         <div className="space-y-6">
 
           {/* STATS CARD */}
-          {/* <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 text-white">
+          <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 text-white">
             <p className="text-xs text-gray-400 mb-4">TRUSTED AT SCALE</p>
 
             <div className="grid grid-cols-2 gap-6">
@@ -71,10 +71,10 @@ export default function Hero() {
                 <p className="text-sm text-gray-400">Hotline Access</p>
               </div>
             </div>
-          </div> */}
+          </div>
 
           {/* QUOTE CARD */}
-          {/* <div className="bg-white/5 backdrop-blur-lg border border-[#C8A75B]/40 rounded-xl p-6 text-gray-300 italic text-sm">
+          <div className="bg-white/5 backdrop-blur-lg border border-[#C8A75B]/40 rounded-xl p-6 text-gray-300 italic text-sm">
             <p>
               "The need for a heter iska for shopkeepers and businesspeople is
               extremely great, and it is fitting for Rabbanim to institute in all
@@ -84,7 +84,7 @@ export default function Hero() {
             <p className="mt-4 text-[#C8A75B] not-italic">
               — Harav Moshe Shternbuch shlit"a
             </p>
-          </div> */}
+          </div>
 
         </div>
       </div>
