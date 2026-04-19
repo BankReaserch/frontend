@@ -55,21 +55,21 @@ export default function Hero() {
                 <h3 className="text-2xl font-semibold text-[#C8A75B]">3000+</h3>
                 <p className="text-sm text-gray-400">USA Banks</p>
               </div>
-
               <div>
-                <h3 className="text-2xl font-semibold text-[#C8A75B]">10</h3>
-                <p className="text-sm text-gray-400">Poskim Available</p>
+                <h3 className="text-2xl font-semibold text-[#C8A75B]">2000+</h3>
+                <p className="text-sm text-gray-400">People Serviced</p>
               </div>
+
 
               <div>
                 <h3 className="text-2xl font-semibold text-[#C8A75B]">1000+</h3>
                 <p className="text-sm text-gray-400">Hours Researched</p>
               </div>
-
               <div>
-                <h3 className="text-2xl font-semibold text-[#C8A75B]">2000+</h3>
-                <p className="text-sm text-gray-400">People Serviced</p>
+                <h3 className="text-2xl font-semibold text-[#C8A75B]">10</h3>
+                <p className="text-sm text-gray-400">Poskim Available</p>
               </div>
+
             </div>
           </div>
 
