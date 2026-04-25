@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --gold: #c8a96e;
+  --gold-light: #e8d5a8;
+  --gold-dim: #8a6e3e;
+  --ink: #0c0b0a;
+  --ink-2: #1a1815;
+  --ink-3: #252220;
+  --fog: #b0a898;
+  --fog-2: #7a7268;
+  --off: #f5f2eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  cursor: none;
+  background: var(--ink);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.08;   /* was 0.4 — this was the culprit */
+}
+
+.font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+.font-sans  { font-family: 'Outfit', sans-serif; }
+.font-mono  { font-family: 'DM Mono', monospace; }
+
+/* Reveal animation */
+/* Only animate if JS has loaded — fallback to visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Safety net — if no JS or slow hydration, show content */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Scroll indicator pulse */
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+  50%       { opacity: 1;   transform: scaleY(1); }
+}
+.scroll-line {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* Nav underline */
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Skill card top-border sweep */
+.skill-card {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--gold);
+  transition: width 0.4s;
+}
+.skill-card:hover { background: rgba(200,169,110,0.04); }
+.skill-card:hover::before { width: 100%; }
+
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
