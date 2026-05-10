@@ -21,7 +21,7 @@ export default function Hero() {
           </p>
 
           <h1 className="text-white text-4xl md:text-6xl font-serif leading-tight mb-6">
-            Halachic Clarity <br />
+            AWARENESS <br />
             for <span className="text-[#C8A75B] italic">Modern</span> <br />
             Finance<span className="text-[#C8A75B]">.</span>
           </h1>
