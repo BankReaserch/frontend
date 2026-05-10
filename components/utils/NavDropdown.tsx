@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import type { NavItem } from "../../../types/nav";
+import type { NavItem } from "@/types/nav";
 
 type Props = {
   item: NavItem;

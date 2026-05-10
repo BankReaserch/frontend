@@ -4,47 +4,48 @@ import { useState } from "react";
 import { CloseIcon, MenuIcon } from "./utils/icons";
 import type { NavItem } from "@/types/nav";
 import NavDropdown from "./utils/NavDropdown";
+import Link from "next/link";
 
 const NAV_ITEMS: NavItem[] = [
   {
     name: "Home",
     children: [
-      { name: "About" },
-      { name: "Team" },
-      { name: "Highlights" },
-      { name: "Contact" },
+      { name: "About", href: "/about" },
+      { name: "Team", href: "/about/#team" },
+      { name: "Highlights", href: "/highlights" },
+      { name: "Contact", href: "/contact" },
     ],
   },
   {
     name: "Services",
     children: [
-      { name: "Banks" },
-      { name: "Brokers" },
-      { name: "Investments" },
-      { name: "Businesses" },
+      { name: "Banks", href: "/banks" },
+      { name: "Brokers", href: "/brokers" },
+      { name: "Investments", href: "/investments" },
+      { name: "Businesses", href: "/businesses" },
     ],
   },
   {
     name: "Education",
     children: [
-      { name: "Shiurim" },
-      { name: "Magazine" },
-      { name: "Articles" },
-      { name: "Programs" },
-      { name: "Alerts" },
+      { name: "Shiurim", href: "/shiurim" },
+      { name: "Magazine", href: "/magazine" },
+      { name: "Articles", href: "/articles" },
+      { name: "Programs", href: "/programs" },
+      { name: "Alerts", href: "/alerts" },
     ],
   },
   {
     name: "Shop",
-    children: [{ name: "Store" }],
+    children: [{ name: "Store", href: "/store" }],
   },
   {
     name: "Departments",
     children: [
-      { name: "Bais Horaah" },
-      { name: "Heter Iska" },
-      { name: "Donate" },
-      { name: "Contact" },
+      { name: "Bais Horaah", href: "/bais-horaah" },
+      { name: "Heter Iska", href: "/heter-iska" },
+      { name: "Donate", href: "/donate" },
+      { name: "Contact", href: "/contact" },
     ],
   },
 ];
@@ -58,14 +59,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
 
         {/* LOGO */}
-        <div className="flex items-center gap-2">
+        <Link href={'/'} className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-md bg-[#C8A75B] flex items-center justify-center text-black font-bold">
             ר
           </div>
           <span className="text-white text-lg font-semibold">
             Ribis
           </span>
-        </div>
+        </Link>
 
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-10 text-sm text-gray-300 uppercase">

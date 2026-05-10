@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
 const STATS = [
@@ -122,29 +123,10 @@ const MILESTONES = [
 export default function page() {
   return (
     <div className="min-h-screen bg-[#f5f0e8]">
-
-      {/* ── Navbar ── */}
-      <nav className="bg-[#0d1b2a] px-6 lg:px-16 flex items-center justify-between h-16 sticky top-0 z-50">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#c9a84c] rounded-md flex items-center justify-center">
-            <span className="text-[#0d1b2a] font-bold text-sm font-serif">ר</span>
-          </div>
-          <span className="text-white font-semibold tracking-wide text-sm">Ribis</span>
-        </Link>
-        <div className="hidden md:flex items-center gap-8">
-          {["Home", "Services", "Education", "Shop", "Departments"].map((item) => (
-            <Link key={item} href="#" className="text-[#8a9bb0] hover:text-white transition text-xs tracking-wide">
-              {item}
-            </Link>
-          ))}
-        </div>
-        <button className="bg-[#c9a84c] text-[#0d1b2a] text-xs font-bold px-4 py-2 rounded-md hover:bg-[#d4b567] transition tracking-wide">
-          CONTACT US
-        </button>
-      </nav>
+      <Navbar/>
 
       {/* ── Hero ── */}
-      <section className="bg-[#0d1b2a] relative overflow-hidden">
+      <section className="bg-[#0d1b2a] relative overflow-hidden pt-32">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -289,7 +271,7 @@ export default function page() {
       </section>
 
       {/* ── Team ── */}
-      <section className="px-6 lg:px-16 py-20 bg-[#f5f0e8]">
+      <section className="px-6 lg:px-16 py-20 bg-[#f5f0e8]" id="team">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
             <p className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase font-semibold mb-3">The people behind Ribis.org</p>
