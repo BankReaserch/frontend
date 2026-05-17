@@ -76,9 +76,9 @@ export default function Navbar() {
         </nav>
 
         {/* CTA */}
-        <button className="hidden md:block bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition">
+        <Link href={"/contact"} className="hidden md:block bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition">
           CONTACT US
-        </button>
+        </Link>
 
         {/* MOBILE MENU BUTTON */}
         <button
@@ -128,9 +128,9 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <button className="mt-6 bg-[#C8A75B] text-black px-6 py-3 rounded-lg font-medium">
+          <Link href={"/contact"} className="mt-6 bg-[#C8A75B] text-black px-6 py-3 rounded-lg font-medium">
             CONTACT US
-          </button>
+          </Link>
         </div>
       </div>
     </header>
