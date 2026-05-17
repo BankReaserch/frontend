@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 const CATEGORIES = ["All", "Halacha", "Finance", "Responsa", "Education", "Audio"];
 
@@ -103,49 +104,12 @@ export default function StorePage() {
     setCart((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
-  return (
+  return (      
     <div className="min-h-screen bg-[#f5f0e8]">
-      {/* Navbar */}
-      <nav className="bg-[#0d1b2a] border-b border-white/8 px-6 lg:px-12 py-0 flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#c9a84c] rounded-md flex items-center justify-center">
-            <span className="text-[#0d1b2a] font-bold text-sm font-serif">ר</span>
-          </div>
-          <span className="text-white font-semibold tracking-wide text-sm">Ribis</span>
-        </Link>
-
-        <div className="hidden md:flex items-center gap-8 text-sm">
-          {["Home", "Services", "Education", "Shop", "Departments"].map((item) => (
-            <Link
-              key={item}
-              href="#"
-              className={`text-[#8a9bb0] hover:text-white transition text-xs tracking-wide ${
-                item === "Shop" ? "text-[#c9a84c]" : ""
-              }`}
-            >
-              {item}
-            </Link>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button className="relative text-[#8a9bb0] hover:text-white transition">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
-            {cart.length > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#c9a84c] rounded-full text-[#0d1b2a] text-[9px] font-bold flex items-center justify-center">
-                {cart.length}
-              </span>
-            )}
-          </button>
-          <button className="bg-[#c9a84c] text-[#0d1b2a] text-xs font-bold px-4 py-2 rounded-md hover:bg-[#d4b567] transition tracking-wide">
-            CONTACT US
-          </button>
-        </div>
-      </nav>
-
-      {/* Hero banner */}
+    <div className="bg-[#0B1C2C] text-white pt-20 pb-10">
+            <Navbar/>
+             </div>
+  
       <div className="bg-[#0d1b2a] px-6 lg:px-12 py-12 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.03]"
