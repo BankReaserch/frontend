@@ -16,17 +16,25 @@ const CATEGORIES = [
 ];
 
 type BookType = {
-  _id: string;
+  _id?: string;
+
   title: string;
   author: string;
-  price: number;
-  originalPrice?: number;
+
+  price: number | string;
+  originalPrice?: number | string;
+
   category: string;
+
   badge?: string;
-  pages?: number;
+
+  pages?: number | string;
+
   inStock: boolean;
+
   description: string;
-  coverImage: string;
+
+  coverImage?: string;
 };
 
 export default function Books() {
@@ -214,7 +222,7 @@ export default function Books() {
                 <div className="relative h-56 overflow-hidden bg-[#f8f5ef]">
 
                   <img
-                    src={`${process.env.NEXT_PUBLIC_API_URL}${book.coverImage.replace(/^\/+/, "")}`}
+                   src={`${process.env.NEXT_PUBLIC_API_URL}${book.coverImage?.replace(/^\/+/, "") || ""}`}
                     alt={book.title}
                     className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                   />
@@ -261,17 +269,13 @@ export default function Books() {
                     <div className="flex items-baseline gap-2">
                       <span className="text-lg font-bold text-[#0d1b2a]">
                         $
-                        {book.price?.toFixed(
-                          2
-                        )}
+                        {Number(book.price).toFixed(2)}
                       </span>
 
                       {book.originalPrice && (
                         <span className="text-xs text-[#b0a898] line-through">
                           $
-                          {book.originalPrice?.toFixed(
-                            2
-                          )}
+                          {Number(book.originalPrice).toFixed(2)}
                         </span>
                       )}
                     </div>
@@ -286,18 +290,14 @@ export default function Books() {
                       }
                       className={`rounded-lg px-4 py-2 text-xs font-bold tracking-wide transition-all ${!book.inStock
                         ? "cursor-not-allowed bg-[#f0ece4] text-[#b0a898]"
-                        : cart.includes(
-                          book._id
-                        )
+                        : cart.includes(book._id || "")
                           ? "bg-[#0d1b2a] text-[#c9a84c]"
                           : "bg-[#c9a84c] text-[#0d1b2a] hover:bg-[#d4b567]"
                         }`}
                     >
                       {!book.inStock
                         ? "Unavailable"
-                        : cart.includes(
-                          book._id
-                        )
+                        : cart.includes(book._id || "")
                           ? "✓ Added"
                           : "Edit"}
                     </button>

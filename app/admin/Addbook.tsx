@@ -15,16 +15,25 @@ import {
 } from "lucide-react";
 
 type BookType = {
-    _id?: string;
-    title: string;
-    author: string;
-    category: string;
-    description: string;
-    pages: number | string;
-    price: number | string;
-    originalPrice?: number | string;
-    badge?: string;
-    inStock: boolean;
+  _id?: string;
+
+  title: string;
+  author: string;
+
+  price: number | string;
+  originalPrice?: number | string;
+
+  category: string;
+
+  badge?: string;
+
+  pages?: number | string;
+
+  inStock: boolean;
+
+  description: string;
+
+  coverImage?: string;
 };
 
 type AddBookProps = {
@@ -140,6 +149,7 @@ const Addbook = ({
                     return;
                 }
             }
+
             // create formdata
             const payload = new FormData();
 
