@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { name: "Banks", href: "/banks" },
       { name: "Brokers", href: "/brokers" },
-      { name: "Investments", href: "/investments" },
+      { name: "Investments", href: "/programs/#investments" },
       { name: "Businesses", href: "/businesses" },
     ],
   },
@@ -32,7 +32,7 @@ const NAV_ITEMS: NavItem[] = [
       { name: "Magazine", href: "/magazine" },
       { name: "Articles", href: "/articles" },
       { name: "Programs", href: "/programs" },
-      { name: "Alerts", href: "/alerts" },
+      { name: "Alerts", href: "/programs/#alerts" },
     ],
   },
   {

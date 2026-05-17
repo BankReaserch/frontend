@@ -32,6 +32,8 @@ type BookType = {
 export default function Books() {
   const [activeCategory, setActiveCategory] =
     useState("All");
+  const [selectedBook, setSelectedBook] =
+    useState<BookType | null>(null);
 
   const [cart, setCart] = useState<string[]>([]);
 
@@ -101,14 +103,15 @@ export default function Books() {
   return (
     <div className="min-h-screen bg-[#f5f0e8]">
 
-      {/* ADD BOOK MODAL */}
       <Addbook
         open={showaddForm}
+        editData={selectedBook}
         onClose={(value) => {
+
           setShowaddForm(value);
 
-          // refresh after close
           if (!value) {
+            setSelectedBook(null);
             fetchBooks();
           }
         }}
@@ -152,11 +155,10 @@ export default function Books() {
               onClick={() =>
                 setActiveCategory(cat)
               }
-              className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all ${
-                activeCategory === cat
-                  ? "bg-[#0d1b2a] text-white"
-                  : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
-              }`}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all ${activeCategory === cat
+                ? "bg-[#0d1b2a] text-white"
+                : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
+                }`}
             >
               {cat}
             </button>
@@ -275,29 +277,29 @@ export default function Books() {
                     </div>
 
                     <button
-                      onClick={() =>
-                        addToCart(book._id)
-                      }
+                      onClick={() => {
+                        setSelectedBook(book);
+                        setShowaddForm(true);
+                      }}
                       disabled={
                         !book.inStock
                       }
-                      className={`rounded-lg px-4 py-2 text-xs font-bold tracking-wide transition-all ${
-                        !book.inStock
-                          ? "cursor-not-allowed bg-[#f0ece4] text-[#b0a898]"
-                          : cart.includes(
-                              book._id
-                            )
+                      className={`rounded-lg px-4 py-2 text-xs font-bold tracking-wide transition-all ${!book.inStock
+                        ? "cursor-not-allowed bg-[#f0ece4] text-[#b0a898]"
+                        : cart.includes(
+                          book._id
+                        )
                           ? "bg-[#0d1b2a] text-[#c9a84c]"
                           : "bg-[#c9a84c] text-[#0d1b2a] hover:bg-[#d4b567]"
-                      }`}
+                        }`}
                     >
                       {!book.inStock
                         ? "Unavailable"
                         : cart.includes(
-                            book._id
-                          )
-                        ? "✓ Added"
-                        : "Edit"}
+                          book._id
+                        )
+                          ? "✓ Added"
+                          : "Edit"}
                     </button>
                   </div>
                 </div>

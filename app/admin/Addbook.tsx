@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "@/components/utils/modal/FormModel";
 import {
     BookOpen,
@@ -14,9 +14,24 @@ import {
     ShieldCheck,
 } from "lucide-react";
 
+type BookType = {
+    _id?: string;
+    title: string;
+    author: string;
+    category: string;
+    description: string;
+    pages: number | string;
+    price: number | string;
+    originalPrice?: number | string;
+    badge?: string;
+    inStock: boolean;
+};
+
 type AddBookProps = {
     open: boolean;
     onClose: (value: boolean) => void;
+
+    editData?: BookType | null;
 };
 
 const categories = [
@@ -27,7 +42,11 @@ const categories = [
     "Audio",
 ];
 
-const Addbook = ({ open, onClose }: AddBookProps) => {
+const Addbook = ({
+    open,
+    onClose,
+    editData,
+}: AddBookProps) => {
     const [formData, setFormData] = useState({
         title: "",
         author: "",
@@ -42,6 +61,28 @@ const Addbook = ({ open, onClose }: AddBookProps) => {
 
     const [coverImage, setCoverImage] = useState<File | null>(null);
     const [bookFile, setBookFile] = useState<File | null>(null);
+
+    useEffect(() => {
+
+        if (editData) {
+
+            setFormData({
+                title: editData.title || "",
+                author: editData.author || "",
+                category: editData.category || "",
+                description: editData.description || "",
+                pages: String(editData.pages || ""),
+                price: String(editData.price || ""),
+                originalPrice: String(
+                    editData.originalPrice || ""
+                ),
+                badge: editData.badge || "",
+                inStock:
+                    editData.inStock ?? true,
+            });
+        }
+
+    }, [editData]);
 
     const handleChange = (
         e: React.ChangeEvent<
@@ -83,16 +124,22 @@ const Addbook = ({ open, onClose }: AddBookProps) => {
                 return;
             }
 
-            if (!coverImage) {
-                alert("Please upload cover image");
-                return;
-            }
+            if (!editData?._id) {
 
-            if (!bookFile) {
-                alert("Please upload book file");
-                return;
-            }
+                if (!coverImage) {
+                    alert(
+                        "Please upload cover image"
+                    );
+                    return;
+                }
 
+                if (!bookFile) {
+                    alert(
+                        "Please upload book file"
+                    );
+                    return;
+                }
+            }
             // create formdata
             const payload = new FormData();
 
@@ -102,13 +149,28 @@ const Addbook = ({ open, onClose }: AddBookProps) => {
             });
 
             // files
-            payload.append("coverImage", coverImage);
+            if (coverImage) {
+                payload.append(
+                    "coverImage",
+                    coverImage
+                );
+            }
 
-            payload.append("bookFile", bookFile);
+            if (bookFile) {
+                payload.append(
+                    "bookFile",
+                    bookFile
+                );
+            }
             const response = await fetch(
-                 `${process.env.NEXT_PUBLIC_API_URL}api/book/add`,
+                editData?._id
+                    ? `${process.env.NEXT_PUBLIC_API_URL}api/book/${editData._id}`
+                    : `${process.env.NEXT_PUBLIC_API_URL}api/book/add`,
                 {
-                    method: "POST",
+                    method:
+                        editData?._id
+                            ? "PUT"
+                            : "POST",
                     body: payload,
                     credentials: "include",
                 }
@@ -161,7 +223,11 @@ const Addbook = ({ open, onClose }: AddBookProps) => {
             open={open}
             onClose={onClose}
             size="xl"
-            title="Add New Book"
+            title={
+                editData
+                    ? "Edit Book"
+                    : "Add New Book"
+            }
             description="Create and publish a new book to your Ribis library."
         >
             <form onSubmit={handleSubmit} className="space-y-7">

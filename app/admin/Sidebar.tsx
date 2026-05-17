@@ -34,38 +34,38 @@ const menu = [
     name: "Audio",
     icon: FileVolume,
   },
-  {
-    name: "Products",
-    icon: Package,
-  },
+  // {
+  //   name: "Products",
+  //   icon: Package,
+  // },
   {
     name: "Books",
     icon: BookUser,
   },
-  {
-    name: "Downloads",
-    icon: Download,
-  },
+  // {
+  //   name: "Downloads",
+  //   icon: Download,
+  // },
   {
     name: "Customers",
     icon: Users,
   },
-  {
-    name: "Coupons",
-    icon: TicketPercent,
-  },
-  {
-    name: "Analytics",
-    icon: BarChart3,
-  },
-  {
-    name: "Reviews",
-    icon: Star,
-  },
-  {
-    name: "Settings",
-    icon: Settings,
-  },
+  // {
+  //   name: "Coupons",
+  //   icon: TicketPercent,
+  // },
+  // {
+  //   name: "Analytics",
+  //   icon: BarChart3,
+  // },
+  // {
+  //   name: "Reviews",
+  //   icon: Star,
+  // },
+  // {
+  //   name: "Settings",
+  //   icon: Settings,
+  // },
 ];
 
 export default function Sidebar({
