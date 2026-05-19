@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { useState, useMemo } from "react";
 
-/* ── Types ─────────────────────────────────────────── */
 type Status = "mehudar" | "compliant" | "conditional" | "questionable" | "noncompliant" | "undetermined";
 
 interface Bank {
@@ -488,9 +487,9 @@ export default function BankDirectoryPage() {
                     <div className="pointer-events-none absolute inset-0 opacity-[0.04] bg-[linear-gradient(135deg,#fff_1px,transparent_1px)] bg-[size:20px_20px]" />
                     <button
                       onClick={() => setSelected(null)}
-                      className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-white/60 transition-colors hover:bg-white/20"
+                      className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-white/60 transition-colors hover:bg-white/20 cursor-pointer"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-4 w-4 cursor-pointer" />
                     </button>
                     <h2 className="relative font-serif text-xl text-white mb-1">{selected.name}</h2>
                     <p className="relative text-[12px] text-[#7a93ae]">{selected.type} · {selected.hq}</p>

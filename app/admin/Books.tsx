@@ -68,8 +68,8 @@ export default function Books() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}api/book`
       );
-
-      setBooks(response.data.data || []);
+       setBooks(
+  response.data.data.books || []);
 
     } catch (error) {
       console.error(
@@ -83,7 +83,7 @@ export default function Books() {
   };
 
   // FILTER
-  const filtered = books.filter((b) => {
+  const filtered = books?.filter((b) => {
     const matchCat =
       activeCategory === "All" ||
       b.category === activeCategory;
@@ -222,7 +222,7 @@ export default function Books() {
                 <div className="relative h-56 overflow-hidden bg-[#f8f5ef]">
 
                   <img
-                   src={`${process.env.NEXT_PUBLIC_API_URL}${book.coverImage?.replace(/^\/+/, "") || ""}`}
+                   src={`${process.env.NEXT_PUBLIC_API_URL}${book.coverImage}`}
                     alt={book.title}
                     className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                   />

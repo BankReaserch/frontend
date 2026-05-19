@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 import { CloseIcon, MenuIcon } from "./utils/icons";
 import type { NavItem } from "@/types/nav";
 import NavDropdown from "./utils/NavDropdown";
@@ -53,6 +54,12 @@ const NAV_ITEMS: NavItem[] = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<number | null>(null);
+  const { cart } = useCart();
+
+  const totalItems = cart.reduce(
+    (acc, item) => acc + item.qty,
+    0
+  );
 
   return (
     <header className="w-full absolute top-0 left-0 z-50">
@@ -76,9 +83,50 @@ export default function Navbar() {
         </nav>
 
         {/* CTA */}
-        <Link href={"/contact"} className="hidden md:block bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition">
-          CONTACT US
-        </Link>
+        {/* RIGHT SIDE */}
+        <div className="hidden md:flex items-center gap-4">
+
+          {/* CART */}
+          {totalItems > 0 && (
+            <Link
+              href="/cart"
+              className="relative flex items-center gap-2 border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition"
+            >
+              {/* Icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 6.2a1 1 0 001 .8h12.6"
+                />
+              </svg>
+
+              <span className="text-white text-sm font-medium">
+                Cart
+              </span>
+
+              {/* Badge */}
+              <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#C8A75B] text-black text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-[#0B1C2C]">
+                {totalItems}
+              </div>
+            </Link>
+          )}
+
+          {/* CONTACT BUTTON */}
+          <Link
+            href={"/contact"}
+            className="bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition"
+          >
+            CONTACT US
+          </Link>
+        </div>
 
         {/* MOBILE MENU BUTTON */}
         <button
@@ -128,9 +176,50 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <Link href={"/contact"} className="mt-6 bg-[#C8A75B] text-black px-6 py-3 rounded-lg font-medium">
-            CONTACT US
-          </Link>
+          {/* RIGHT SIDE */}
+<div className="hidden md:flex items-center gap-4">
+
+  {/* CART */}
+  {totalItems > 0 && (
+    <Link
+      href="/cart"
+      className="relative flex items-center gap-2 border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition"
+    >
+      {/* Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-5 h-5 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 6.2a1 1 0 001 .8h12.6"
+        />
+      </svg>
+
+      <span className="text-white text-sm font-medium">
+        Cart
+      </span>
+
+      {/* Badge */}
+      <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#C8A75B] text-black text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-[#0B1C2C]">
+        {totalItems}
+      </div>
+    </Link>
+  )}
+
+  {/* CONTACT BUTTON */}
+  <Link
+    href={"/contact"}
+    className="bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition"
+  >
+    CONTACT US
+  </Link>
+</div>
         </div>
       </div>
     </header>

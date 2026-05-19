@@ -1,26 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 
-const CART_ITEMS = [
-  {
-    id: 1,
-    title: "Hilchos Ribis: A Practical Guide",
-    author: "Rabbi Y. Blumenkrantz",
-    price: 34.99,
-    qty: 1,
-    category: "Halacha",
-  },
-  {
-    id: 2,
-    title: "The Heter Iska Handbook",
-    author: "Rabbi M. Tendler",
-    price: 28.0,
-    qty: 2,
-    category: "Finance",
-  },
-];
 
 const SHIPPING_OPTIONS = [
   { id: "standard", label: "Standard (5–7 days)", price: 0 },
@@ -29,7 +12,14 @@ const SHIPPING_OPTIONS = [
 ];
 
 export default function CartPage() {
-  const [items, setItems] = useState(CART_ITEMS);
+  const {
+    cart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+  } = useCart();
+
+  const items = cart;
   const [shipping, setShipping] = useState("standard");
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
@@ -40,13 +30,7 @@ export default function CartPage() {
     cardNumber: "", expiry: "", cvv: "", nameOnCard: "",
   });
 
-  const updateQty = (id: number, qty: number) => {
-    if (qty < 1) {
-      setItems((prev) => prev.filter((i) => i.id !== id));
-    } else {
-      setItems((prev) => prev.map((i) => (i.id === id ? { ...i, qty } : i)));
-    }
-  };
+
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
   const shippingCost = SHIPPING_OPTIONS.find((o) => o.id === shipping)?.price ?? 0;
@@ -163,12 +147,12 @@ export default function CartPage() {
                       </div>
                       <div className="flex flex-col items-end gap-3">
                         <div className="flex items-center border border-[#e5ddd0] rounded-lg overflow-hidden">
-                          <button onClick={() => updateQty(item.id, item.qty - 1)} className="px-3 py-1.5 text-[#6b5e4e] hover:bg-[#f5f0e8] transition text-sm">−</button>
+                          <button onClick={() => updateQuantity(item.id, item.qty - 1)} className="px-3 py-1.5 text-[#6b5e4e] hover:bg-[#f5f0e8] transition text-sm">−</button>
                           <span className="px-3 py-1.5 text-[#0d1b2a] text-sm font-semibold border-x border-[#e5ddd0]">{item.qty}</span>
-                          <button onClick={() => updateQty(item.id, item.qty + 1)} className="px-3 py-1.5 text-[#6b5e4e] hover:bg-[#f5f0e8] transition text-sm">+</button>
+                          <button onClick={() => updateQuantity(item.id, item.qty + 1)} className="px-3 py-1.5 text-[#6b5e4e] hover:bg-[#f5f0e8] transition text-sm">+</button>
                         </div>
                         <p className="text-[#0d1b2a] font-bold">{f(item.price * item.qty)}</p>
-                        <button onClick={() => updateQty(item.id, 0)} className="text-[#b0a898] hover:text-[#d85a30] text-[10px] transition">Remove</button>
+                        <button onClick={() => removeFromCart(item.id)} className="text-[#b0a898] hover:text-[#d85a30] text-[10px] transition">Remove</button>
                       </div>
                     </div>
                   ))

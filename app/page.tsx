@@ -1,4 +1,3 @@
-import GuidedStrip from "@/components/GuidedStrip";
 import AboutSection from "@/components/AboutSection";
 import AskSection from "@/components/AskSection";
 import BankDirectorySection from "@/components/BankDirectory";
@@ -18,7 +17,7 @@ const Home = () => {
         <Navbar />
         <Hero />
       </main>
-      <GuidedStrip/>
+      {/* <GuidedStrip/> */}
       <FeaturesGrid/>
       <BankDirectorySection/>
       <EducationSection/>

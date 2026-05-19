@@ -1,262 +1,538 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import axios from "axios";
+
 import Link from "next/link";
+
+import { useCart } from "@/context/CartContext";
+
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-const CATEGORIES = ["All", "Halacha", "Finance", "Responsa", "Education", "Audio"];
-
-const BOOKS = [
-  {
-    id: 1,
-    title: "Hilchos Ribis: A Practical Guide",
-    author: "Rabbi Y. Blumenkrantz",
-    price: 34.99,
-    originalPrice: 44.99,
-    category: "Halacha",
-    badge: "Bestseller",
-    badgeColor: "#c9a84c",
-    pages: 312,
-    inStock: true,
-    description: "The definitive English guide to the laws of ribis for everyday financial situations.",
-  },
-  {
-    id: 2,
-    title: "The Heter Iska Handbook",
-    author: "Rabbi M. Tendler",
-    price: 28.0,
-    originalPrice: null,
-    category: "Finance",
-    badge: "New",
-    badgeColor: "#4caf82",
-    pages: 218,
-    inStock: true,
-    description: "A comprehensive walkthrough of heter iska structures for modern lending arrangements.",
-  },
-  {
-    id: 3,
-    title: "Responsa on Modern Banking",
-    author: "Rabbi S. Wosner zt\"l",
-    price: 42.0,
-    originalPrice: null,
-    category: "Responsa",
-    badge: null,
-    badgeColor: null,
-    pages: 480,
-    inStock: true,
-    description: "Collected teshuvos addressing interest, banking, and financial instruments.",
-  },
-  {
-    id: 4,
-    title: "Interest-Free Finance in Halacha",
-    author: "Rabbi A. Weiss",
-    price: 22.5,
-    originalPrice: 29.99,
-    category: "Education",
-    badge: "Sale",
-    badgeColor: "#d85a30",
-    pages: 176,
-    inStock: true,
-    description: "An accessible introduction for laypeople to the principles behind ribis law.",
-  },
-  {
-    id: 5,
-    title: "Sha'alos U'Teshuvos: Ribis",
-    author: "Dayan C. Feldman",
-    price: 38.0,
-    originalPrice: null,
-    category: "Responsa",
-    badge: null,
-    badgeColor: null,
-    pages: 540,
-    inStock: false,
-    description: "A collection of contemporary responsa on ribis issues in business and real estate.",
-  },
-  {
-    id: 6,
-    title: "Audio: Ribis Shiur Series (12 CDs)",
-    author: "Rabbi P. Krohn",
-    price: 54.0,
-    originalPrice: 69.99,
-    category: "Audio",
-    badge: "Bundle",
-    badgeColor: "#534ab7",
-    pages: null,
-    inStock: true,
-    description: "Complete audio series covering all major topics in hilchos ribis, 24+ hours.",
-  },
+const CATEGORIES = [
+  "All",
+  "Halacha",
+  "Finance",
+  "Responsa",
+  "Education",
+  "Audio",
 ];
 
+type BookType = {
+  _id: string;
+
+  title: string;
+
+  author: string;
+
+  price: number;
+
+  originalPrice?: number;
+
+  category: string;
+
+  badge?: string;
+
+  badgeColor?: string;
+
+  pages?: number;
+
+  inStock: boolean;
+
+  description: string;
+
+  coverImage?: string;
+};
+
 export default function StorePage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [cart, setCart] = useState<number[]>([]);
-  const [search, setSearch] = useState("");
 
-  const filtered = BOOKS.filter((b) => {
-    const matchCat = activeCategory === "All" || b.category === activeCategory;
-    const matchSearch =
-      b.title.toLowerCase().includes(search.toLowerCase()) ||
-      b.author.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  const [activeCategory, setActiveCategory] =
+    useState("All");
 
-  const addToCart = (id: number) => {
-    setCart((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  const [search, setSearch] =
+    useState("");
+
+  const [books, setBooks] =
+    useState<BookType[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const {
+    cart,
+    addToCart,
+    updateQuantity,
+  } = useCart();
+
+  // FETCH BOOKS
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+
+    try {
+
+      setLoading(true);
+
+      const response =
+        await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}api/book`
+        );
+
+      setBooks(
+  response.data.data.books || []
+);
+
+    } catch (error) {
+
+      console.error(
+        "Fetch books error:",
+        error
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
   };
 
-  return (      
+  // FILTER
+  const filtered = books?.filter((b) => {
+
+    const matchCat =
+      activeCategory === "All" ||
+      b.category === activeCategory;
+
+    const matchSearch =
+      b.title
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        ) ||
+      b.author
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        );
+
+    return (
+      matchCat && matchSearch
+    );
+
+  });
+
+  return (
     <div className="min-h-screen bg-[#f5f0e8]">
-    <div className="bg-[#0B1C2C] text-white pt-20 pb-10">
-            <Navbar/>
-             </div>
-  
+
+      {/* HERO */}
+      <div className="bg-[#0B1C2C] text-white pt-20 pb-10">
+        <Navbar />
+      </div>
+
+      {/* HERO SECTION */}
       <div className="bg-[#0d1b2a] px-6 lg:px-12 py-12 relative overflow-hidden">
+
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
-            backgroundImage: `linear-gradient(#c9a84c 1px, transparent 1px), linear-gradient(90deg, #c9a84c 1px, transparent 1px)`,
-            backgroundSize: "40px 40px",
+            backgroundImage:
+              "linear-gradient(#c9a84c 1px, transparent 1px), linear-gradient(90deg, #c9a84c 1px, transparent 1px)",
+            backgroundSize:
+              "40px 40px",
           }}
         />
+
         <div className="relative z-10 max-w-2xl">
-          <p className="text-[#c9a84c] text-xs tracking-[0.3em] uppercase font-semibold mb-3">Ribis · Shop</p>
-          <h1 className="text-white font-serif text-4xl lg:text-5xl leading-tight mb-4">
-            Seforim & Resources on<br />
-            <em className="text-[#c9a84c] not-italic">Hilchos Ribis</em>
-          </h1>
-          <p className="text-[#8a9bb0] text-sm leading-relaxed max-w-lg">
-            Curated books, responsa, and audio resources reviewed by our Kashrus Department — every title vetted for halachic accuracy.
+
+          <p className="text-[#c9a84c] text-xs tracking-[0.3em] uppercase font-semibold mb-3">
+            Ribis · Shop
           </p>
+
+          <h1 className="text-white font-serif text-4xl lg:text-5xl leading-tight mb-4">
+            Seforim & Resources on
+            <br />
+            <em className="text-[#c9a84c] not-italic">
+              Hilchos Ribis
+            </em>
+          </h1>
+
+          <p className="text-[#8a9bb0] text-sm leading-relaxed max-w-lg">
+            Curated books,
+            responsa, and audio
+            resources reviewed by
+            our Kashrus Department.
+          </p>
+
         </div>
+
       </div>
 
-      {/* Filter bar */}
-      <div className="bg-white border-b border-[#e5ddd0] px-6 lg:px-12 py-4 flex flex-wrap items-center gap-4">
-        {/* Search */}
-        <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8a9bb0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search titles, authors..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border border-[#e5ddd0] rounded-lg text-sm text-[#1a2535] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]"
-          />
-        </div>
+      {/* FILTER BAR */}
+      <div className="bg-white border-b border-[#e5ddd0] px-6 lg:px-12 py-4">
 
-        {/* Category pills */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
-                activeCategory === cat
-                  ? "bg-[#0d1b2a] text-white"
-                  : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
 
-        <div className="ml-auto text-xs text-[#8a9bb0]">
-          {filtered.length} item{filtered.length !== 1 ? "s" : ""}
-        </div>
-      </div>
+          {/* LEFT */}
+          <div className="flex flex-1 flex-wrap items-center gap-4">
 
-      {/* Book grid */}
-      <div className="px-6 lg:px-12 py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((book) => (
-            <div
-              key={book.id}
-              className="bg-white rounded-xl border border-[#e5ddd0] overflow-hidden hover:border-[#c9a84c]/50 transition-all group"
-            >
-              {/* Book cover placeholder */}
-              <div className="h-48 bg-[#0d1b2a] relative overflow-hidden flex items-center justify-center">
-                <div
-                  className="absolute inset-0 opacity-[0.04]"
-                  style={{
-                    backgroundImage: `linear-gradient(#c9a84c 1px, transparent 1px), linear-gradient(90deg, #c9a84c 1px, transparent 1px)`,
-                    backgroundSize: "24px 24px",
-                  }}
-                />
-                {/* Stylized book spine */}
-                <div className="relative z-10 w-20 h-32 bg-[#1a2e42] border border-[#c9a84c]/30 rounded-sm flex flex-col items-center justify-between py-3 px-2">
-                  <div className="w-10 h-px bg-[#c9a84c]/40" />
-                  <div className="text-center">
-                    <div className="w-8 h-8 bg-[#c9a84c]/10 border border-[#c9a84c]/30 rounded-sm flex items-center justify-center mx-auto mb-2">
-                      <span className="text-[#c9a84c] font-serif text-xs">ר</span>
-                    </div>
-                    <p className="text-[#c9a84c] text-[8px] font-semibold tracking-widest uppercase">Ribis</p>
-                  </div>
-                  <div className="w-10 h-px bg-[#c9a84c]/40" />
-                </div>
-                {/* Badge */}
-                {book.badge && (
-                  <span
-                    className="absolute top-3 left-3 text-white text-[9px] font-bold px-2 py-1 rounded-full tracking-wide"
-                    style={{ backgroundColor: book.badgeColor ?? "#c9a84c" }}
-                  >
-                    {book.badge}
-                  </span>
-                )}
-                {!book.inStock && (
-                  <span className="absolute top-3 right-3 bg-black/60 text-white/70 text-[9px] px-2 py-1 rounded-full">
-                    Out of Stock
-                  </span>
-                )}
-              </div>
+            {/* SEARCH */}
+            <div className="relative flex-1 min-w-[220px] max-w-xs">
 
-              {/* Details */}
-              <div className="p-5">
-                <p className="text-[#c9a84c] text-[9px] tracking-[0.2em] uppercase font-semibold mb-1">{book.category}</p>
-                <h3 className="text-[#0d1b2a] font-serif text-base leading-snug mb-1 group-hover:text-[#1a4a6b] transition">
-                  {book.title}
-                </h3>
-                <p className="text-[#8a9bb0] text-xs mb-2">{book.author}</p>
-                <p className="text-[#6b5e4e] text-xs leading-relaxed mb-4 line-clamp-2">{book.description}</p>
+              <input
+                type="text"
+                placeholder="Search titles, authors..."
+                value={search}
+                onChange={(e) =>
+                  setSearch(
+                    e.target.value
+                  )
+                }
+                className="w-full px-4 py-2.5 border border-[#e5ddd0] rounded-xl text-sm bg-[#faf8f5] focus:outline-none focus:border-[#c9a84c]"
+              />
 
-                {book.pages && (
-                  <p className="text-[#b0a898] text-[10px] mb-3">{book.pages} pages</p>
-                )}
+            </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-[#0d1b2a] text-lg font-bold">${book.price.toFixed(2)}</span>
-                    {book.originalPrice && (
-                      <span className="text-[#b0a898] text-xs line-through">${book.originalPrice.toFixed(2)}</span>
-                    )}
-                  </div>
+            {/* CATEGORIES */}
+            <div className="flex items-center gap-2 flex-wrap">
+
+              {CATEGORIES.map(
+                (cat) => (
+
                   <button
-                    onClick={() => addToCart(book.id)}
-                    disabled={!book.inStock}
-                    className={`px-4 py-2 rounded-lg text-xs font-bold tracking-wide transition-all ${
-                      !book.inStock
-                        ? "bg-[#f0ece4] text-[#b0a898] cursor-not-allowed"
-                        : cart.includes(book.id)
-                        ? "bg-[#0d1b2a] text-[#c9a84c]"
-                        : "bg-[#c9a84c] text-[#0d1b2a] hover:bg-[#d4b567]"
+                    key={cat}
+                    onClick={() =>
+                      setActiveCategory(
+                        cat
+                      )
+                    }
+                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+                      activeCategory ===
+                      cat
+                        ? "bg-[#0d1b2a] text-white"
+                        : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
                     }`}
                   >
-                    {!book.inStock ? "Unavailable" : cart.includes(book.id) ? "✓ Added" : "Add to Cart"}
+                    {cat}
                   </button>
-                </div>
-              </div>
+
+                )
+              )}
+
             </div>
-          ))}
+
+          </div>
+
+          {/* RIGHT */}
+          {cart.length > 0 && (
+
+            <Link
+              href="/cart"
+              className="relative flex items-center gap-3 bg-[#0d1b2a] hover:bg-[#13263a] text-white px-5 py-2.5 rounded-xl transition-all shadow-sm"
+            >
+
+              <div className="flex flex-col leading-none">
+
+                <span className="text-[10px] uppercase tracking-wider text-white/60">
+                  Cart
+                </span>
+
+                <span className="text-sm font-semibold">
+                  {cart.reduce(
+                    (
+                      acc,
+                      item
+                    ) =>
+                      acc +
+                      item.qty,
+                    0
+                  )}{" "}
+                  Items
+                </span>
+
+              </div>
+
+              {/* BADGE */}
+              <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#c9a84c] text-[#0d1b2a] text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-white">
+
+                {cart.reduce(
+                  (
+                    acc,
+                    item
+                  ) =>
+                    acc +
+                    item.qty,
+                  0
+                )}
+
+              </div>
+
+            </Link>
+
+          )}
+
         </div>
 
-        {filtered.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-[#8a9bb0] text-sm">No items found for your search.</p>
-          </div>
-        )}
       </div>
+
+      {/* PRODUCTS */}
+      <div className="px-6 lg:px-12 py-10">
+
+        {/* LOADING */}
+        {loading && (
+
+          <div className="flex justify-center py-20">
+
+            <p className="text-[#8a9bb0] text-sm">
+              Loading books...
+            </p>
+
+          </div>
+
+        )}
+
+        {/* GRID */}
+        {!loading && (
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {filtered.map((book) => {
+
+              const cartItem =
+                cart.find(
+                  (item) =>
+                    item.id ===
+                    book._id
+                );
+
+              return (
+
+                <div
+                  key={book._id}
+                  className="bg-white rounded-xl border border-[#e5ddd0] overflow-hidden hover:border-[#c9a84c]/50 transition-all group"
+                >
+
+                  {/* IMAGE */}
+                  <Link
+                    href={`/product/${book._id}`}
+                    className="block h-56 overflow-hidden bg-[#f8f5ef] relative"
+                  >
+
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_API_URL}${book.coverImage}`}
+                      alt={
+                        book.title
+                      }
+                      className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+
+                    {book.badge && (
+
+                      <span
+                        className="absolute top-3 left-3 text-white text-[9px] font-bold px-2 py-1 rounded-full"
+                        style={{
+                          backgroundColor:
+                            book.badgeColor ||
+                            "#c9a84c",
+                        }}
+                      >
+                        {book.badge}
+                      </span>
+
+                    )}
+
+                    {!book.inStock && (
+
+                      <span className="absolute top-3 right-3 bg-black/70 text-white text-[9px] px-2 py-1 rounded-full">
+                        Out of Stock
+                      </span>
+
+                    )}
+
+                  </Link>
+
+                  {/* CONTENT */}
+                  <div className="p-5">
+
+                    <p className="text-[#c9a84c] text-[9px] tracking-[0.2em] uppercase font-semibold mb-1">
+                      {book.category}
+                    </p>
+
+                    <Link
+                      href={`/product/${book._id}`}
+                    >
+
+                      <h3 className="text-[#0d1b2a] font-serif text-base leading-snug mb-1 hover:text-[#1a4a6b] transition">
+                        {book.title}
+                      </h3>
+
+                    </Link>
+
+                    <p className="text-[#8a9bb0] text-xs mb-2">
+                      {book.author}
+                    </p>
+
+                    <p className="text-[#6b5e4e] text-xs leading-relaxed mb-4 line-clamp-2">
+                      {
+                        book.description
+                      }
+                    </p>
+
+                    {/* PRICE + CART */}
+                    <div className="flex items-center justify-between">
+
+                      <div className="flex items-center gap-2">
+
+                        <span className="text-[#0d1b2a] text-lg font-bold">
+                          $
+                          {Number(
+                            book.price
+                          ).toFixed(
+                            2
+                          )}
+                        </span>
+
+                        {book.originalPrice && (
+
+                          <span className="text-xs text-[#b0a898] line-through">
+                            $
+                            {Number(
+                              book.originalPrice
+                            ).toFixed(
+                              2
+                            )}
+                          </span>
+
+                        )}
+
+                      </div>
+
+                      {/* CART */}
+                      {!book.inStock ? (
+
+                        <button
+                          disabled
+                          className="px-4 py-2 rounded-lg text-xs font-bold bg-[#f0ece4] text-[#b0a898] cursor-not-allowed"
+                        >
+                          Unavailable
+                        </button>
+
+                      ) : cartItem ? (
+
+                        <div className="flex items-center border border-[#e5ddd0] rounded-lg overflow-hidden">
+
+                          <button
+                            onClick={() =>
+                              updateQuantity(
+                                book._id,
+                                cartItem.qty -
+                                  1
+                              )
+                            }
+                            className="px-3 py-2 text-sm bg-[#f5f0e8] hover:bg-[#e5ddd0] transition"
+                          >
+                            −
+                          </button>
+
+                          <span className="px-4 text-sm font-bold text-[#0d1b2a]">
+                            {
+                              cartItem.qty
+                            }
+                          </span>
+
+                          <button
+                            onClick={() =>
+                              addToCart(
+                                {
+                                  id: book._id,
+                                  title:
+                                    book.title,
+                                  author:
+                                    book.author,
+                                  price:
+                                    Number(
+                                      book.price
+                                    ),
+                                  qty: 1,
+                                  category:
+                                    book.category,
+                                }
+                              )
+                            }
+                            className="px-3 py-2 text-sm bg-[#c9a84c] text-[#0d1b2a] hover:bg-[#d4b567] transition"
+                          >
+                            +
+                          </button>
+
+                        </div>
+
+                      ) : (
+
+                        <button
+                          onClick={() =>
+                            addToCart(
+                              {
+                                id: book._id,
+                                title:
+                                  book.title,
+                                author:
+                                  book.author,
+                                price:
+                                  Number(
+                                    book.price
+                                  ),
+                                qty: 1,
+                                category:
+                                  book.category,
+                              }
+                            )
+                          }
+                          className="px-4 py-2 rounded-lg text-xs font-bold tracking-wide bg-[#c9a84c] text-[#0d1b2a] hover:bg-[#d4b567] transition-all"
+                        >
+                          Add to Cart
+                        </button>
+
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              );
+
+            })}
+
+          </div>
+
+        )}
+
+        {/* EMPTY */}
+        {!loading &&
+          filtered.length ===
+            0 && (
+
+            <div className="text-center py-20">
+
+              <p className="text-[#8a9bb0] text-sm">
+                No books found.
+              </p>
+
+            </div>
+
+          )}
+
+      </div>
+
+      <Footer />
+
     </div>
   );
 }
