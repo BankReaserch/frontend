@@ -30,7 +30,7 @@ const NAV_ITEMS: NavItem[] = [
     name: "Education",
     children: [
       { name: "Shiurim", href: "/shiurim" },
-      { name: "Magazine", href: "/magazine" },
+      { name: "Q&A", href: "/Q&A" },
       { name: "Articles", href: "/articles" },
       { name: "Programs", href: "/programs" },
       { name: "Alerts", href: "/programs/#alerts" },
