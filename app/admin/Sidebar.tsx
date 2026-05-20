@@ -10,7 +10,7 @@ import {
   TicketPercent,
   BarChart3,
   Star,
-  Settings,
+  CircleQuestionMark,
   BookUser,
 } from "lucide-react";
 
@@ -50,10 +50,10 @@ const menu = [
     name: "Customers",
     icon: Users,
   },
-  // {
-  //   name: "Coupons",
-  //   icon: TicketPercent,
-  // },
+  {
+    name: "Q&A",
+    icon: CircleQuestionMark,
+  },
   // {
   //   name: "Analytics",
   //   icon: BarChart3,

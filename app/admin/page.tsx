@@ -1,30 +1,135 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  useRouter,
+} from "next/navigation";
 
 import Sidebar from "./Sidebar";
+
 import Topbar from "@/components/dashboard/Topbar";
 
 import StatCard from "@/components/dashboard/StatCard";
+
 import RevenueChart from "@/components/dashboard/RevenueChart";
+
 import OrdersTable from "@/components/dashboard/OrdersTable";
+
 import ProductsList from "@/components/dashboard/ProductsList";
+
 import CategoryChart from "@/components/dashboard/CategoryChart";
+
 import Insights from "@/components/dashboard/Insights";
+
 import AudioTable from "@/components/dashboard/AudioTable";
+
 import Books from "./Books";
 
+import QNA from "./Q&A";
+
 export default function DashboardPage() {
+
+  const router =
+    useRouter();
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [authorized, setAuthorized] =
+    useState(false);
+
   const [active, setActive] =
     useState("Dashboard");
 
+  // VERIFY ADMIN
+ useEffect(() => {
+
+  const verifyAdmin =
+    async () => {
+
+      try {
+
+        const response =
+          await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,
+            {
+              credentials:
+                "include",
+            }
+          );
+
+        const data =
+          await response.json();
+
+        console.log(data);
+
+        // NOT ADMIN
+        if (
+          !response.ok ||
+          !data.isAdmin
+        ) {
+
+          router.replace(
+            "/login"
+          );
+
+          return;
+        }
+
+        setAuthorized(true);
+
+      } catch (error) {
+
+        router.replace(
+          "/login"
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+    };
+
+  verifyAdmin();
+
+}, [router]);
+
+  // LOADING SCREEN
+  if (loading) {
+
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f4efe7]">
+
+        <div className="text-[#0f172a] text-lg font-semibold">
+
+          Verifying access...
+
+        </div>
+
+      </div>
+    );
+  }
+
+  // BLOCK RENDER
+  if (!authorized) {
+    return null;
+  }
+
   const renderContent = () => {
+
     switch (active) {
+
       case "Dashboard":
+
         return (
           <>
-            {/* STATS */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
+
               <StatCard
                 title="Total Orders"
                 value="1,248"
@@ -48,74 +153,113 @@ export default function DashboardPage() {
                 value="$8,450"
                 growth="+16.3%"
               />
+
             </div>
 
-            {/* MIDDLE */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
+
               <div className="xl:col-span-2">
+
                 <RevenueChart />
+
               </div>
 
               <OrdersTable />
+
             </div>
 
-            {/* BOTTOM */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
+
               <ProductsList />
 
               <CategoryChart />
 
               <Insights />
+
             </div>
           </>
         );
 
       case "Orders":
+
         return (
           <div className="mt-6">
+
             <OrdersTable />
+
           </div>
         );
+
       case "Audio":
+
         return (
           <div className="mt-6">
-            <AudioTable/>
+
+            <AudioTable />
+
           </div>
         );
 
       case "Products":
+
         return (
           <div className="mt-6">
+
             <ProductsList />
+
           </div>
         );
-        case "Books":
+
+      case "Books":
+
         return (
           <div className="mt-6">
-           <Books/>
+
+            <Books />
+
+          </div>
+        );
+
+      case "Q&A":
+
+        return (
+          <div className="mt-6">
+
+            <QNA />
+
           </div>
         );
 
       case "Analytics":
+
         return (
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+
             <RevenueChart />
 
             <CategoryChart />
+
           </div>
         );
 
       default:
+
         return (
           <div className="bg-white rounded-2xl p-10 mt-6">
+
             <h2 className="text-3xl font-semibold">
+
               {active}
+
             </h2>
 
             <p className="text-gray-500 mt-2">
+
               This section is under
               development.
+
             </p>
+
           </div>
         );
     }
@@ -130,7 +274,7 @@ export default function DashboardPage() {
         setActive={setActive}
       />
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <div className="flex-1 p-6 overflow-x-hidden">
 
         <Topbar />
@@ -138,6 +282,7 @@ export default function DashboardPage() {
         {renderContent()}
 
       </div>
+
     </div>
   );
 }
