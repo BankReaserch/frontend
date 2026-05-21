@@ -232,46 +232,46 @@ export default function OrdersPage() {
 
               <div className="border-t mt-5 pt-4 flex items-center justify-between">
 
-  <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500">
 
-    {new Date(
-      order.createdAt
-    ).toLocaleDateString()}
+                  {new Date(
+                    order.createdAt
+                  ).toLocaleDateString()}
 
-  </span>
+                </span>
 
-  <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
 
-    <span className="font-bold">
+                  <span className="font-bold">
 
-      $
-      {order.totalAmount.toFixed(
-        2
-      )}
+                    $
+                    {order.totalAmount.toFixed(
+                      2
+                    )}
 
-    </span>
+                  </span>
 
-    {(order.status ===
-      "pending" ||
-      order.status ===
-        "processing") && (
+                  {(order.status ===
+                    "pending" ||
+                    order.status ===
+                    "processing") && (
 
-      <button
-        onClick={() =>
-          setCancelOrderId(
-            order._id
-          )
-        }
-        className="px-4 py-2 rounded-xl bg-red-100 hover:bg-red-200 text-red-700 text-xs font-medium transition"
-      >
-        Cancel Order
-      </button>
+                      <button
+                        onClick={() =>
+                          setCancelOrderId(
+                            order._id
+                          )
+                        }
+                        className="px-4 py-2 rounded-xl bg-red-100 hover:bg-red-200 text-red-700 text-xs font-medium transition"
+                      >
+                        Cancel Order
+                      </button>
 
-    )}
+                    )}
 
-  </div>
+                </div>
 
-</div>
+              </div>
             </div>
 
           )
