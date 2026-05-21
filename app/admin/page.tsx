@@ -46,59 +46,93 @@ export default function DashboardPage() {
     useState("Dashboard");
 
   // VERIFY ADMIN
- useEffect(() => {
+  useEffect(() => {
 
-  const verifyAdmin =
-    async () => {
+    let isMounted = true;
 
-      try {
+    const verifyAdmin =
+      async () => {
 
-        const response =
-          await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,
-            {
-              credentials:
-                "include",
-            }
+        try {
+
+          const response =
+            await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,
+              {
+                method: "GET",
+
+                credentials:
+                  "include",
+
+                headers: {
+                  "Content-Type":
+                    "application/json",
+                },
+
+                cache: "no-store",
+              }
+            );
+
+          // UNAUTHORIZED
+          if (!response.ok) {
+
+            window.location.href =
+              "/login";
+
+            return;
+          }
+
+          const data =
+            await response.json();
+
+          console.log(
+            "AUTH DATA:",
+            data
           );
 
-        const data =
-          await response.json();
+          // NOT ADMIN
+          if (
+            !data?.user ||
+            data.user.role !==
+            "admin"
+          ) {
 
-        console.log(data);
+            window.location.href =
+              "/login";
 
-        // NOT ADMIN
-        if (
-  !response.ok ||
-  data.user?.role !==
-    "admin"
-) {
+            return;
+          }
 
-          router.replace(
-            "/login"
+          // SUCCESS
+          if (isMounted) {
+            setAuthorized(true);
+          }
+
+        } catch (error) {
+
+          console.error(
+            "Admin verify failed:",
+            error
           );
 
-          return;
+          window.location.href =
+            "/login";
+
+        } finally {
+
+          if (isMounted) {
+            setLoading(false);
+          }
         }
+      };
 
-        setAuthorized(true);
+    verifyAdmin();
 
-      } catch (error) {
-
-        router.replace(
-          "/login"
-        );
-
-      } finally {
-
-        setLoading(false);
-
-      }
+    return () => {
+      isMounted = false;
     };
 
-  verifyAdmin();
-
-}, [router]);
+  }, []);
 
   // LOADING SCREEN
   if (loading) {
