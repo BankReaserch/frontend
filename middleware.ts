@@ -15,14 +15,35 @@ export function middleware(
   const pathname =
     request.nextUrl.pathname;
 
-  // PROTECT ADMIN ROUTES
+  /*
+    ADMIN ROUTES
+  */
   if (
     pathname.startsWith(
       "/admin"
     )
   ) {
 
-    // NO TOKEN
+    if (!token) {
+
+      return NextResponse.redirect(
+        new URL(
+          "/login",
+          request.url
+        )
+      );
+    }
+  }
+
+  /*
+    USER DASHBOARD ROUTES
+  */
+  if (
+    pathname.startsWith(
+      "/dashboard"
+    )
+  ) {
+
     if (!token) {
 
       return NextResponse.redirect(
@@ -37,9 +58,9 @@ export function middleware(
   return NextResponse.next();
 }
 
-// ROUTES
 export const config = {
   matcher: [
     "/admin/:path*",
+    "/dashboard/:path*",
   ],
 };

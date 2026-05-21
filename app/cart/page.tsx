@@ -3,13 +3,8 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
+import axios from "axios";
 
-
-const SHIPPING_OPTIONS = [
-  { id: "standard", label: "Standard (5–7 days)", price: 0 },
-  { id: "express", label: "Express (2–3 days)", price: 9.99 },
-  { id: "overnight", label: "Overnight", price: 24.99 },
-];
 
 export default function CartPage() {
   const {
@@ -20,28 +15,130 @@ export default function CartPage() {
   } = useCart();
 
   const items = cart;
-  const [shipping, setShipping] = useState("standard");
-  const [coupon, setCoupon] = useState("");
-  const [couponApplied, setCouponApplied] = useState(false);
   const [step, setStep] = useState<"cart" | "checkout" | "confirmation">("cart");
+  const [loading, setLoading] = useState(false);
+  const [orderId, setOrderId] = useState("");
 
-  const [form, setForm] = useState({
-    firstName: "", lastName: "", email: "", address: "", city: "", zip: "", country: "US",
-    cardNumber: "", expiry: "", cvv: "", nameOnCard: "",
-  });
-
-
-
+  const [form, setForm] = useState({ fullName: "", contactMethod: "email", email: "", phone: "", address: "", zip: "", });
   const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
-  const shippingCost = SHIPPING_OPTIONS.find((o) => o.id === shipping)?.price ?? 0;
-  const discount = couponApplied ? subtotal * 0.1 : 0;
-  const total = subtotal + shippingCost - discount;
-
-  const applyCoupon = () => {
-    if (coupon.toLowerCase() === "ribis10") setCouponApplied(true);
-  };
+  const total = subtotal;
 
   const f = (n: number) => `$${n.toFixed(2)}`;
+  const placeOrder =
+    async () => {
+      try {
+        if (
+          !form.fullName ||
+          !form.address ||
+          !form.zip
+        ) {
+
+          alert(
+            "Please fill all required fields"
+          );
+
+          return;
+        }
+
+        if (
+          form.contactMethod ===
+          "email" &&
+          !form.email
+        ) {
+
+          alert(
+            "Please enter email"
+          );
+
+          return;
+        }
+
+        if (
+          form.contactMethod ===
+          "phone" &&
+          !form.phone
+        ) {
+
+          alert(
+            "Please enter phone number"
+          );
+
+          return;
+        }
+
+        setLoading(true);
+
+        // API CALL
+        const response =
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}api/order/place`,
+            {
+              items:
+                items.map(
+                  (item) => ({
+                    book:
+                      item.id,
+
+                    quantity:
+                      item.qty,
+                  })
+                ),
+
+              contactInfo:
+              {
+                fullName:
+                  form.fullName,
+
+                contactMethod:
+                  form.contactMethod,
+
+                email:
+                  form.email,
+
+                phone:
+                  form.phone,
+
+                address:
+                  form.address,
+
+                zip:
+                  form.zip,
+              },
+            },
+            {
+              withCredentials:
+                true,
+            }
+          );
+
+        setOrderId(
+          response.data.data
+            ?.orderNumber ||
+          response.data.data
+            ?._id
+        );
+
+        clearCart();
+        setStep(
+          "confirmation"
+        );
+
+      } catch (error: any) {
+
+        console.error(
+          "Order Error:",
+          error
+        );
+
+        alert(
+          error?.response?.data
+            ?.message ||
+          "Failed to place order"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
 
   if (step === "confirmation") {
     return (
@@ -55,7 +152,7 @@ export default function CartPage() {
           <p className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase font-semibold mb-3">Order Confirmed</p>
           <h1 className="text-[#0d1b2a] font-serif text-3xl mb-3">Thank you!</h1>
           <p className="text-[#8a9bb0] text-sm leading-relaxed mb-2">
-            Your order <span className="text-[#0d1b2a] font-semibold">#RB-{Math.floor(Math.random() * 90000 + 10000)}</span> has been placed.
+            Your order <span className="text-[#0d1b2a] font-semibold">{orderId}</span> has been placed.
           </p>
           <p className="text-[#8a9bb0] text-sm mb-8">
             A confirmation will be sent to <span className="text-[#0d1b2a]">{form.email || "your email"}</span>.
@@ -158,109 +255,210 @@ export default function CartPage() {
                   ))
                 )}
 
-                {/* Coupon */}
-                <div className="bg-white border border-[#e5ddd0] rounded-xl p-5">
-                  <p className="text-[#0d1b2a] text-sm font-semibold mb-3">Have a coupon?</p>
-                  <div className="flex gap-3">
-                    <input
-                      type="text"
-                      placeholder="Enter code (try RIBIS10)"
-                      value={coupon}
-                      onChange={(e) => setCoupon(e.target.value)}
-                      disabled={couponApplied}
-                      className="flex-1 border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5] disabled:opacity-50"
-                    />
-                    <button
-                      onClick={applyCoupon}
-                      disabled={couponApplied || !coupon}
-                      className="px-5 py-2.5 bg-[#0d1b2a] text-[#c9a84c] font-bold text-xs rounded-lg hover:bg-[#1a2e42] transition disabled:opacity-40"
-                    >
-                      {couponApplied ? "Applied ✓" : "Apply"}
-                    </button>
-                  </div>
-                </div>
 
-                {/* Shipping */}
-                <div className="bg-white border border-[#e5ddd0] rounded-xl p-5">
-                  <p className="text-[#0d1b2a] text-sm font-semibold mb-3">Shipping Method</p>
-                  <div className="space-y-2">
-                    {SHIPPING_OPTIONS.map((opt) => (
-                      <label key={opt.id} className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition ${shipping === opt.id ? "border-[#c9a84c] bg-[#c9a84c]/5" : "border-[#e5ddd0] hover:border-[#c9a84c]/50"}`}>
-                        <div className="flex items-center gap-3">
-                          <input type="radio" name="shipping" value={opt.id} checked={shipping === opt.id} onChange={() => setShipping(opt.id)} className="accent-[#c9a84c]" />
-                          <span className="text-[#0d1b2a] text-sm">{opt.label}</span>
-                        </div>
-                        <span className="text-[#0d1b2a] text-sm font-semibold">{opt.price === 0 ? "Free" : f(opt.price)}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
               </>
             )}
 
             {step === "checkout" && (
               <div className="space-y-5">
-                {/* Shipping info */}
+
+                {/* CONTACT INFO */}
                 <div className="bg-white border border-[#e5ddd0] rounded-xl p-6">
-                  <h2 className="text-[#0d1b2a] font-serif text-lg mb-5">Shipping Information</h2>
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { label: "First Name", field: "firstName", type: "text", placeholder: "Yosef" },
-                      { label: "Last Name", field: "lastName", type: "text", placeholder: "Cohen" },
-                    ].map(({ label, field, type, placeholder }) => (
-                      <div key={field}>
-                        <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">{label}</label>
-                        <input type={type} placeholder={placeholder} value={(form as Record<string, string>)[field]} onChange={(e) => setForm((p) => ({ ...p, [field]: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
+
+                  <h2 className="text-[#0d1b2a] font-serif text-lg mb-5">
+
+                    Contact Information
+
+                  </h2>
+
+                  <div className="space-y-5">
+
+                    {/* NAME */}
+                    <div>
+
+                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">
+
+                        Full Name
+
+                      </label>
+
+                      <input
+                        type="text"
+                        placeholder="Yosef Cohen"
+                        value={form.fullName}
+                        onChange={(e) =>
+                          setForm((p) => ({
+                            ...p,
+                            fullName:
+                              e.target.value,
+                          }))
+                        }
+                        className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]"
+                      />
+
+                    </div>
+
+                    {/* CONTACT METHOD */}
+                    <div>
+
+                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-3">
+
+                        How would you like to be contacted?
+
+                      </label>
+
+                      <div className="flex gap-4">
+
+                        {/* EMAIL */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((p) => ({
+                              ...p,
+                              contactMethod:
+                                "email",
+                            }))
+                          }
+                          className={`flex-1 border rounded-xl px-5 py-4 text-sm font-medium transition ${form.contactMethod ===
+                            "email"
+                            ? "bg-[#0d1b2a] text-white border-[#0d1b2a]"
+                            : "bg-[#faf8f5] border-[#e5ddd0] text-[#0d1b2a]"
+                            }`}
+                        >
+
+                          Email
+
+                        </button>
+
+                        {/* PHONE */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((p) => ({
+                              ...p,
+                              contactMethod:
+                                "phone",
+                            }))
+                          }
+                          className={`flex-1 border rounded-xl px-5 py-4 text-sm font-medium transition ${form.contactMethod ===
+                            "phone"
+                            ? "bg-[#0d1b2a] text-white border-[#0d1b2a]"
+                            : "bg-[#faf8f5] border-[#e5ddd0] text-[#0d1b2a]"
+                            }`}
+                        >
+                          Phone
+                        </button>
                       </div>
-                    ))}
-                    <div className="col-span-2">
-                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">Email</label>
-                      <input type="email" placeholder="you@example.com" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
                     </div>
-                    <div className="col-span-2">
-                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">Address</label>
-                      <input type="text" placeholder="123 Main St" value={form.address} onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
-                    </div>
+                    {form.contactMethod ===
+                      "email" ? (
+
+                      <div>
+
+                        <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">
+
+                          Email Address
+
+                        </label>
+
+                        <input
+                          type="email"
+                          placeholder="you@example.com"
+                          value={form.email}
+                          onChange={(e) =>
+                            setForm((p) => ({
+                              ...p,
+                              email:
+                                e.target.value,
+                            }))
+                          }
+                          className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]"
+                        />
+
+                      </div>
+
+                    ) : (
+
+                      <div>
+
+                        <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">
+
+                          Phone Number
+
+                        </label>
+
+                        <input
+                          type="text"
+                          placeholder="+1 234 567 890"
+                          value={form.phone}
+                          onChange={(e) =>
+                            setForm((p) => ({
+                              ...p,
+                              phone:
+                                e.target.value,
+                            }))
+                          }
+                          className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]"
+                        />
+
+                      </div>
+
+                    )}
+
+                    {/* ADDRESS */}
                     <div>
-                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">City</label>
-                      <input type="text" placeholder="Lakewood" value={form.city} onChange={(e) => setForm((p) => ({ ...p, city: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
+
+                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">
+
+                        Address
+
+                      </label>
+
+                      <input
+                        type="text"
+                        placeholder="123 Main St"
+                        value={form.address}
+                        onChange={(e) =>
+                          setForm((p) => ({
+                            ...p,
+                            address:
+                              e.target.value,
+                          }))
+                        }
+                        className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]"
+                      />
+
                     </div>
+
+                    {/* ZIP */}
                     <div>
-                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">ZIP Code</label>
-                      <input type="text" placeholder="08701" value={form.zip} onChange={(e) => setForm((p) => ({ ...p, zip: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
+
+                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">
+
+                        ZIP Code
+
+                      </label>
+
+                      <input
+                        type="text"
+                        placeholder="08701"
+                        value={form.zip}
+                        onChange={(e) =>
+                          setForm((p) => ({
+                            ...p,
+                            zip:
+                              e.target.value,
+                          }))
+                        }
+                        className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]"
+                      />
+
                     </div>
+
                   </div>
+
                 </div>
 
-                {/* Payment */}
-                <div className="bg-white border border-[#e5ddd0] rounded-xl p-6">
-                  <h2 className="text-[#0d1b2a] font-serif text-lg mb-5">Payment</h2>
-                  <div className="flex gap-3 mb-5">
-                    {["Visa", "MC", "AMEX", "PayPal"].map((card) => (
-                      <div key={card} className="px-3 py-1.5 border border-[#e5ddd0] rounded-md text-[10px] text-[#8a9bb0] font-semibold">{card}</div>
-                    ))}
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">Name on Card</label>
-                      <input type="text" placeholder="Yosef Cohen" value={form.nameOnCard} onChange={(e) => setForm((p) => ({ ...p, nameOnCard: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
-                    </div>
-                    <div>
-                      <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">Card Number</label>
-                      <input type="text" placeholder="1234 5678 9012 3456" value={form.cardNumber} onChange={(e) => setForm((p) => ({ ...p, cardNumber: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">Expiry</label>
-                        <input type="text" placeholder="MM / YY" value={form.expiry} onChange={(e) => setForm((p) => ({ ...p, expiry: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
-                      </div>
-                      <div>
-                        <label className="block text-[#8a9bb0] text-[10px] tracking-widest uppercase mb-1.5">CVV</label>
-                        <input type="text" placeholder="•••" value={form.cvv} onChange={(e) => setForm((p) => ({ ...p, cvv: e.target.value }))} className="w-full border border-[#e5ddd0] rounded-lg px-4 py-2.5 text-sm text-[#0d1b2a] placeholder-[#b0a898] focus:outline-none focus:border-[#c9a84c] transition bg-[#faf8f5]" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             )}
           </div>
@@ -285,16 +483,16 @@ export default function CartPage() {
                   <span className="text-[#8a9bb0]">Subtotal</span>
                   <span className="text-white">{f(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-xs">
+                {/* <div className="flex justify-between text-xs">
                   <span className="text-[#8a9bb0]">Shipping</span>
                   <span className="text-white">{shippingCost === 0 ? "Free" : f(shippingCost)}</span>
-                </div>
-                {couponApplied && (
+                </div> */}
+                {/* {couponApplied && (
                   <div className="flex justify-between text-xs">
                     <span className="text-[#4caf82]">Coupon (RIBIS10)</span>
                     <span className="text-[#4caf82]">−{f(discount)}</span>
                   </div>
-                )}
+                )} */}
                 <div className="flex justify-between pt-2 border-t border-white/10">
                   <span className="text-white font-bold text-sm">Total</span>
                   <span className="text-[#c9a84c] font-bold text-lg">{f(total)}</span>
@@ -311,10 +509,17 @@ export default function CartPage() {
                 </button>
               ) : (
                 <button
-                  onClick={() => setStep("confirmation")}
+                  onClick={
+                    placeOrder
+                  }
+                  disabled={loading}
                   className="w-full mt-6 bg-[#c9a84c] text-[#0d1b2a] font-bold py-3 rounded-xl text-sm tracking-wide hover:bg-[#d4b567] transition"
                 >
-                  Place Order · {f(total)}
+                  {
+                    loading
+                      ? "Placing Order..."
+                      : `Place Order · ${f(total)}`
+                  }
                 </button>
               )}
 

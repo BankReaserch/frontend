@@ -15,7 +15,8 @@ import { useCart } from "@/context/CartContext";
 
 export default function CheckoutPage() {
 
-  const router = useRouter();
+  const router =
+    useRouter();
 
   const {
     cart,
@@ -25,342 +26,326 @@ export default function CheckoutPage() {
   const [loading, setLoading] =
     useState(false);
 
-  const [paymentMethod, setPaymentMethod] =
-    useState("card");
+  const [
+    contactMethod,
+    setContactMethod,
+  ] = useState<
+    "email" | "phone"
+  >("email");
 
   // FORM
   const [formData, setFormData] =
     useState({
-      email: "",
 
       fullName: "",
 
-      address: "",
-
-      apartment: "",
-
-      city: "",
-
-      state: "",
-
-      zipCode: "",
-
-      country: "",
+      email: "",
 
       phone: "",
     });
 
   // TOTAL
-  const subtotal = useMemo(() => {
+  const subtotal =
+    useMemo(() => {
 
-    return cart.reduce(
-      (acc, item) =>
-        acc +
-        item.price * item.qty,
-      0
-    );
+      return cart.reduce(
+        (acc, item) =>
+          acc +
+          item.price *
+            item.qty,
+        0
+      );
 
-  }, [cart]);
+    }, [cart]);
 
   // INPUT CHANGE
-  const handleChange = (
-    e:
-      React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange =
+    (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
 
-    setFormData({
-      ...formData,
+      setFormData({
+        ...formData,
 
-      [e.target.name]:
-        e.target.value,
-    });
-
-  };
+        [e.target.name]:
+          e.target.value,
+      });
+    };
 
   // PLACE ORDER
-  const placeOrder = async () => {
+  const placeOrder =
+    async () => {
 
-    try {
+      try {
 
-      if (
-        cart.length === 0
-      ) {
-        return alert(
-          "Cart is empty"
-        );
-      }
+        if (
+          cart.length === 0
+        ) {
 
-      setLoading(true);
+          return alert(
+            "Cart is empty"
+          );
+        }
 
-      const payload = {
-        items: cart.map(
-          (item) => ({
-            book: item.id,
+        if (
+          !formData.fullName
+        ) {
 
-            quantity:
-              item.qty,
-          })
-        ),
+          return alert(
+            "Please enter your name"
+          );
+        }
 
-        paymentMethod,
-      };
+        if (
+          contactMethod ===
+            "email" &&
+          !formData.email
+        ) {
 
-      const response =
+          return alert(
+            "Please enter email"
+          );
+        }
+
+        if (
+          contactMethod ===
+            "phone" &&
+          !formData.phone
+        ) {
+
+          return alert(
+            "Please enter phone number"
+          );
+        }
+
+        setLoading(true);
+
+        const payload = {
+
+          items:
+            cart.map(
+              (
+                item
+              ) => ({
+                book:
+                  item.id,
+
+                quantity:
+                  item.qty,
+              })
+            ),
+
+          customerName:
+            formData.fullName,
+
+          contactMethod,
+
+          email:
+            formData.email,
+
+          phone:
+            formData.phone,
+        };
+
         await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}api/order/place`,
           payload,
           {
-            withCredentials: true,
+            withCredentials:
+              true,
           }
         );
 
-      // SUCCESS
-      alert(
-        "Order placed successfully"
-      );
+        alert(
+          "Order submitted successfully"
+        );
 
-      clearCart();
+        clearCart();
 
-      router.push("/");
+        router.push("/");
 
-    } catch (error: any) {
+      } catch (error: any) {
 
-      console.error(
-        "Order error:",
-        error
-      );
+        console.error(
+          error
+        );
 
-      alert(
-        error?.response?.data
-          ?.message ||
-          "Failed to place order"
-      );
+        alert(
+          error?.response
+            ?.data
+            ?.message ||
+            "Failed to submit order"
+        );
 
-    } finally {
+      } finally {
 
-      setLoading(false);
-
-    }
-  };
+        setLoading(false);
+      }
+    };
 
   return (
-    <div className="min-h-screen bg-[#f4efe7] px-6 py-10">
+    <div className="min-h-screen bg-[#f4efe7] px-6 py-12">
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         {/* LEFT */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2">
 
-          {/* TITLE */}
-          <div>
+          <div className="bg-white rounded-3xl p-8 border border-[#e5ddd0] shadow-sm">
 
-            <h1 className="text-3xl font-serif text-[#1a1a1a]">
-              Checkout
-            </h1>
+            {/* HEADER */}
+            <div className="mb-8">
 
-            <p className="text-gray-500 text-sm">
-              Complete your order securely.
-            </p>
+              <span className="text-xs tracking-[0.25em] uppercase text-[#c9a84c]">
 
-          </div>
+                Checkout Details
 
-          {/* CONTACT */}
-          <div className="bg-white rounded-xl p-5 border border-gray-200">
+              </span>
 
-            <h2 className="font-medium mb-3">
-              Contact Information
-            </h2>
+              <h1 className="text-4xl font-serif text-[#0d1b2a] mt-3">
 
-            <input
-              type="email"
-              name="email"
-              value={
-                formData.email
-              }
-              onChange={
-                handleChange
-              }
-              placeholder="you@example.com"
-              className="input"
-            />
+                Complete Your Order
 
-          </div>
+              </h1>
 
-          {/* SHIPPING */}
-          <div className="bg-white rounded-xl p-5 border border-gray-200">
+              <p className="text-[#6b7280] mt-3 leading-relaxed">
 
-            <h2 className="font-medium mb-3">
-              Shipping Information
-            </h2>
+                Enter your information below and we will contact you regarding your order.
 
-            <div className="space-y-3">
+              </p>
+
+            </div>
+
+            {/* NAME */}
+            <div className="mb-5">
+
+              <label className="block text-sm font-medium text-[#0d1b2a] mb-2">
+
+                Full Name
+
+              </label>
 
               <input
+                type="text"
                 name="fullName"
-                placeholder="Full Name"
                 value={
                   formData.fullName
                 }
                 onChange={
                   handleChange
                 }
+                placeholder="Your full name"
                 className="input"
               />
 
-              <input
-                name="address"
-                placeholder="Address"
-                value={
-                  formData.address
-                }
-                onChange={
-                  handleChange
-                }
-                className="input"
-              />
+            </div>
 
-              <input
-                name="apartment"
-                placeholder="Apartment, suite, etc. (optional)"
-                value={
-                  formData.apartment
-                }
-                onChange={
-                  handleChange
-                }
-                className="input"
-              />
+            {/* CONTACT METHOD */}
+            <div className="mb-5">
 
-              <div className="grid grid-cols-3 gap-3">
+              <label className="block text-sm font-medium text-[#0d1b2a] mb-3">
+
+                Preferred Contact Method
+
+              </label>
+
+              <div className="flex gap-4">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setContactMethod(
+                      "email"
+                    )
+                  }
+                  className={`px-5 py-3 rounded-2xl border transition-all ${
+                    contactMethod ===
+                    "email"
+                      ? "bg-[#0d1b2a] text-white border-[#0d1b2a]"
+                      : "bg-white border-[#d9dfe7] text-[#0d1b2a]"
+                  }`}
+                >
+
+                  Email
+
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setContactMethod(
+                      "phone"
+                    )
+                  }
+                  className={`px-5 py-3 rounded-2xl border transition-all ${
+                    contactMethod ===
+                    "phone"
+                      ? "bg-[#0d1b2a] text-white border-[#0d1b2a]"
+                      : "bg-white border-[#d9dfe7] text-[#0d1b2a]"
+                  }`}
+                >
+
+                  Phone
+
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* CONDITIONAL FIELD */}
+            {contactMethod ===
+            "email" ? (
+
+              <div className="mb-5">
+
+                <label className="block text-sm font-medium text-[#0d1b2a] mb-2">
+
+                  Email Address
+
+                </label>
 
                 <input
-                  name="city"
-                  placeholder="City"
+                  type="email"
+                  name="email"
                   value={
-                    formData.city
+                    formData.email
                   }
                   onChange={
                     handleChange
                   }
-                  className="input"
-                />
-
-                <input
-                  name="state"
-                  placeholder="State"
-                  value={
-                    formData.state
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  className="input"
-                />
-
-                <input
-                  name="zipCode"
-                  placeholder="ZIP Code"
-                  value={
-                    formData.zipCode
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  placeholder="you@example.com"
                   className="input"
                 />
 
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+            ) : (
+
+              <div className="mb-5">
+
+                <label className="block text-sm font-medium text-[#0d1b2a] mb-2">
+
+                  Phone Number
+
+                </label>
 
                 <input
-                  name="country"
-                  placeholder="Country"
-                  value={
-                    formData.country
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  className="input"
-                />
-
-                <input
+                  type="text"
                   name="phone"
-                  placeholder="Phone"
                   value={
                     formData.phone
                   }
                   onChange={
                     handleChange
                   }
+                  placeholder="+1 234 567 890"
                   className="input"
                 />
 
               </div>
 
-            </div>
-
-          </div>
-
-          {/* PAYMENT */}
-          <div className="bg-white rounded-xl p-5 border border-gray-200">
-
-            <h2 className="font-medium mb-2">
-              Payment Method
-            </h2>
-
-            <p className="text-xs text-gray-500 mb-4">
-              Mock payment for now.
-            </p>
-
-            {/* CARD */}
-            <div
-              onClick={() =>
-                setPaymentMethod(
-                  "card"
-                )
-              }
-              className={`border rounded-lg p-4 cursor-pointer ${
-                paymentMethod ===
-                "card"
-                  ? "border-yellow-500 bg-yellow-50"
-                  : "border-gray-200"
-              }`}
-            >
-
-              <div className="flex items-center justify-between">
-
-                <span className="text-sm font-medium">
-                  Credit / Debit Card
-                </span>
-
-                <div className="flex gap-2 text-xs">
-                  <span>VISA</span>
-                  <span>MC</span>
-                  <span>AMEX</span>
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* APPLE */}
-            <div
-              onClick={() =>
-                setPaymentMethod(
-                  "apple"
-                )
-              }
-              className={`mt-3 border rounded-lg p-4 cursor-pointer ${
-                paymentMethod ===
-                "apple"
-                  ? "border-yellow-500 bg-yellow-50"
-                  : "border-gray-200"
-              }`}
-            >
-               Pay
-            </div>
+            )}
 
           </div>
 
@@ -369,92 +354,81 @@ export default function CheckoutPage() {
         {/* RIGHT */}
         <div>
 
-          <div className="bg-[#0b2a45] text-white rounded-2xl p-6 shadow-xl">
+          <div className="bg-[#0b1d2d] text-white rounded-3xl p-7 shadow-xl sticky top-8">
 
-            <h2 className="text-lg font-semibold mb-4">
+            <h2 className="text-xl font-semibold mb-6">
+
               Order Summary
+
             </h2>
 
             {/* ITEMS */}
-            <div className="space-y-4 text-sm">
+            <div className="space-y-5">
 
-              {cart.map((item) => (
+              {cart.map(
+                (item) => (
 
-                <div
-                  key={item.id}
-                  className="flex justify-between"
-                >
+                  <div
+                    key={
+                      item.id
+                    }
+                    className="flex justify-between gap-4"
+                  >
 
-                  <div>
+                    <div>
 
-                    <p>
-                      {item.title}
-                    </p>
+                      <h3 className="text-sm font-medium">
 
-                    <p className="text-xs text-gray-400">
-                      Qty:{" "}
-                      {item.qty}
-                    </p>
+                        {
+                          item.title
+                        }
+
+                      </h3>
+
+                      <p className="text-xs text-gray-400 mt-1">
+
+                        Qty:
+                        {" "}
+                        {
+                          item.qty
+                        }
+
+                      </p>
+
+                    </div>
+
+                    <span className="text-sm">
+
+                      $
+                      {(
+                        item.price *
+                        item.qty
+                      ).toFixed(
+                        2
+                      )}
+
+                    </span>
 
                   </div>
-
-                  <span>
-                    $
-                    {(
-                      item.price *
-                      item.qty
-                    ).toFixed(2)}
-                  </span>
-
-                </div>
-
-              ))}
+                )
+              )}
 
             </div>
 
-            <div className="border-t border-gray-600 my-4" />
+            <div className="border-t border-white/10 my-6" />
 
             {/* TOTAL */}
-            <div className="space-y-2 text-sm">
-
-              <div className="flex justify-between text-gray-300">
-
-                <span>
-                  Subtotal
-                </span>
-
-                <span>
-                  $
-                  {subtotal.toFixed(
-                    2
-                  )}
-                </span>
-
-              </div>
-
-              <div className="flex justify-between text-gray-300">
-
-                <span>
-                  Shipping
-                </span>
-
-                <span>
-                  Free
-                </span>
-
-              </div>
-
-            </div>
-
-            <div className="flex justify-between mt-4 text-lg font-semibold">
+            <div className="flex justify-between items-center text-lg font-semibold">
 
               <span>Total</span>
 
-              <span className="text-yellow-400">
+              <span className="text-[#c9a84c]">
+
                 $
                 {subtotal.toFixed(
                   2
                 )}
+
               </span>
 
             </div>
@@ -469,22 +443,21 @@ export default function CheckoutPage() {
               onClick={
                 placeOrder
               }
-              className="w-full mt-5 bg-yellow-500 text-black font-medium py-3 rounded-lg hover:opacity-90 transition disabled:opacity-50"
+              className="w-full mt-7 bg-[#c9a84c] text-[#0d1b2a] font-medium py-4 rounded-2xl hover:opacity-90 transition disabled:opacity-50"
             >
 
               {loading
-                ? "Processing..."
-                : `Place Order • $${subtotal.toFixed(
-                    2
-                  )}`}
+                ? "Submitting..."
+                : "Proceed to Checkout"}
 
             </button>
 
-            <div className="flex items-center justify-center gap-2 text-xs text-gray-400 mt-3">
+            {/* SECURITY */}
+            <div className="flex items-center justify-center gap-2 text-xs text-gray-400 mt-4">
 
               <Lock size={14} />
 
-              Secure checkout
+              Secure order request
 
             </div>
 
@@ -497,7 +470,7 @@ export default function CheckoutPage() {
       {/* INPUT STYLE */}
       <style jsx>{`
         .input {
-          @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-500;
+          @apply w-full border border-[#d9dfe7] rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#c9a84c] bg-white;
         }
       `}</style>
 
