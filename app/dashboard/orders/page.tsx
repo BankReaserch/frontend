@@ -8,10 +8,11 @@ import {
 import axios from "axios";
 
 import DashboardHeader
-from "../components/DashboardHeader";
+  from "../components/DashboardHeader";
 
 import { OrderType }
-from "../types/dashboard";
+  from "../types/dashboard";
+import ConfirmModal from "@/components/utils/modal/ConfirmModal";
 
 export default function OrdersPage() {
 
@@ -20,7 +21,13 @@ export default function OrdersPage() {
 
   const [loading, setLoading] =
     useState(true);
+  const [cancelOrderId, setCancelOrderId] =
+    useState<string | null>(
+      null
+    );
 
+  const [cancelLoading, setCancelLoading] =
+    useState(false);
   useEffect(() => {
 
     fetchOrders();
@@ -42,7 +49,7 @@ export default function OrdersPage() {
 
         setOrders(
           response.data.data ||
-            []
+          []
         );
 
       } catch (error) {
@@ -57,7 +64,69 @@ export default function OrdersPage() {
 
       }
     };
+  const statusStyles: Record<
+    string,
+    string
+  > = {
 
+    pending:
+      "bg-yellow-100 text-yellow-700",
+
+    processing:
+      "bg-blue-100 text-blue-700",
+
+    shipped:
+      "bg-purple-100 text-purple-700",
+
+    delivered:
+      "bg-green-100 text-green-700",
+
+    cancelled:
+      "bg-red-100 text-red-700",
+  };
+
+  const cancelOrder =
+    async () => {
+
+      if (!cancelOrderId)
+        return;
+
+      try {
+
+        setCancelLoading(
+          true
+        );
+
+        await axios.patch(
+          `${process.env.NEXT_PUBLIC_API_URL}api/order/cancel/${cancelOrderId}`,
+          {},
+          {
+            withCredentials:
+              true,
+          }
+        );
+
+        fetchOrders();
+
+        setCancelOrderId(
+          null
+        );
+
+      } catch (error: any) {
+
+        alert(
+          error?.response?.data
+            ?.message ||
+          "Failed to cancel order"
+        );
+
+      } finally {
+
+        setCancelLoading(
+          false
+        );
+      }
+    };
   if (loading) {
 
     return (
@@ -103,10 +172,13 @@ export default function OrdersPage() {
 
                 </div>
 
-                <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs">
-
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${statusStyles[
+                    order.status
+                  ]
+                    }`}
+                >
                   {order.status}
-
                 </span>
 
               </div>
@@ -174,18 +246,27 @@ export default function OrdersPage() {
                   {order.totalAmount.toFixed(
                     2
                   )}
-
                 </span>
-
               </div>
-
             </div>
 
           )
         )}
 
       </div>
-
+      <ConfirmModal
+        open={!!cancelOrderId}
+        onClose={() =>
+          setCancelOrderId(
+            null
+          )
+        }
+        onConfirm={cancelOrder}
+        loading={cancelLoading}
+        title="Cancel Order?"
+        description="This order will be cancelled and cannot be restored later."
+        confirmText="Yes, Cancel"
+      />
     </div>
   );
 }
