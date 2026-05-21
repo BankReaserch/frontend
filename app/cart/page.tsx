@@ -155,7 +155,7 @@ export default function CartPage() {
             Your order <span className="text-[#0d1b2a] font-semibold">{orderId}</span> has been placed.
           </p>
           <p className="text-[#8a9bb0] text-sm mb-8">
-            A confirmation will be sent to <span className="text-[#0d1b2a]">{form.email || "your email"}</span>.
+            You can view in all orders in  <Link href={'/dashboard'} className="text-[#0d1b2a]">{form.email || "your email"}</Link>.
           </p>
           <div className="bg-white border border-[#e5ddd0] rounded-xl p-5 mb-6 text-left space-y-3">
             {items.map((item) => (
