@@ -69,9 +69,10 @@ export default function DashboardPage() {
 
         // NOT ADMIN
         if (
-          !response.ok ||
-          !data.isAdmin
-        ) {
+  !response.ok ||
+  data.user?.role !==
+    "admin"
+) {
 
           router.replace(
             "/login"
