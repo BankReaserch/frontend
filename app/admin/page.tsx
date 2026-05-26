@@ -30,6 +30,7 @@ import AudioTable from "@/components/dashboard/AudioTable";
 import Books from "./Books";
 
 import QNA from "./Q&A";
+import Customers from "./Customers";
 
 export default function DashboardPage() {
 
@@ -273,6 +274,15 @@ export default function DashboardPage() {
             <RevenueChart />
 
             <CategoryChart />
+
+          </div>
+        );
+       case "Customers":
+
+        return (
+          <div className="mt-6">
+
+           <Customers/>
 
           </div>
         );
