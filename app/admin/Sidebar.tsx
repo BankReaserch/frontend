@@ -7,7 +7,7 @@ import {
   Package,
   Download,
   Users,
-  TicketPercent,
+  BookSearch,
   Landmark,
   Star,
   CircleQuestionMark,
@@ -54,6 +54,10 @@ const menu = [
   {
     name: "Banks",
     icon: Landmark,
+  },
+  {
+    name: "Article",
+    icon: BookSearch,
   },
    {
     name: "Q&A",
