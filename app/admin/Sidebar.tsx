@@ -8,7 +8,7 @@ import {
   Download,
   Users,
   TicketPercent,
-  BarChart3,
+  Landmark,
   Star,
   CircleQuestionMark,
   BookUser,
@@ -50,14 +50,15 @@ const menu = [
     name: "Customers",
     icon: Users,
   },
+ 
   {
+    name: "Banks",
+    icon: Landmark,
+  },
+   {
     name: "Q&A",
     icon: CircleQuestionMark,
   },
-  // {
-  //   name: "Analytics",
-  //   icon: BarChart3,
-  // },
   // {
   //   name: "Reviews",
   //   icon: Star,

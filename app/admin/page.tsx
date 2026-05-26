@@ -31,6 +31,7 @@ import Books from "./Books";
 
 import QNA from "./Q&A";
 import Customers from "./Customers";
+import BanksAdmin from "./Bank";
 
 export default function DashboardPage() {
 
@@ -283,6 +284,15 @@ export default function DashboardPage() {
           <div className="mt-6">
 
            <Customers/>
+
+          </div>
+        );
+         case "Banks":
+
+        return (
+          <div className="mt-6">
+
+           <BanksAdmin/>
 
           </div>
         );
