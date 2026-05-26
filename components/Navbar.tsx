@@ -31,7 +31,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { name: "Shiurim", href: "/shiurim" },
       { name: "Q&A", href: "/Q&A" },
-      { name: "Articles", href: "/articles" },
+      { name: "Articles", href: "/article" },
       { name: "Programs", href: "/programs" },
       { name: "Alerts", href: "/programs/#alerts" },
     ],
