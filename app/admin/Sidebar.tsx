@@ -9,7 +9,7 @@ import {
   Users,
   BookSearch,
   Landmark,
-  Star,
+  UsersRound,
   CircleQuestionMark,
   BookUser,
 } from "lucide-react";
@@ -42,10 +42,10 @@ const menu = [
     name: "Books",
     icon: BookUser,
   },
-  // {
-  //   name: "Downloads",
-  //   icon: Download,
-  // },
+  {
+    name: "Brokers",
+    icon: UsersRound,
+  },
   {
     name: "Customers",
     icon: Users,

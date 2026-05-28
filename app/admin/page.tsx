@@ -31,6 +31,7 @@ import BanksAdmin from "./Bank";
 import AdminArticlesPage from "./Article";
 import AdminAlertsPage from "./Alert";
 import axios from "axios";
+import AdminBrokersPage from "./BrokersPage";
 
 export default function DashboardPage() {
 
@@ -260,6 +261,15 @@ export default function DashboardPage() {
           <div className="mt-6">
 
              <OrdersTable />
+
+          </div>
+        ); 
+         case "Brokers":
+
+        return (
+          <div className="mt-6">
+
+             <AdminBrokersPage />
 
           </div>
         );
