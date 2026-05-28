@@ -9,7 +9,7 @@ import {
 
 import {
   AlertType,
-} from "@/types/alert";
+} from "../../../app/alert/page";
 
 export const alertStyles: Record<
   AlertType,
