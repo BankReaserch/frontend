@@ -8,14 +8,10 @@ import {
 import axios from "axios";
 
 import {
-  Eye,
-  CheckCircle2,
-  XCircle,
-  Clock3,
   Search,
   Filter,
-  Truck
 } from "lucide-react";
+import OrderStatusAnalytics from "./OrderStatusAnalytics";
 
 type OrderType = {
   _id: string;
@@ -210,100 +206,97 @@ export default function OrdersTable() {
   }
 
   return (
-    <div className="space-y-6">
+  <div className="h-full flex flex-col gap-6">
 
-      {/* TOP BAR */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-5">
+    {/* TOP BAR */}
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 flex-shrink-0">
 
-        <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
 
-          <div>
+        <div>
 
-            <h2 className="text-2xl font-semibold text-[#0f172a]">
+          <h2 className="text-2xl font-semibold text-[#0f172a]">
 
-              Orders
+            Orders
 
-            </h2>
+          </h2>
 
-            <p className="text-gray-500 text-sm mt-1">
+          <p className="text-gray-500 text-sm mt-1">
 
-              Manage customer
-              orders and status
+            Manage customer orders and status
 
-            </p>
+          </p>
+
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+
+          {/* SEARCH */}
+          <div className="relative">
+
+            <Search
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+
+            <input
+              value={search}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
+              }
+              placeholder="Search orders..."
+              className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-[#c9a84c] w-full"
+            />
 
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          {/* FILTER */}
+          <div className="relative">
 
-            {/* SEARCH */}
-            <div className="relative">
+            <Filter
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
 
-              <Search
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
+            <select
+              value={
+                statusFilter
+              }
+              onChange={(e) =>
+                setStatusFilter(
+                  e.target.value
+                )
+              }
+              className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-[#c9a84c]"
+            >
 
-              <input
-                value={search}
-                onChange={(e) =>
-                  setSearch(
-                    e.target.value
-                  )
-                }
-                placeholder="Search orders..."
-                className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-[#c9a84c] w-full"
-              />
+              <option value="all">
+                All Status
+              </option>
 
-            </div>
+              <option value="pending">
+                Pending
+              </option>
 
-            {/* FILTER */}
-            <div className="relative">
+              <option value="processing">
+                Processing
+              </option>
 
-              <Filter
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
+              <option value="shipped">
+                Shipped
+              </option>
 
-              <select
-                value={
-                  statusFilter
-                }
-                onChange={(e) =>
-                  setStatusFilter(
-                    e.target.value
-                  )
-                }
-                className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-[#c9a84c]"
-              >
+              <option value="delivered">
+                Delivered
+              </option>
 
-                <option value="all">
-                  All Status
-                </option>
+              <option value="cancelled">
+                Cancelled
+              </option>
 
-                <option value="pending">
-                  Pending
-                </option>
-
-                <option value="processing">
-                  Processing
-                </option>
-
-                <option value="shipped">
-                  Shipped
-                </option>
-
-                <option value="delivered">
-                  Delivered
-                </option>
-
-                <option value="cancelled">
-                  Cancelled
-                </option>
-
-              </select>
-
-            </div>
+            </select>
 
           </div>
 
@@ -311,308 +304,132 @@ export default function OrdersTable() {
 
       </div>
 
-      {/* TABLE */}
-     {/* TABLE */}
-<div className="bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col h-[420px]">
+    </div>
 
-  {/* HEADER */}
-  <div className="border-b border-gray-200 bg-[#f8fafc] flex-shrink-0">
+    {/* STATUS GRAPH */}
+    <OrderStatusAnalytics
+      orders={orders}
+    />
 
-    <table className="w-full">
+    {/* TABLE */}
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col flex-1 min-h-0">
 
-      <thead>
+      {/* HEADER */}
+      <div className="border-b border-gray-200 bg-[#f8fafc] flex-shrink-0">
 
-        <tr className="text-left text-sm text-gray-500">
+        <table className="w-full">
 
-          <th className="px-6 py-4 w-[35%]">
+          <thead>
 
-            Order
+            <tr className="text-left text-sm text-gray-500">
 
-          </th>
+              <th className="px-6 py-4 w-[35%]">
 
-          <th className="px-6 py-4 w-[45%]">
+                Order
 
-            Customer
+              </th>
 
-          </th>
+              <th className="px-6 py-4 w-[45%]">
 
-          <th className="px-6 py-4 w-[20%]">
+                Customer
 
-            Total
+              </th>
 
-          </th>
+              <th className="px-6 py-4 w-[20%]">
 
-        </tr>
+                Total
 
-      </thead>
-
-    </table>
-
-  </div>
-
-  {/* ROWS */}
-  <div className="flex-1 overflow-y-auto custom-scrollbar">
-
-    <table className="w-full">
-
-      <tbody>
-
-        {filteredOrders.map(
-          (order) => (
-
-            <tr
-              key={order._id}
-              className="border-b border-gray-100 hover:bg-gray-50 transition"
-            >
-
-              {/* ORDER */}
-              <td className="px-6 py-5 w-[35%]">
-
-                <div>
-
-                  <p className="font-semibold text-[#0f172a]">
-
-                    #
-                    {order._id
-                      .slice(-6)
-                      .toUpperCase()}
-
-                  </p>
-
-                  <p className="text-xs text-gray-500 mt-1">
-
-                    {
-                      order.items
-                        .length
-                    }{" "}
-                    items
-
-                  </p>
-
-                </div>
-
-              </td>
-
-              {/* CUSTOMER */}
-              <td className="px-6 py-5 w-[45%]">
-
-                <p className="text-sm text-[#334155] truncate max-w-[220px]">
-
-                  {
-                    order.user
-                      ?.email
-                  }
-
-                </p>
-
-              </td>
-
-              {/* TOTAL */}
-              <td className="px-6 py-5 w-[20%] font-semibold text-[#0f172a]">
-
-                $
-                {order.totalAmount?.toFixed(
-                  2
-                )}
-
-              </td>
+              </th>
 
             </tr>
-          )
-        )}
 
-      </tbody>
+          </thead>
 
-    </table>
+        </table>
 
-  </div>
+      </div>
 
-</div>
+      {/* ROWS */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
 
-      {/* ORDER MODAL */}
-      {selectedOrder && (
+        <table className="w-full">
 
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <tbody>
 
-          <div className="bg-white rounded-3xl w-full max-w-2xl p-7 max-h-[90vh] overflow-y-auto">
+            {filteredOrders.map(
+              (order) => (
 
-            {/* HEADER */}
-            <div className="flex items-center justify-between mb-6">
+                <tr
+                  key={
+                    order._id
+                  }
+                  className="border-b border-gray-100 hover:bg-gray-50 transition"
+                >
 
-              <div>
-
-                <h2 className="text-2xl font-semibold text-[#0f172a]">
-
-                  #{selectedOrder._id
-                    .slice(-6)
-                    .toUpperCase()}
-
-                </h2>
-
-                <p className="text-sm text-gray-500 mt-1">
-
-                  Order details
-
-                </p>
-
-              </div>
-
-              <button
-                onClick={() =>
-                  setSelectedOrder(
-                    null
-                  )
-                }
-                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200"
-              >
-
-                ✕
-
-              </button>
-
-            </div>
-
-            {/* CUSTOMER */}
-            <div className="grid grid-cols-2 gap-5 mb-6">
-
-              <div className="bg-gray-50 rounded-2xl p-4">
-
-                <p className="text-xs text-gray-500 uppercase">
-
-                  Customer
-
-                </p>
-
-                <p className="font-semibold mt-2">
-
-                {selectedOrder.user?.email}
-
-                </p>
-
-              </div>
-
-              <div className="bg-gray-50 rounded-2xl p-4">
-
-                <p className="text-xs text-gray-500 uppercase">
-
-                  Contact
-
-                </p>
-
-                <p className="font-semibold mt-2">
-
-                  {selectedOrder.user?.email}
-
-                </p>
-
-              </div>
-
-            </div>
-
-            {/* ADDRESS */}
-            {/* <div className="bg-gray-50 rounded-2xl p-4 mb-6">
-
-              <p className="text-xs text-gray-500 uppercase">
-
-                Address
-
-              </p>
-
-              <p className="font-medium mt-2">
-
-                {
-                  selectedOrder
-                    .contactInfo
-                    ?.address
-                }
-
-              </p>
-
-            </div> */}
-
-            {/* ITEMS */}
-            <div className="space-y-4">
-
-              <h3 className="font-semibold text-lg">
-
-                Ordered Items
-
-              </h3>
-
-              {selectedOrder.items.map(
-                (
-                  item,
-                  index
-                ) => (
-
-                  <div
-                    key={index}
-                    className="flex items-center justify-between bg-gray-50 rounded-2xl p-4"
-                  >
+                  {/* ORDER */}
+                  <td className="px-6 py-5 w-[35%]">
 
                     <div>
 
-                      <p className="font-medium text-[#0f172a]">
+                      <p className="font-semibold text-[#0f172a]">
 
-                        {item.title ||
-                          item.book?.title}
+                        #
+                        {order._id
+                          .slice(-6)
+                          .toUpperCase()}
 
                       </p>
 
                       <p className="text-xs text-gray-500 mt-1">
 
-                        Qty:{" "}
                         {
-                          item.quantity
-                        }
+                          order.items
+                            .length
+                        }{" "}
+                        items
 
                       </p>
 
                     </div>
 
-                    <p className="font-semibold">
+                  </td>
 
-                      $
-                      {(
-                        item.price *
-                        item.quantity
-                      ).toFixed(
-                        2
-                      )}
+                  {/* CUSTOMER */}
+                  <td className="px-6 py-5 w-[45%]">
+
+                    <p className="text-sm text-[#334155] truncate max-w-[220px]">
+
+                      {
+                        order.user
+                          ?.email
+                      }
 
                     </p>
 
-                  </div>
-                )
-              )}
+                  </td>
 
-            </div>
+                  {/* TOTAL */}
+                  <td className="px-6 py-5 w-[20%] font-semibold text-[#0f172a]">
 
-            {/* TOTAL */}
-            <div className="border-t border-gray-200 mt-6 pt-5 flex justify-between items-center">
+                    $
+                    {order.totalAmount?.toFixed(
+                      2
+                    )}
 
-              <span className="text-lg font-semibold">
+                  </td>
 
-                Total
+                </tr>
+              )
+            )}
 
-              </span>
+          </tbody>
 
-              <span className="text-2xl font-bold text-[#0f172a]">
+        </table>
 
-                $
-                {selectedOrder.totalAmount?.toFixed(
-                  2
-                )}
-
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-      )}
+      </div>
 
     </div>
-  );
+
+  </div>
+);
 }

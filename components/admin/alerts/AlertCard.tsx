@@ -12,7 +12,7 @@ import {
 
 import type {
   Alert,
-} from "../../../app/alert/page";
+} from "../../../app/alerts/page";
 
 type Props = {
   alert: Alert;
