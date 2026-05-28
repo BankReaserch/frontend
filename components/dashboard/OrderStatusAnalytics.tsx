@@ -26,6 +26,7 @@ type Order = {
 
 type Props = {
   orders: Order[];
+  dashboardMode?: boolean;
 };
 
 const COLORS = {
@@ -38,6 +39,7 @@ const COLORS = {
 
 export default function OrderStatusAnalytics({
   orders,
+  dashboardMode = false,
 }: Props) {
 
   const [range, setRange] =
@@ -179,71 +181,65 @@ export default function OrderStatusAnalytics({
     <div className="bg-white rounded-3xl border border-gray-200 p-6">
 
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-8">
+{!dashboardMode && (
+  <div className="flex items-center justify-between mb-8">
 
-        <div>
+    <div>
 
-          <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2">
 
-            <BarChart3
-              size={18}
-              className="text-[#c9a84c]"
-            />
+        <BarChart3
+          size={18}
+          className="text-[#c9a84c]"
+        />
 
-            <h3 className="text-xl font-semibold text-[#0f172a]">
+        <h3 className="text-xl font-semibold text-[#0f172a]">
 
-              Order Analytics
+          Order Analytics
 
-            </h3>
-
-          </div>
-
-          <p className="text-sm text-gray-500 mt-1">
-
-            Interactive order status overview
-
-          </p>
-
-        </div>
-
-        {/* FILTER */}
-        <select
-          value={range}
-          onChange={(e) =>
-            setRange(
-              e.target.value
-            )
-          }
-          className="h-11 px-4 rounded-xl border border-gray-200 bg-[#faf8f4] text-sm outline-none focus:ring-2 focus:ring-[#c9a84c]"
-        >
-
-          <option value="30days">
-
-            Last 30 Days
-
-          </option>
-
-          <option value="3months">
-
-            Last 3 Months
-
-          </option>
-
-          <option value="6months">
-
-            Last 6 Months
-
-          </option>
-
-          <option value="1year">
-
-            Last 1 Year
-
-          </option>
-
-        </select>
+        </h3>
 
       </div>
+
+      <p className="text-sm text-gray-500 mt-1">
+
+        Interactive order status overview
+
+      </p>
+
+    </div>
+
+    {/* FILTER */}
+    <select
+      value={range}
+      onChange={(e) =>
+        setRange(
+          e.target.value
+        )
+      }
+      className="h-11 px-4 rounded-xl border border-gray-200 bg-[#faf8f4] text-sm outline-none focus:ring-2 focus:ring-[#c9a84c]"
+    >
+
+      <option value="30days">
+        Last 30 Days
+      </option>
+
+      <option value="3months">
+        Last 3 Months
+      </option>
+
+      <option value="6months">
+        Last 6 Months
+      </option>
+
+      <option value="1year">
+        Last 1 Year
+      </option>
+
+    </select>
+
+  </div>
+)}
 
       {/* CHART */}
       <div className="h-[320px]">

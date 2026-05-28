@@ -245,7 +245,7 @@ export default function DashboardPage() {
 
                 <div className="h-full overflow-y-auto custom-scrollbar pr-1">
 
-                  <OrdersTable />
+                 <OrdersTable dashboardMode />
 
                 </div>
 
@@ -259,7 +259,7 @@ export default function DashboardPage() {
         return (
           <div className="mt-6">
 
-            <OrdersTable />
+             <OrdersTable />
 
           </div>
         );
