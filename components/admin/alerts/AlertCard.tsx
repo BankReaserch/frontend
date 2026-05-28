@@ -10,9 +10,9 @@ import {
   alertStyles,
 } from "./alert.constants";
 
-import {
+import type {
   Alert,
-} from "@/types/alert";
+} from "../../../app/alert/page";
 
 type Props = {
   alert: Alert;

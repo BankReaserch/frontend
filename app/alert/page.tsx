@@ -24,13 +24,13 @@ import {
   Mail,
 } from "lucide-react";
 
-type AlertType =
+export type AlertType =
   | "warning"
   | "danger"
   | "success"
   | "info";
 
-type Alert = {
+export type Alert = {
   _id: string;
 
   title: string;
