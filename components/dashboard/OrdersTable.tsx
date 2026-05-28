@@ -146,7 +146,7 @@ export default function OrdersTable() {
       try {
 
         await axios.patch(
-          `${process.env.NEXT_PUBLIC_API_URL}api/order/update-status/${orderId}`,
+         `${process.env.NEXT_PUBLIC_API_URL}api/order/status/${orderId}`,
           {
             status,
           },
@@ -312,216 +312,122 @@ export default function OrdersTable() {
       </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+     {/* TABLE */}
+<div className="bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col h-[420px]">
 
-        <div className="overflow-x-auto">
+  {/* HEADER */}
+  <div className="border-b border-gray-200 bg-[#f8fafc] flex-shrink-0">
 
-          <table className="w-full">
+    <table className="w-full">
 
-            <thead className="bg-[#f8fafc] border-b border-gray-200">
+      <thead>
 
-              <tr className="text-left text-sm text-gray-500">
+        <tr className="text-left text-sm text-gray-500">
 
-                <th className="px-6 py-4">
-                  Order
-                </th>
+          <th className="px-6 py-4 w-[35%]">
 
-                <th className="px-6 py-4">
-                  Customer
-                </th>
+            Order
 
-                <th className="px-6 py-4">
-                  Total
-                </th>
+          </th>
 
-                <th className="px-6 py-4">
-                  Date
-                </th>
+          <th className="px-6 py-4 w-[45%]">
 
-                <th className="px-6 py-4">
-                  Status
-                </th>
+            Customer
 
-                <th className="px-6 py-4">
-                  Actions
-                </th>
+          </th>
 
-              </tr>
+          <th className="px-6 py-4 w-[20%]">
 
-            </thead>
+            Total
 
-            <tbody>
+          </th>
 
-              {filteredOrders.map(
-                (order) => (
+        </tr>
 
-                  <tr
-                    key={order._id}
-                    className="border-b border-gray-100 hover:bg-gray-50 transition"
-                  >
+      </thead>
 
-                    {/* ORDER */}
-                    <td className="px-6 py-5">
-
-                      <div>
-
-                        <p className="font-semibold text-[#0f172a]">
-                          #{order._id.slice(-6).toUpperCase()}
-                        </p>
-
-                        <p className="text-xs text-gray-500 mt-1">
-
-                          {
-                            order.items
-                              .length
-                          }{" "}
-                          items
-
-                        </p>
-
-                      </div>
-
-                    </td>
-
-                    {/* CUSTOMER */}
-                    <td className="px-6 py-5">
-
-                      <div>
-
-                        <p className="font-medium text-[#0f172a]">
-                          Customer
-                        </p>
-
-                        <p className="text-xs text-gray-500 mt-1">
-                          {order.user?.email}
-                        </p>
-
-                      </div>
-
-                    </td>
-
-                    {/* TOTAL */}
-                    <td className="px-6 py-5 font-semibold text-[#0f172a]">
-
-                      $
-                      {order.totalAmount?.toFixed(
-                        2
-                      )}
-
-                    </td>
-
-                    {/* DATE */}
-                    <td className="px-6 py-5 text-sm text-gray-600">
-
-                      {new Date(
-                        order.createdAt
-                      ).toLocaleDateString()}
-
-                    </td>
-
-                    {/* STATUS */}
-                    <td className="px-6 py-5">
-
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[
-                          order
-                            .status
-                        ]
-                          }`}
-                      >
-
-                        {
-                          order.status
-                        }
-
-                      </span>
-
-                    </td>
-
-                   {/* ACTIONS */}
-<td className="px-6 py-5">
-
-  <div className="flex items-center gap-2">
-
-    {/* VIEW */}
-    <button
-      onClick={() =>
-        setSelectedOrder(
-          order
-        )
-      }
-      className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center transition"
-    >
-      <Eye size={17} />
-    </button>
-
-    {/* DELIVERED */}
-    <button
-      onClick={() =>
-        updateStatus(
-          order._id,
-          "delivered"
-        )
-      }
-      className="w-9 h-9 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 flex items-center justify-center transition"
-    >
-      <CheckCircle2 size={17} />
-    </button>
-
-    {/* PROCESSING */}
-    <button
-      onClick={() =>
-        updateStatus(
-          order._id,
-          "processing"
-        )
-      }
-      className="w-9 h-9 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 flex items-center justify-center transition"
-    >
-      <Clock3 size={17} />
-    </button>
-
-    {/* SHIPPED */}
-    <button
-      onClick={() =>
-        updateStatus(
-          order._id,
-          "shipped"
-        )
-      }
-      className="w-9 h-9 rounded-lg bg-purple-100 hover:bg-purple-200 text-purple-700 flex items-center justify-center transition"
-    >
-      <Truck size={17} />
-    </button>
-
-    {/* CANCEL */}
-    <button
-      onClick={() =>
-        updateStatus(
-          order._id,
-          "cancelled"
-        )
-      }
-      className="w-9 h-9 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center transition"
-    >
-      <XCircle size={17} />
-    </button>
+    </table>
 
   </div>
 
-</td>
+  {/* ROWS */}
+  <div className="flex-1 overflow-y-auto custom-scrollbar">
 
-                  </tr>
-                )
-              )}
+    <table className="w-full">
 
-            </tbody>
+      <tbody>
 
-          </table>
+        {filteredOrders.map(
+          (order) => (
 
-        </div>
+            <tr
+              key={order._id}
+              className="border-b border-gray-100 hover:bg-gray-50 transition"
+            >
 
-      </div>
+              {/* ORDER */}
+              <td className="px-6 py-5 w-[35%]">
+
+                <div>
+
+                  <p className="font-semibold text-[#0f172a]">
+
+                    #
+                    {order._id
+                      .slice(-6)
+                      .toUpperCase()}
+
+                  </p>
+
+                  <p className="text-xs text-gray-500 mt-1">
+
+                    {
+                      order.items
+                        .length
+                    }{" "}
+                    items
+
+                  </p>
+
+                </div>
+
+              </td>
+
+              {/* CUSTOMER */}
+              <td className="px-6 py-5 w-[45%]">
+
+                <p className="text-sm text-[#334155] truncate max-w-[220px]">
+
+                  {
+                    order.user
+                      ?.email
+                  }
+
+                </p>
+
+              </td>
+
+              {/* TOTAL */}
+              <td className="px-6 py-5 w-[20%] font-semibold text-[#0f172a]">
+
+                $
+                {order.totalAmount?.toFixed(
+                  2
+                )}
+
+              </td>
+
+            </tr>
+          )
+        )}
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
 
       {/* ORDER MODAL */}
       {selectedOrder && (

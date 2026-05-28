@@ -502,143 +502,146 @@ export default function AdminArticlesPage() {
                   article
                 ) => (
 
-                  <div
-                    key={
-                      article._id
-                    }
-                    className="rounded-[28px] overflow-hidden border border-[#e7dfd2] bg-white shadow-sm hover:shadow-2xl transition-all duration-300"
-                  >
+                <div
+  key={article._id}
+  className="group relative h-[640px] rounded-[32px] overflow-hidden border border-[#ebe3d6] bg-white/90 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col"
+>
 
-                    {/* IMAGE */}
-                    <div className="relative h-[220px] bg-[#051933]">
+  {/* IMAGE */}
+  <div className="relative h-[220px] bg-[#051933] flex-shrink-0 overflow-hidden">
 
-                      {article.coverImage ? (
+    {article.coverImage ? (
 
-                        <Image
-                          src={getFileUrl(
-                            article.coverImage
-                          )}
-                          alt={
-                            article.title
-                          }
-                          fill
-                          className="object-cover"
-                        />
+      <Image
+        src={getFileUrl(
+          article.coverImage
+        )}
+        alt={article.title}
+        fill
+        className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
+      />
 
-                      ) : (
+    ) : (
 
-                        <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center">
 
-                          <FileText className="w-16 h-16 text-[#c8a21a]" />
+        <FileText className="w-16 h-16 text-[#c8a21a]" />
 
-                        </div>
-                      )}
+      </div>
+    )}
 
-                    </div>
+    {/* OVERLAY */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
-                    {/* CONTENT */}
-                    <div className="p-7">
+  </div>
 
-                      <div className="flex items-center justify-between gap-3 mb-4">
+  {/* CONTENT */}
+  <div className="flex flex-col flex-1 p-7 min-h-0">
 
-                        <span className="text-[10px] uppercase tracking-[0.2em] bg-[#c8a21a]/10 text-[#c8a21a] px-3 py-2 rounded-full font-semibold">
+    {/* TOP */}
+    <div className="flex items-center justify-between gap-3 flex-shrink-0">
 
-                          {
-                            article.category
-                          }
+      <span className="text-[10px] uppercase tracking-[0.25em] bg-[#c8a21a]/10 text-[#c8a21a] px-3 py-2 rounded-full font-semibold">
 
-                        </span>
+        {article.category}
 
-                        <p className="text-xs text-[#94a3b8]">
+      </span>
 
-                          {
-                            article.readTime
-                          }
+      <p className="text-xs text-[#94a3b8] whitespace-nowrap">
 
-                        </p>
+        {article.readTime}
 
-                      </div>
+      </p>
 
-                      <h2 className="font-serif text-3xl leading-snug text-[#051933]">
+    </div>
 
-                        {
-                          article.title
-                        }
+    {/* TITLE */}
+    <h2 className="font-serif text-[38px] leading-[1] tracking-[-0.03em] text-[#051933] mt-5 break-words flex-shrink-0">
 
-                      </h2>
+      {article.title}
 
-                      <p className="text-[#64748b] leading-7 text-sm mt-4 line-clamp-3">
+    </h2>
 
-                        {
-                          article.excerpt
-                        }
+    {/* AUTHOR */}
+    <p className="text-sm text-[#94a3b8] mt-3 flex-shrink-0">
 
-                      </p>
+      By {article.author}
 
-                      {/* ACTIONS */}
-                      <div className="mt-8 flex items-center gap-3">
+    </p>
 
-                        {/* VIEW */}
-                        <a
-                          href={getFileUrl(
-                            article.pdfUrl
-                          )}
-                          target="_blank"
-                          className="flex-1 h-11 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] flex items-center justify-center gap-2 text-sm font-semibold text-[#051933] transition-all"
-                        >
+    {/* EXCERPT */}
+    <div className="mt-5 flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-0">
 
-                          <Eye className="w-4 h-4" />
+      <p className="text-[#64748b] leading-8 text-[15px] whitespace-pre-line">
 
-                          View
+        {article.excerpt}
 
-                        </a>
+      </p>
 
-                        {/* DOWNLOAD */}
-                        <a
-                          href={getFileUrl(
-                            article.pdfUrl
-                          )}
-                          download
-                          className="w-11 h-11 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] flex items-center justify-center transition-all"
-                        >
+    </div>
 
-                          <Download className="w-4 h-4 text-[#051933]" />
+    {/* ACTIONS */}
+    <div className="mt-6 pt-5 border-t border-[#f1ebe2] flex items-center gap-3 flex-shrink-0">
 
-                        </a>
+      {/* VIEW */}
+      <a
+        href={getFileUrl(
+          article.pdfUrl
+        )}
+        target="_blank"
+        className="flex-1 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] hover:bg-[#fffdf9] flex items-center justify-center gap-2 text-sm font-semibold text-[#051933] transition-all duration-300"
+      >
 
-                        {/* EDIT */}
-                        <button
-                          onClick={() =>
-                            handleEdit(
-                              article
-                            )
-                          }
-                          className="w-11 h-11 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] flex items-center justify-center transition-all"
-                        >
+        <Eye className="w-4 h-4" />
 
-                          <Pencil className="w-4 h-4 text-[#051933]" />
+        View
 
-                        </button>
+      </a>
 
-                        {/* DELETE */}
-                        <button
-                          onClick={() =>
-                            handleDelete(
-                              article._id
-                            )
-                          }
-                          className="w-11 h-11 rounded-2xl border border-red-200 hover:border-red-400 bg-red-50 flex items-center justify-center transition-all"
-                        >
+      {/* DOWNLOAD */}
+      <a
+        href={getFileUrl(
+          article.pdfUrl
+        )}
+        download
+        className="w-12 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] hover:bg-[#fffdf9] flex items-center justify-center transition-all duration-300"
+      >
 
-                          <Trash2 className="w-4 h-4 text-red-600" />
+        <Download className="w-4 h-4 text-[#051933]" />
 
-                        </button>
+      </a>
 
-                      </div>
+      {/* EDIT */}
+      <button
+        onClick={() =>
+          handleEdit(article)
+        }
+        className="w-12 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] hover:bg-[#fffdf9] flex items-center justify-center transition-all duration-300"
+      >
 
-                    </div>
+        <Pencil className="w-4 h-4 text-[#051933]" />
 
-                  </div>
+      </button>
+
+      {/* DELETE */}
+      <button
+        onClick={() =>
+          handleDelete(
+            article._id
+          )
+        }
+        className="w-12 h-12 rounded-2xl border border-red-200 hover:border-red-400 bg-red-50 hover:bg-red-100 flex items-center justify-center transition-all duration-300"
+      >
+
+        <Trash2 className="w-4 h-4 text-red-600" />
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
                 )
               )}
 

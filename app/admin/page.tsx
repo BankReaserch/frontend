@@ -19,11 +19,7 @@ import RevenueChart from "@/components/dashboard/RevenueChart";
 
 import OrdersTable from "@/components/dashboard/OrdersTable";
 
-import ProductsList from "@/components/dashboard/ProductsList";
 
-import CategoryChart from "@/components/dashboard/CategoryChart";
-
-import Insights from "@/components/dashboard/Insights";
 
 import AudioTable from "@/components/dashboard/AudioTable";
 
@@ -33,6 +29,8 @@ import QNA from "./Q&A";
 import Customers from "./Customers";
 import BanksAdmin from "./Bank";
 import AdminArticlesPage from "./Article";
+import AdminAlertsPage from "./Alert";
+import axios from "axios";
 
 export default function DashboardPage() {
 
@@ -47,6 +45,39 @@ export default function DashboardPage() {
 
   const [active, setActive] =
     useState("Dashboard");
+  const [stats, setStats] =
+    useState<any>(null);
+
+  useEffect(() => {
+
+    fetchStats();
+
+  }, []);
+
+  const fetchStats =
+    async () => {
+
+      try {
+
+        const res =
+          await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}api/dashboard/stats`,
+            {
+              withCredentials: true,
+            }
+          );
+
+        setStats(
+          res.data.data
+        );
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+      }
+    };
 
   // VERIFY ADMIN
   useEffect(() => {
@@ -170,49 +201,55 @@ export default function DashboardPage() {
 
               <StatCard
                 title="Total Orders"
-                value="1,248"
-                growth="+18.2%"
+                value={
+                  stats?.totalOrders?.toLocaleString() ||
+                  "0"
+                }
+                growth={`+${stats?.ordersGrowth || 0}%`}
               />
 
               <StatCard
                 title="Revenue"
-                value="$24,890"
-                growth="+22.5%"
+                value={`$${stats?.totalRevenue?.toLocaleString() || 0}`}
+                growth={`+${stats?.revenueGrowth || 0}%`}
               />
 
               <StatCard
                 title="Customers"
-                value="856"
-                growth="+14.7%"
+                value={
+                  stats?.totalCustomers?.toLocaleString() ||
+                  "0"
+                }
+                growth={`+${stats?.customersGrowth || 0}%`}
               />
 
               <StatCard
                 title="This Month"
-                value="$8,450"
-                growth="+16.3%"
+                value={`$${stats?.monthlyRevenue?.toLocaleString() || 0}`}
+                growth={`+${stats?.monthlyGrowth || 0}%`}
               />
 
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 mt-6 items-start">
 
-              <div className="xl:col-span-2">
+              {/* CHART */}
+              <div className="xl:col-span-6">
 
                 <RevenueChart />
 
               </div>
 
-              <OrdersTable />
+              {/* ORDERS */}
+              <div className="xl:col-span-6 h-[620px] overflow-hidden rounded-3xl">
 
-            </div>
+                <div className="h-full overflow-y-auto custom-scrollbar pr-1">
 
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
+                  <OrdersTable />
 
-              <ProductsList />
+                </div>
 
-              <CategoryChart />
-
-              <Insights />
+              </div>
 
             </div>
           </>
@@ -242,7 +279,7 @@ export default function DashboardPage() {
         return (
           <div className="mt-6">
 
-            <ProductsList />
+
 
           </div>
         );
@@ -256,12 +293,22 @@ export default function DashboardPage() {
 
           </div>
         );
-         case "Article":
+      case "Article":
 
         return (
           <div className="mt-6">
 
-            <AdminArticlesPage/>
+            <AdminArticlesPage />
+
+          </div>
+        );
+
+      case "Alerts":
+
+        return (
+          <div className="mt-6">
+
+            <AdminAlertsPage />
 
           </div>
         );
@@ -276,32 +323,32 @@ export default function DashboardPage() {
           </div>
         );
 
-      case "Analytics":
+      // case "Analytics":
 
-        return (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+      //   return (
+      //     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
 
-            <RevenueChart />
+      //       <RevenueChart />
 
-            <CategoryChart />
 
-          </div>
-        );
-       case "Customers":
 
-        return (
-          <div className="mt-6">
-
-           <Customers/>
-
-          </div>
-        );
-         case "Banks":
+      //     </div>
+      //   );
+      case "Customers":
 
         return (
           <div className="mt-6">
 
-           <BanksAdmin/>
+            <Customers />
+
+          </div>
+        );
+      case "Banks":
+
+        return (
+          <div className="mt-6">
+
+            <BanksAdmin />
 
           </div>
         );

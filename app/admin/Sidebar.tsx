@@ -4,7 +4,7 @@ import {
   LayoutDashboard,
   ShoppingCart,
   FileVolume,
-  Package,
+  CircleAlert,
   Download,
   Users,
   BookSearch,
@@ -59,14 +59,15 @@ const menu = [
     name: "Article",
     icon: BookSearch,
   },
+  
+  {
+    name: "Alerts",
+    icon: CircleAlert,
+  },
    {
     name: "Q&A",
     icon: CircleQuestionMark,
   },
-  // {
-  //   name: "Reviews",
-  //   icon: Star,
-  // },
   // {
   //   name: "Settings",
   //   icon: Settings,
