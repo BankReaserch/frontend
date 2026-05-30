@@ -1,4 +1,4 @@
-import { Status } from "./page";
+import { Status } from "./bank.types";
 
 export const STATUS_CFG: Record<
   Status,
