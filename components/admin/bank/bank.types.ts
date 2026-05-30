@@ -11,6 +11,7 @@ export type BankType = {
 
   website?: string;
 
+  assets?: string;
 
   founded?: string;
 
