@@ -1,0 +1,728 @@
+// "use client";
+
+// import Navbar from "@/components/Navbar";
+
+// import Footer from "@/components/Footer";
+
+// import axios from "axios";
+
+// import {
+//   Search,
+//   ChevronUp,
+//   ChevronDown,
+// } from "lucide-react";
+
+// import {
+//   useState,
+//   useMemo,
+//   useEffect,
+// } from "react";
+// import BankTable from "@/components/admin/bank/BankTable";
+// import BankDetailsPanel from "./BankDetailsPanel";
+
+// type Status =
+//   | "mehudar"
+//   | "compliant"
+//   | "conditional"
+//   | "questionable"
+//   | "noncompliant"
+//   | "undetermined";
+
+// interface Bank {
+//   id: number;
+
+//   name: string;
+
+//   type: string;
+
+//   hq: string;
+
+//   assets: string;
+
+//   founded: string;
+
+//   status: Status;
+
+//   notes: string;
+
+//   summary: string;
+
+//   poskim: string[];
+
+//   website: string;
+
+//   reportUrl?: string;
+// }
+
+// /* ── Config ─────────────────────────────────────────── */
+
+// const STATUS_CFG: Record<
+//   Status,
+//   {
+//     label: string;
+
+//     dot: string;
+
+//     badge: string;
+
+//     text: string;
+//   }
+// > = {
+//   mehudar: {
+//     label: "Mehudar",
+
+//     dot: "bg-emerald-500",
+
+//     badge:
+//       "bg-emerald-500/15 text-emerald-700",
+
+//     text: "text-emerald-700",
+//   },
+
+//   compliant: {
+//     label: "Compliant",
+
+//     dot: "bg-blue-500",
+
+//     badge:
+//       "bg-blue-500/15 text-blue-700",
+
+//     text: "text-blue-700",
+//   },
+
+//   conditional: {
+//     label: "Conditional",
+
+//     dot: "bg-amber-500",
+
+//     badge:
+//       "bg-amber-500/15 text-amber-700",
+
+//     text: "text-amber-700",
+//   },
+
+//   questionable: {
+//     label: "Questionable",
+
+//     dot: "bg-orange-500",
+
+//     badge:
+//       "bg-orange-500/15 text-orange-700",
+
+//     text: "text-orange-700",
+//   },
+
+//   noncompliant: {
+//     label: "Noncompliant",
+
+//     dot: "bg-red-500",
+
+//     badge:
+//       "bg-red-500/15 text-red-700",
+
+//     text: "text-red-700",
+//   },
+
+//   undetermined: {
+//     label: "Undetermined",
+
+//     dot: "bg-slate-400",
+
+//     badge:
+//       "bg-slate-400/15 text-slate-600",
+
+//     text: "text-slate-600",
+//   },
+// };
+
+// const STATUS_DESCRIPTIONS: Record<
+//   Status,
+//   string
+// > = {
+//   mehudar:
+//     "No known Jewish ownership or leadership involvement.",
+
+//   compliant:
+//     "No Jewish ownership with material influence.",
+
+//   conditional:
+//     "Permitted only with a valid heter iska.",
+
+//   questionable:
+//     "Some information requires clarification.",
+
+//   noncompliant:
+//     "Halachically problematic.",
+
+//   undetermined:
+//     "Insufficient data to determine status.",
+// };
+
+// type SortKey =
+//   | "name"
+//   | "type";
+
+// /* ── Status Badge ───────────────────────────────────── */
+
+// function StatusBadge({
+//   status,
+// }: {
+//   status: Status;
+// }) {
+
+//   const cfg =
+//     STATUS_CFG[status];
+
+//   return (
+//     <span
+//       className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${cfg.badge}`}
+//     >
+
+//       <span
+//         className={`h-1.5 w-1.5 rounded-full ${cfg.dot}`}
+//       />
+
+//       {cfg.label}
+
+//     </span>
+//   );
+// }
+
+// /* ── Main Page ──────────────────────────────────────── */
+
+// export default function BankDirectoryPage() {
+
+//   /*
+//   ========================================
+//   STATES
+//   ========================================
+//   */
+
+//   const [banks, setBanks] =
+//     useState<Bank[]>([]);
+
+//   const [loading, setLoading] =
+//     useState(true);
+
+//   const [search, setSearch] =
+//     useState("");
+
+//   const [filter, setFilter] =
+//     useState<
+//       Status | "all"
+//     >("all");
+
+//   const [selected, setSelected] =
+//     useState<Bank | null>(
+//       null
+//     );
+
+//   const [sortKey, setSortKey] =
+//     useState<SortKey>(
+//       "name"
+//     );
+
+//   const [sortDir, setSortDir] =
+//     useState(1);
+
+
+//   /*
+//   ========================================
+//   AXIOS
+//   ========================================
+//   */
+ 
+
+//   const api =
+//     axios.create({
+//       baseURL:
+//         process.env
+//           .NEXT_PUBLIC_API_URL,
+//     });
+
+//   /*
+//   ========================================
+//   FETCH REAL BANKS
+//   ========================================
+//   */
+
+//   useEffect(() => {
+
+//     const fetchBanks =
+//       async () => {
+
+//         try {
+
+//           const response =
+//             await api.get(
+//               "/api/banks/all"
+//             );
+
+//           if (
+//             response.data
+//               .success
+//           ) {
+//             const formatted =
+//               response.data.data.map(
+//                 (
+//                   bank: any,
+//                   index: number
+//                 ) => ({
+//                   id:
+//                     index + 1,
+
+//                   name:
+//                     bank.name,
+
+//                   type:
+//                     bank.type,
+
+//                   hq:
+//                     bank.location,
+
+//                   assets:
+//                     bank.assets ||
+//                     "N/A",
+
+//                   founded:
+//                     bank.founded ||
+//                     "N/A",
+
+//                   status:
+//                     bank.status?.toLowerCase(),
+
+//                   notes:
+//                     bank.publicInfo ||
+//                     "No research notes available.",
+
+//                   summary:
+//                     bank.publicInfo ||
+//                     "No summary available.",
+
+//                   poskim:
+//                     [],
+
+//                   website:
+//                     bank.website ||
+//                     "",
+
+//                   reportUrl:
+//                     bank.reportUrl
+//                       ? `${process.env.NEXT_PUBLIC_API_URL}/api/banks/view-report/${bank._id}`
+//                       : "",
+//                 })
+//               );
+
+//             setBanks(
+//               formatted
+//             );
+//           }
+
+//         } catch (error) {
+
+//           console.error(
+//             "Failed to fetch banks:",
+//             error
+//           );
+
+//         } finally {
+
+//           setLoading(
+//             false
+//           );
+//         }
+//       };
+
+//     fetchBanks();
+
+//   }, []);
+
+//   /*
+//   ========================================
+//   FILTER
+//   ========================================
+//   */
+
+//   const filtered =
+//     useMemo(() => {
+
+//       let data =
+//         banks.filter(
+//           (b) => {
+
+//             const ms =
+//               filter ===
+//               "all" ||
+//               b.status ===
+//               filter;
+
+//             const mq =
+//               b.name
+//                 .toLowerCase()
+//                 .includes(
+//                   search.toLowerCase()
+//                 ) ||
+//               b.type
+//                 .toLowerCase()
+//                 .includes(
+//                   search.toLowerCase()
+//                 );
+
+//             return (
+//               ms && mq
+//             );
+//           }
+//         );
+
+//       data.sort(
+//         (a, b) => {
+
+//           const av =
+//             a[
+//             sortKey
+//             ];
+
+//           const bv =
+//             b[
+//             sortKey
+//             ];
+
+//           return av <
+//             bv
+//             ? -sortDir
+//             : av >
+//               bv
+//               ? sortDir
+//               : 0;
+//         }
+//       );
+
+//       return data;
+
+//     }, [
+//       banks,
+//       search,
+//       filter,
+//       sortKey,
+//       sortDir,
+//     ]);
+
+//   /*
+//   ========================================
+//   SORT
+//   ========================================
+//   */
+
+//   const handleSort =
+//     (
+//       key: SortKey
+//     ) => {
+
+//       if (
+//         sortKey ===
+//         key
+//       ) {
+
+//         setSortDir(
+//           (d) =>
+//             d * -1
+//         );
+
+//       } else {
+
+//         setSortKey(
+//           key
+//         );
+
+//         setSortDir(
+//           1
+//         );
+//       }
+//     };
+
+//   const SortIcon = ({
+//     k,
+//   }: {
+//     k: SortKey;
+//   }) =>
+//     sortKey ===
+//       k ? (
+//       sortDir ===
+//         1 ? (
+//         <ChevronUp className="h-3 w-3" />
+//       ) : (
+//         <ChevronDown className="h-3 w-3" />
+//       )
+//     ) : (
+//       <span className="h-3 w-3 text-[10px]">
+
+//         ↕
+
+//       </span>
+//     );
+
+//   return (
+//     <>
+//       <Navbar />
+
+//       <main className="min-h-screen bg-[#f5f1ea] overflow-x-hidden">
+
+//         {/* HERO */}
+//         <section className="relative bg-[#051933] overflow-hidden">
+
+//           <div className="pointer-events-none absolute inset-0 opacity-[0.035] bg-[linear-gradient(135deg,#ffffff_1px,transparent_1px)] bg-[size:28px_28px]" />
+
+//           <div className="relative mx-auto max-w-6xl px-6 pt-24 pb-10 md:pt-32">
+
+//             <div className="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
+
+//               <div>
+
+//                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#c8a21a] mb-5">
+
+//                   Services · Bank Directory
+
+//                 </p>
+
+//                 <h1 className="font-serif text-5xl md:text-6xl leading-[1.08] text-white mb-6">
+
+//                   Know Your Bank's{" "}
+
+//                   <em className="italic text-[#c8a21a]">
+
+//                     Kashrus
+
+//                   </em>
+
+//                 </h1>
+
+//                 <p className="text-[15px] leading-8 text-[#94a3b8] max-w-xl mb-4">
+
+//                   Ribis.org conducts
+//                   comprehensive,
+//                   in-depth
+//                   research to
+//                   deliver clear,
+//                   authoritative
+//                   guidance on the
+//                   kashrus status
+//                   of financial
+//                   institutions.
+
+//                 </p>
+
+//               </div>
+
+//               {/* STATUS GUIDE */}
+//               <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+
+//                 <div className="px-5 py-3.5 border-b border-white/8">
+
+//                   <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#c8a21a]">
+
+//                     Kashrus Status Guide
+
+//                   </p>
+
+//                 </div>
+
+//                 {(
+//                   Object.entries(
+//                     STATUS_CFG
+//                   ) as [
+//                     Status,
+//                     typeof STATUS_CFG.mehudar
+//                   ][]
+//                 ).map(
+//                   ([
+//                     key,
+//                     cfg,
+//                   ]) => (
+
+//                     <div
+//                       key={key}
+//                       className="flex items-start gap-3 px-5 py-3 border-b border-white/5 last:border-none"
+//                     >
+
+//                       <span
+//                         className={`mt-1.5 h-2 w-2 min-w-2 rounded-full ${cfg.dot}`}
+//                       />
+
+//                       <div>
+
+//                         <p className="text-[13px] text-white/90 mb-0.5">
+
+//                           {
+//                             cfg.label
+//                           }
+
+//                         </p>
+
+//                         <p className="text-[11px] text-[#4e6070] leading-snug">
+
+//                           {
+//                             STATUS_DESCRIPTIONS[
+//                             key
+//                             ]
+//                           }
+
+//                         </p>
+
+//                       </div>
+
+//                     </div>
+//                   )
+//                 )}
+
+//               </div>
+
+//             </div>
+
+//           </div>
+
+//           {/* STATS */}
+//           <div className="border-t border-white/10 mt-10">
+
+//             <div className="mx-auto max-w-6xl px-6 py-5 grid grid-cols-3 md:grid-cols-6 divide-x divide-white/10">
+
+//               {[
+//                 {
+//                   n: String(
+//                     banks.length
+//                   ),
+
+//                   l: "Banks Listed",
+//                 },
+
+//                 {
+//                   n: "1000+",
+
+//                   l: "Hours Researched",
+//                 },
+
+//                 {
+//                   n: "10",
+
+//                   l: "Poskim Guiding",
+//                 },
+
+//                 {
+//                   n: "2000+",
+
+//                   l: "People Served",
+//                 },
+
+//                 {
+//                   n: "50+",
+
+//                   l: "States Covered",
+//                 },
+
+//                 {
+//                   n: "4",
+
+//                   l: "Lead Poskim",
+//                 },
+//               ].map(
+//                 (s) => (
+
+//                   <div
+//                     key={s.l}
+//                     className="px-4 text-center first:pl-0 last:pr-0"
+//                   >
+
+//                     <p className="font-serif text-2xl text-[#d0ab24]">
+
+//                       {
+//                         s.n
+//                       }
+
+//                     </p>
+
+//                     <p className="text-[8px] uppercase tracking-widest text-[#4e6070] mt-1">
+
+//                       {
+//                         s.l
+//                       }
+
+//                     </p>
+
+//                   </div>
+//                 )
+//               )}
+
+//             </div>
+
+//           </div>
+
+//         </section>
+
+//         {/* DIRECTORY */}
+//         <section className="py-14 pb-20">
+
+//           <div className="mx-auto max-w-6xl px-6">
+
+//             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#c8a21a] mb-3">
+
+//               Search the Directory
+
+//             </p>
+
+//             <h2 className="font-serif text-4xl text-[#051933] mb-8">
+
+//               Kosher Bank{" "}
+
+//               <em className="italic text-[#c8a21a]">
+
+//                 Directory
+
+//               </em>
+
+//             </h2>
+
+//             {/* SEARCH */}
+//             <div className="relative mb-5 max-w-md">
+
+//               <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94a3b8]" />
+
+//               <input
+//                 type="text"
+//                 placeholder="Search by bank name or type..."
+//                 value={
+//                   search
+//                 }
+//                 onChange={(
+//                   e
+//                 ) =>
+//                   setSearch(
+//                     e.target
+//                       .value
+//                   )
+//                 }
+//                 className="h-11 w-full rounded-2xl border border-[#e8e2d6] bg-white pl-11 pr-4 text-[14px] text-[#0f172a] outline-none"
+//               />
+
+//             </div>
+//             <div className="grid lg:grid-cols-[1.1fr_.9fr] gap-6">
+
+//               <BankTable
+//                 banks={filtered}
+//                 onSelect={setSelected}
+//               />
+
+//               <BankDetailsPanel
+//                 bank={selected}
+//               />
+
+//             </div>
+//           </div>
+
+//         </section>
+
+//       </main>
+
+//       <Footer />
+
+//     </>
+//   );
+// }

@@ -27,15 +27,12 @@ export default function AskAShaalahPage() {
             </div>
             <main className="bg-[#F4F1EC]">
 
-                {/* HERO */}
                 <section className="bg-gradient-to-br from-[#071B34] to-[#17345A] py-28">
 
                     <div className="max-w-7xl mx-auto px-6">
 
                         <p className="text-[#C8A75B] tracking-[0.35em] uppercase text-xs">
-
                             Bais Hora'ah
-
                         </p>
 
                         <h1 className="mt-6 text-white font-serif text-5xl md:text-7xl leading-tight">
