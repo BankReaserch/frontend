@@ -344,7 +344,7 @@ export default function DashboardPage() {
 
       //     </div>
       //   );
-      case "Customers":
+      case "Users":
 
         return (
           <div className="mt-6">

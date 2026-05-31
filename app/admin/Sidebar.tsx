@@ -47,7 +47,7 @@ const menu = [
     icon: UsersRound,
   },
   {
-    name: "Customers",
+    name: "Users",
     icon: Users,
   },
  
