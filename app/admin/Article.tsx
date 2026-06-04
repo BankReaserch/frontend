@@ -8,20 +8,16 @@ import {
 
 import axios from "axios";
 
-import Image from "next/image";
 
 import {
   Search,
   Plus,
-  Trash2,
-  Pencil,
   Upload,
   FileText,
   Loader2,
   X,
-  Eye,
-  Download,
 } from "lucide-react";
+import ArticleCard from "@/components/article/ArticleCard";
 
 type Article = {
   _id: string;
@@ -109,13 +105,6 @@ export default function AdminArticlesPage() {
     useState<File | null>(
       null
     );
-
-  /*
-  ========================================
-  AXIOS
-  ========================================
-  */
-
   const api = axios.create({
     baseURL:
       process.env
@@ -123,57 +112,35 @@ export default function AdminArticlesPage() {
 
     withCredentials: true,
   });
-
-  /*
-  ========================================
-  FETCH ARTICLES
-  ========================================
-  */
-
   const fetchArticles =
     async () => {
-
       try {
-
         const response =
           await api.get(
             "/api/articles/all"
           );
-
         if (
           response.data
             .success
         ) {
-
           setArticles(
             response.data
               .data || []
           );
         }
-
       } catch (error) {
-
         console.error(
           error
         );
-
       } finally {
-
         setLoading(false);
       }
     };
 
   useEffect(() => {
-
     fetchArticles();
-
   }, []);
 
-  /*
-  ========================================
-  FILTER
-  ========================================
-  */
 
   const filtered =
     useMemo(() => {
@@ -196,39 +163,20 @@ export default function AdminArticlesPage() {
       articles,
       search,
     ]);
-
-  /*
-  ========================================
-  CREATE / UPDATE
-  ========================================
-  */
-
-  const handleSubmit =
-    async (
-      e: any
-    ) => {
-
+  const handleSubmit =async (e: any) => {
       e.preventDefault();
-
       try {
-
-        setSubmitting(
-          true
-        );
-
+        setSubmitting(true);
         const body =
           new FormData();
-
         body.append(
           "title",
           formData.title
         );
-
         body.append(
           "excerpt",
           formData.excerpt
         );
-
         body.append(
           "category",
           formData.category
@@ -238,26 +186,21 @@ export default function AdminArticlesPage() {
           "author",
           formData.author
         );
-
         body.append(
           "readTime",
           formData.readTime
         );
-
         if (
           coverImage
         ) {
-
           body.append(
             "coverImage",
             coverImage
           );
         }
-
         if (
           pdfFile
         ) {
-
           body.append(
             "pdf",
             pdfFile
@@ -320,13 +263,6 @@ export default function AdminArticlesPage() {
         );
       }
     };
-
-  /*
-  ========================================
-  DELETE
-  ========================================
-  */
-
   const handleDelete =
     async (
       id: string
@@ -358,13 +294,6 @@ export default function AdminArticlesPage() {
         );
       }
     };
-
-  /*
-  ========================================
-  EDIT
-  ========================================
-  */
-
   const handleEdit =
     (
       article: Article
@@ -398,8 +327,6 @@ export default function AdminArticlesPage() {
 
   return (
     <main className="min-h-screen bg-[#f5f1ea]">
-
-      {/* TOP */}
       <section className="border-b border-[#e7dfd2] bg-white sticky top-0 z-20 backdrop-blur-xl">
 
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between gap-5">
@@ -495,157 +422,26 @@ export default function AdminArticlesPage() {
 
           ) : (
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-              {filtered.map(
-                (
-                  article
-                ) => (
+  {filtered.map((article) => (
 
-                <div
-  key={article._id}
-  className="group relative h-[640px] rounded-[32px] overflow-hidden border border-[#ebe3d6] bg-white/90 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col"
->
+    <ArticleCard
+      key={article._id}
+      article={article}
+      variant="admin"
+      getFileUrl={getFileUrl}
+      onEdit={() =>
+        handleEdit(article)
+      }
+      onDelete={() =>
+        handleDelete(article._id)
+      }
+    />
 
-  {/* IMAGE */}
-  <div className="relative h-[220px] bg-[#051933] flex-shrink-0 overflow-hidden">
-
-    {article.coverImage ? (
-
-      <Image
-        src={getFileUrl(
-          article.coverImage
-        )}
-        alt={article.title}
-        fill
-        className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
-      />
-
-    ) : (
-
-      <div className="w-full h-full flex items-center justify-center">
-
-        <FileText className="w-16 h-16 text-[#c8a21a]" />
-
-      </div>
-    )}
-
-    {/* OVERLAY */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-
-  </div>
-
-  {/* CONTENT */}
-  <div className="flex flex-col flex-1 p-7 min-h-0">
-
-    {/* TOP */}
-    <div className="flex items-center justify-between gap-3 flex-shrink-0">
-
-      <span className="text-[10px] uppercase tracking-[0.25em] bg-[#c8a21a]/10 text-[#c8a21a] px-3 py-2 rounded-full font-semibold">
-
-        {article.category}
-
-      </span>
-
-      <p className="text-xs text-[#94a3b8] whitespace-nowrap">
-
-        {article.readTime}
-
-      </p>
-
-    </div>
-
-    {/* TITLE */}
-    <h2 className="font-serif text-[38px] leading-[1] tracking-[-0.03em] text-[#051933] mt-5 break-words flex-shrink-0">
-
-      {article.title}
-
-    </h2>
-
-    {/* AUTHOR */}
-    <p className="text-sm text-[#94a3b8] mt-3 flex-shrink-0">
-
-      By {article.author}
-
-    </p>
-
-    {/* EXCERPT */}
-    <div className="mt-5 flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-0">
-
-      <p className="text-[#64748b] leading-8 text-[15px] whitespace-pre-line">
-
-        {article.excerpt}
-
-      </p>
-
-    </div>
-
-    {/* ACTIONS */}
-    <div className="mt-6 pt-5 border-t border-[#f1ebe2] flex items-center gap-3 flex-shrink-0">
-
-      {/* VIEW */}
-      <a
-        href={getFileUrl(
-          article.pdfUrl
-        )}
-        target="_blank"
-        className="flex-1 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] hover:bg-[#fffdf9] flex items-center justify-center gap-2 text-sm font-semibold text-[#051933] transition-all duration-300"
-      >
-
-        <Eye className="w-4 h-4" />
-
-        View
-
-      </a>
-
-      {/* DOWNLOAD */}
-      <a
-        href={getFileUrl(
-          article.pdfUrl
-        )}
-        download
-        className="w-12 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] hover:bg-[#fffdf9] flex items-center justify-center transition-all duration-300"
-      >
-
-        <Download className="w-4 h-4 text-[#051933]" />
-
-      </a>
-
-      {/* EDIT */}
-      <button
-        onClick={() =>
-          handleEdit(article)
-        }
-        className="w-12 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] hover:bg-[#fffdf9] flex items-center justify-center transition-all duration-300"
-      >
-
-        <Pencil className="w-4 h-4 text-[#051933]" />
-
-      </button>
-
-      {/* DELETE */}
-      <button
-        onClick={() =>
-          handleDelete(
-            article._id
-          )
-        }
-        className="w-12 h-12 rounded-2xl border border-red-200 hover:border-red-400 bg-red-50 hover:bg-red-100 flex items-center justify-center transition-all duration-300"
-      >
-
-        <Trash2 className="w-4 h-4 text-red-600" />
-
-      </button>
-
-    </div>
-
-  </div>
+  ))}
 
 </div>
-                )
-              )}
-
-            </div>
           )}
 
         </div>
@@ -830,7 +626,7 @@ export default function AdminArticlesPage() {
                       setCoverImage(
                         e.target
                           .files?.[0] ||
-                          null
+                        null
                       )
                     }
                   />
@@ -858,7 +654,7 @@ export default function AdminArticlesPage() {
                       setPdfFile(
                         e.target
                           .files?.[0] ||
-                          null
+                        null
                       )
                     }
                   />

@@ -1,23 +1,65 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-
 import Footer from "@/components/Footer";
 
-import Link from "next/link";
-
 import {
-  ArrowRight,
   ShieldCheck,
-  Globe,
   Building2,
-  BadgeCheck,
   Landmark,
-  Sparkles,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Investment } from "@/components/admin/investments/investment.types";
+import axios from "axios";
 
 export default function InvestmentsPage() {
+  const [investments, setInvestments] =
+    useState<Investment[]>([]);
 
+  const [selected, setSelected] =
+    useState<Investment | null>(
+      null
+    );
+
+  const [loading, setLoading] =
+    useState(true);
+  useEffect(() => {
+
+    const fetchInvestments =
+      async () => {
+
+        try {
+
+          const response =
+            await axios.get(
+              `${process.env.NEXT_PUBLIC_API_URL}api/investments`
+            );
+
+          if (
+            response.data.success
+          ) {
+
+            setInvestments(
+              response.data.data || []
+            );
+
+          }
+
+        } catch (error) {
+
+          console.error(error);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      };
+
+    fetchInvestments();
+
+  }, []);
   return (
     <>
       {/* NAVBAR */}
@@ -119,128 +161,162 @@ export default function InvestmentsPage() {
 
               </div>
 
-              {/* RIGHT CARD */}
-              <div className="relative">
+              <div className="grid gap-6">
 
-                {/* SHADOW */}
-                <div className="absolute inset-0 bg-[#c8a21a]/10 blur-3xl rounded-[40px]" />
+                {investments
+                  .slice(0, 3)
+                  .map(
+                    (
+                      investment
+                    ) => (
 
-                <div className="relative rounded-[36px] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-2xl">
+                      <div
+                        key={
+                          investment._id
+                        }
+                        className="
+            rounded-3xl
+            bg-white/5
+            backdrop-blur-xl
+            border
+            border-white/10
+            p-6
+          "
+                      >
 
-                  {/* TOP BAR */}
-                  <div className="h-[4px] bg-[#c8a21a]" />
+                        <div className="flex items-center justify-between">
 
-                  <div className="p-10">
+                          <h3 className="text-white text-xl font-semibold">
 
-                    {/* ICON */}
-                    <div className="w-20 h-20 rounded-3xl bg-[#c8a21a]/10 border border-[#c8a21a]/20 flex items-center justify-center">
+                            {
+                              investment.name
+                            }
 
-                      <Landmark className="w-10 h-10 text-[#c8a21a]" />
+                          </h3>
 
-                    </div>
+                          <span className="text-[#c8a21a] text-xs uppercase">
 
-                    {/* COMPANY */}
-                    <div className="mt-8">
+                            {
+                              investment.riskLevel
+                            }
 
-                      <div className="inline-flex items-center gap-2 bg-[#c8a21a]/10 border border-[#c8a21a]/20 rounded-full px-4 py-2 text-[#c8a21a] text-xs uppercase tracking-[0.18em] font-semibold">
+                          </span>
 
-                        <Sparkles className="w-3.5 h-3.5" />
+                        </div>
 
-                        Verified Opportunity
+                        <p className="text-[#94a3b8] mt-2">
+
+                          {
+                            investment.provider
+                          }
+
+                        </p>
+
+                        <button
+                          onClick={() =>
+                            setSelected(
+                              investment
+                            )
+                          }
+                          className="
+              mt-5
+              w-full
+              h-12
+              rounded-xl
+              bg-[#c8a21a]
+              text-[#051933]
+              font-semibold
+            "
+                        >
+
+                          View Details
+
+                        </button>
 
                       </div>
 
-                      <h2 className="font-serif text-4xl text-white leading-tight mt-6">
+                    )
+                  )}
 
-                        ISKA MORTGAGES LLC
+              </div>
 
-                      </h2>
+            </div>
 
-                    </div>
+          </div>
 
-                    {/* INFO */}
-                    <div className="mt-8 space-y-6">
+        </section>
+        <section className="py-20">
 
-                      {/* REVIEWED */}
-                      <div className="flex items-start gap-4">
+          <div className="max-w-7xl mx-auto px-6">
 
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-                          <BadgeCheck className="w-6 h-6 text-[#c8a21a]" />
+              {investments.map(
+                (
+                  investment
+                ) => (
 
-                        </div>
+                  <div
+                    key={
+                      investment._id
+                    }
+                    className="
+              bg-white
+              rounded-3xl
+              border
+              shadow-sm
+              p-6
+            "
+                  >
 
-                        <div>
+                    <h3 className="font-serif text-2xl text-[#051933]">
 
-                          <p className="text-[#94a3b8] text-xs uppercase tracking-[0.18em] mb-2">
+                      {
+                        investment.name
+                      }
 
-                            Rabbinical Oversight
+                    </h3>
 
-                          </p>
+                    <p className="text-gray-500 mt-2">
 
-                          <p className="text-white text-[15px] leading-7">
+                      {
+                        investment.provider
+                      }
 
-                            Works with Bais Horaah of
-                            Rav Pinchos Vind Shlita
+                    </p>
 
-                          </p>
+                    <p className="mt-4 text-sm text-gray-600 line-clamp-4">
 
-                        </div>
+                      {
+                        investment.description
+                      }
 
-                      </div>
+                    </p>
 
-                      {/* WEBSITE */}
-                      <div className="flex items-start gap-4">
-
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-
-                          <Globe className="w-6 h-6 text-[#c8a21a]" />
-
-                        </div>
-
-                        <div>
-
-                          <p className="text-[#94a3b8] text-xs uppercase tracking-[0.18em] mb-2">
-
-                            Website
-
-                          </p>
-
-                          <a
-                            href="https://www.iskamortgage.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#c8a21a] hover:text-[#d8b84a] transition-all text-[15px]"
-                          >
-
-                            www.iskamortgage.com
-
-                          </a>
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                    {/* CTA */}
-                    <Link
-                      href="https://www.iskamortgage.com"
-                      target="_blank"
-                      className="group mt-10 w-full h-14 rounded-2xl bg-[#c8a21a] hover:bg-[#d8b84a] transition-all flex items-center justify-center gap-3 text-[#051933] font-semibold text-[15px]"
+                    <button
+                      onClick={() =>
+                        setSelected(
+                          investment
+                        )
+                      }
+                      className="
+                mt-6
+                w-full
+                h-11
+                rounded-xl
+                bg-[#051933]
+                text-white
+              "
                     >
 
-                      Visit Investment Website
+                      View Opportunity
 
-                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-
-                    </Link>
+                    </button>
 
                   </div>
 
-                </div>
-
-              </div>
+                )
+              )}
 
             </div>
 

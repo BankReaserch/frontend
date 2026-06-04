@@ -5,7 +5,7 @@ import {
   ShoppingCart,
   FileVolume,
   CircleAlert,
-  Download,
+  HandCoins,
   Users,
   BookSearch,
   Landmark,
@@ -34,10 +34,7 @@ const menu = [
     name: "Audio",
     icon: FileVolume,
   },
-  // {
-  //   name: "Products",
-  //   icon: Package,
-  // },
+ 
   {
     name: "Books",
     icon: BookUser,
@@ -63,6 +60,10 @@ const menu = [
   {
     name: "Alerts",
     icon: CircleAlert,
+  },
+   {
+    name: "Investments",
+    icon: HandCoins,
   },
    {
     name: "Q&A",

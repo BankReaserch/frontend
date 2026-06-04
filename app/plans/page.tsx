@@ -1,9 +1,8 @@
 "use client";
 
 import Footer from "@/components/Footer";
-
 import Navbar from "@/components/Navbar";
-
+import axios from "axios";
 import {
   Check,
   ArrowRight,
@@ -11,42 +10,30 @@ import {
   Sparkles,
   Infinity,
 } from "lucide-react";
-
 export default function Plan() {
-
 const handleCheckout =
   async () => {
-
     try {
-
       const response =
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}api/plan/checkout`,
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/plan/checkout`,
+          {},
           {
-            method: "POST",
-
-            credentials: "include",
-
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+            withCredentials: true,
           }
         );
-
       const data =
-        await response.json();
+        response.data;
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.message
         );
       }
 
-      // REDIRECT TO STRIPE
+      // Redirect to Stripe
+
       window.location.href =
         data.url;
 
@@ -58,19 +45,18 @@ const handleCheckout =
       );
 
       alert(
+        error?.response?.data
+          ?.message ||
         error.message ||
-          "Something went wrong"
+        "Something went wrong"
       );
     }
   };
 
   return (
     <>
-      {/* NAVBAR */}
-      <div className="bg-[#0B1C2C] text-white">
-
+      <div className="bg-[#0B1C2C] text-white pt-20 pb-10">
         <Navbar />
-
       </div>
 
       {/* MAIN */}
@@ -209,17 +195,12 @@ const handleCheckout =
 
                   {/* PRICE */}
                   <div className="mt-10 flex items-end gap-3">
-
                     <span className="font-serif text-8xl text-white leading-none">
-
-                      $30
-
+                      $50
                     </span>
 
                     <span className="text-[#94a3b8] mb-3 text-lg">
-
                       one-time
-
                     </span>
 
                   </div>

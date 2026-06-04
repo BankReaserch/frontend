@@ -22,6 +22,7 @@ import {
   TrendingUp,
   Info,
   Mail,
+  X,
 } from "lucide-react";
 
 export type AlertType =
@@ -44,39 +45,6 @@ export type Alert = {
   createdAt: string;
 };
 
-const alertStyles = {
-  warning: {
-    card:
-      "border-yellow-200 bg-yellow-50/60",
-
-    icon:
-      "bg-yellow-500/10 text-yellow-600 border-yellow-500/10",
-  },
-
-  danger: {
-    card:
-      "border-red-200 bg-red-50/60",
-
-    icon:
-      "bg-red-500/10 text-red-600 border-red-500/10",
-  },
-
-  success: {
-    card:
-      "border-green-200 bg-green-50/60",
-
-    icon:
-      "bg-green-500/10 text-green-600 border-green-500/10",
-  },
-
-  info: {
-    card:
-      "border-blue-200 bg-blue-50/60",
-
-    icon:
-      "bg-blue-500/10 text-blue-600 border-blue-500/10",
-  },
-};
 
 const alertIcons = {
   warning:
@@ -92,45 +60,29 @@ const alertIcons = {
 };
 
 export default function AlertsPage() {
-
-  /*
-  ========================================
-  STATES
-  ========================================
-  */
-
   const [alerts, setAlerts] =
     useState<Alert[]>([]);
 
-  const [loading, setLoading] =
-    useState(true);
-
   const [search, setSearch] =
     useState("");
+const [hiddenAlerts, setHiddenAlerts] =
+  useState<string[]>([]);
 
-  /*
-  ========================================
-  AXIOS
-  ========================================
-  */
+const hideAlert = (id: string) => {
+  setHiddenAlerts((prev) => [
+    ...prev,
+    id,
+  ]);
+};
 
   const api = axios.create({
     baseURL:
       process.env
         .NEXT_PUBLIC_API_URL,
   });
-
-  /*
-  ========================================
-  FETCH ALERTS
-  ========================================
-  */
-
   useEffect(() => {
-
     const fetchAlerts =
       async () => {
-
         try {
 
           const res =
@@ -150,19 +102,12 @@ export default function AlertsPage() {
 
         } finally {
 
-          setLoading(false);
         }
       };
 
     fetchAlerts();
 
   }, []);
-
-  /*
-  ========================================
-  FILTER
-  ========================================
-  */
 
   const filteredAlerts =
     useMemo(() => {
@@ -185,7 +130,14 @@ export default function AlertsPage() {
       alerts,
       search,
     ]);
-
+const visibleAlerts =
+  filteredAlerts.filter(
+    (alert) =>
+      !hiddenAlerts.includes(
+        alert._id
+      )
+  );
+  
   return (
     <>
       {/* NAVBAR */}
@@ -350,194 +302,191 @@ export default function AlertsPage() {
         </section>
 
         {/* ALERTS */}
-{/* ALERTS */}
-<section className="py-20">
+<section className="py-24 bg-[#F7F3EB]">
 
   <div className="max-w-7xl mx-auto px-6">
 
-    {/* SECTION HEADER */}
-    <div className="mb-14">
+    {/* HEADER */}
 
-      {/* LABEL */}
-      <p className="text-[#c8a21a] uppercase tracking-[0.32em] text-xs font-semibold mb-5">
+    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
 
-        Public Notices
+      <div>
 
-      </p>
+        <p className="text-[#C8A21A] uppercase tracking-[0.32em] text-xs font-semibold mb-4">
+          PUBLIC NOTICES
+        </p>
 
-      {/* TOP */}
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+        <h2 className="font-serif text-5xl md:text-6xl text-[#051933] leading-none">
 
-        {/* LEFT */}
-        <div>
+          Latest{" "}
 
-          {/* TITLE */}
-          <h2 className="font-serif text-5xl md:text-6xl leading-[1] tracking-[-0.03em] text-[#051933]">
+          <span className="italic text-[#C8A21A]">
+            Alerts
+          </span>
 
-            Latest{" "}
+        </h2>
 
-            <span className="italic text-[#c8a21a]">
+        <p className="mt-6 max-w-2xl text-[#64748B] leading-8">
 
-              Alerts
+          Important financial updates, ribis developments,
+          public notices, and halachic guidance curated for
+          the frum community and modern financial realities.
 
-            </span>
+        </p>
 
-          </h2>
+      </div>
 
-          {/* DESCRIPTION */}
-          <p className="max-w-2xl text-[#64748b] leading-8 text-[15px] mt-6">
+      <div className="inline-flex items-center gap-3 rounded-2xl bg-white border border-[#E9E1D2] px-5 py-4 shadow-sm">
 
-            Important financial updates, ribis developments,
-            public notices, and halachic guidance curated
-            for the frum community and modern financial realities.
+        <div className="w-3 h-3 rounded-full bg-[#C8A21A] animate-pulse" />
 
-          </p>
+        <span className="font-medium text-[#051933]">
 
-        </div>
+          {visibleAlerts.length} Active Alerts
 
-        {/* RIGHT STATS */}
-        <div className="flex items-center gap-4">
+        </span>
 
-          {/* ACTIVE ALERTS */}
-          <div className="inline-flex items-center gap-3 rounded-2xl border border-[#e8dece] bg-white/70 backdrop-blur-xl px-5 py-4 shadow-sm">
+      </div>
 
-            <div className="w-3 h-3 rounded-full bg-[#c8a21a] animate-pulse" />
+    </div>
 
-            <span className="text-sm font-medium text-[#051933]">
+    {/* ALERTS */}
+<div className="space-y-4">
 
-              {filteredAlerts.length} Active Alerts
+  {visibleAlerts.map((alert) => {
 
-            </span>
+    const Icon =
+      alertIcons[
+        alert.type?.toLowerCase() as AlertType
+      ] || AlertTriangle;
+
+    return (
+
+      <div
+        key={alert._id}
+        className="
+          relative
+          overflow-hidden
+          rounded-3xl
+          bg-[#051933]
+          border
+          border-[#0E294A]
+          shadow-xl
+        "
+      >
+
+        <div className="absolute left-0 top-0 h-full w-1.5 bg-[#C8A21A]" />
+
+        <div className="flex items-start justify-between gap-6 p-7">
+
+          <div className="flex gap-5 flex-1">
+
+            <div
+              className="
+                h-14
+                w-14
+                rounded-2xl
+                bg-[#C8A21A]/15
+                flex
+                items-center
+                justify-center
+                shrink-0
+              "
+            >
+              <Icon
+                className="
+                  h-6
+                  w-6
+                  text-[#C8A21A]
+                "
+              />
+            </div>
+
+            <div className="flex-1">
+
+              <div className="flex items-center gap-4 mb-2">
+
+                <span
+                  className="
+                    text-[11px]
+                    uppercase
+                    tracking-[0.30em]
+                    text-[#C8A21A]
+                    font-semibold
+                  "
+                >
+                  {alert.type}
+                </span>
+
+                <span className="text-sm text-[#8CA0B8]">
+                  {new Date(
+                    alert.createdAt
+                  ).toLocaleDateString(
+                    "en-US",
+                    {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    }
+                  )}
+                </span>
+
+              </div>
+
+              <h3
+                className="
+                  font-serif
+                  text-3xl
+                  text-white
+                  mb-3
+                "
+              >
+                {alert.title}
+              </h3>
+
+              <p
+                className="
+                  text-[#D3DCE8]
+                  leading-8
+                "
+              >
+                {alert.message}
+              </p>
+
+            </div>
 
           </div>
 
+          <button
+            onClick={() =>
+              hideAlert(alert._id)
+            }
+            className="
+              shrink-0
+              h-10
+              w-10
+              rounded-xl
+              bg-[#C8A21A]
+              text-[#051933]
+              hover:scale-105
+              transition
+              flex
+              items-center
+              justify-center
+            "
+          >
+            <X size={16} />
+          </button>
+
         </div>
 
       </div>
 
-    </div>
+    );
 
-    {/* LOADING */}
-    {loading ? (
-
-      <div className="text-center py-24">
-
-        <p className="text-[#64748b]">
-
-          Loading alerts...
-
-        </p>
-
-      </div>
-
-    ) : filteredAlerts.length ===
-      0 ? (
-
-      <div className="rounded-[36px] border border-dashed border-[#d9cfbf] bg-white/80 backdrop-blur-xl py-28 text-center">
-
-        <Bell className="w-14 h-14 text-[#94a3b8] mx-auto mb-6" />
-
-        <h3 className="font-serif text-4xl text-[#051933]">
-
-          No Alerts Available
-
-        </h3>
-
-        <p className="text-[#64748b] mt-4">
-
-          There are currently no public alerts.
-
-        </p>
-
-      </div>
-
-    ) : (
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-
-        {filteredAlerts.map(
-          (
-            alert
-          ) => {
-
-            const Icon =
-              alertIcons[
-                alert.type
-              ];
-
-            const style =
-              alertStyles[
-                alert.type
-              ];
-
-            return (
-             <div
-  key={alert._id}
-  className={`group relative h-[520px] rounded-[36px] border ${style.card} bg-white/75 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden flex flex-col`}
->
-
-  {/* GLOW */}
-  <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-[#f6efe4]/60 pointer-events-none" />
-
-  {/* CONTENT */}
-  <div className="relative p-8 flex flex-col h-full">
-
-    {/* TOP */}
-    <div className="flex items-start justify-between gap-4 flex-shrink-0">
-
-      {/* ICON */}
-      <div
-        className={`w-16 h-16 rounded-[24px] border flex items-center justify-center ${style.icon}`}
-      >
-
-        <Icon className="w-7 h-7" />
-
-      </div>
-
-      {/* DATE */}
-      <div className="px-4 py-2 rounded-full bg-white/70 border border-white text-xs font-medium text-[#64748b]">
-
-        {new Date(
-          alert.createdAt
-        ).toLocaleDateString()}
-
-      </div>
-
-    </div>
-
-    {/* BODY */}
-    <div className="flex-1 flex flex-col mt-8 min-h-0">
-
-      {/* TITLE */}
-      <h2 className="font-serif text-[44px] leading-[0.92] tracking-[-0.03em] text-[#051933] break-words flex-shrink-0">
-
-        {alert.title}
-
-      </h2>
-
-      {/* MESSAGE */}
-      <div className="mt-6 flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-0">
-
-        <p className="text-[#64748b] text-[15px] leading-8 whitespace-pre-line">
-
-          {alert.message}
-
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
+  })}
 
 </div>
-            );
-          }
-        )}
-
-      </div>
-    )}
-
   </div>
 
 </section>
@@ -545,7 +494,6 @@ export default function AlertsPage() {
       </main>
 
       <Footer />
-
     </>
   );
 }

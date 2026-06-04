@@ -40,13 +40,6 @@ export default function BrokersPage() {
 
   const [loading, setLoading] =
     useState(true);
-
-  /*
-  ========================================
-  FETCH BROKERS
-  ========================================
-  */
-
   useEffect(() => {
 
     fetchBrokers();

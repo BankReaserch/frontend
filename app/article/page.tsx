@@ -1,54 +1,19 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-
 import Footer from "@/components/Footer";
-
-import Image from "next/image";
-
 import {
   Search,
-  Download,
-  ArrowRight,
-  CalendarDays,
-  Clock3,
-  FileText,
 } from "lucide-react";
 
 import {
   useEffect,
-  useMemo,
   useState,
 } from "react";
 
 import axios from "axios";
-
-type Article = {
-  _id: string;
-
-  title: string;
-
-  excerpt: string;
-
-  category: string;
-
-  author: string;
-
-  coverImage: string;
-
-  pdfUrl: string;
-
-  createdAt: string;
-
-  readTime: string;
-};
-
-/*
-========================================
-FIX URLS
-========================================
-*/
-
+import ArticleCard from "@/components/article/ArticleCard";
+import { Article } from "@/components/article/article.types";
 const getFileUrl = (
   path: string
 ) => {
@@ -60,13 +25,6 @@ const getFileUrl = (
 };
 
 export default function ArticlesPage() {
-
-  /*
-  ========================================
-  STATES
-  ========================================
-  */
-
   const [articles, setArticles] =
     useState<Article[]>([]);
 
@@ -75,24 +33,11 @@ export default function ArticlesPage() {
 
   const [search, setSearch] =
     useState("");
-
-  /*
-  ========================================
-  AXIOS
-  ========================================
-  */
-
   const api = axios.create({
     baseURL:
       process.env
         .NEXT_PUBLIC_API_URL,
   });
-
-  /*
-  ========================================
-  FETCH ARTICLES
-  ========================================
-  */
 
   useEffect(() => {
 
@@ -132,35 +77,26 @@ export default function ArticlesPage() {
     fetchArticles();
 
   }, []);
-
-  /*
-  ========================================
-  FILTER
-  ========================================
-  */
-
-  const filtered =
-    useMemo(() => {
-
-      return articles.filter(
-        (article) =>
-          article.title
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            ) ||
-          article.category
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            )
-      );
-
-    }, [
-      articles,
-      search,
-    ]);
-
+  /* FILTERED ARTICLES */
+  const filteredArticles =
+    articles.filter(
+      (article) =>
+        article.title
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          ) ||
+        article.category
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          ) ||
+        article.author
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
+    );
   return (
     <>
       <div className="bg-[#051933]">
@@ -243,198 +179,80 @@ export default function ArticlesPage() {
 
           <div className="max-w-7xl mx-auto px-6">
 
-            {/* LOADING */}
             {loading ? (
 
               <div className="text-center py-24">
 
+                <div className="w-10 h-10 border-4 border-[#c8a21a] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+
                 <p className="text-[#64748b]">
-
                   Loading articles...
-
                 </p>
 
               </div>
 
-            ) : filtered.length ===
-              0 ? (
+            ) : filteredArticles.length === 0 ? (
 
               <div className="text-center py-24">
 
                 <h3 className="font-serif text-3xl text-[#051933]">
-
                   No Articles Found
-
                 </h3>
+
+                <p className="mt-3 text-[#64748b]">
+                  Try adjusting your search.
+                </p>
 
               </div>
 
             ) : (
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              <>
+                {/* COUNT */}
 
-                {filtered.map(
-                  (
-                    article
-                  ) => (
+                <div className="flex justify-between items-center mb-10">
 
-                    <div
-                      key={
-                        article._id
-                      }
-                      className="group rounded-[28px] overflow-hidden border border-[#e7dfd2] bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
-                    >
+                  <h2 className="font-serif text-4xl text-[#051933]">
 
-                      {/* IMAGE */}
-                      <div className="relative h-[240px] overflow-hidden bg-[#051933]">
+                    Articles
 
-                        {article.coverImage ? (
+                  </h2>
 
-                          <Image
-                            src={getFileUrl(
-                              article.coverImage
-                            )}
-                            alt={
-                              article.title
-                            }
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
+                  <div className="rounded-2xl bg-white border border-[#e7dfd2] px-4 py-2 text-sm text-[#64748b]">
 
-                        ) : (
+                    {filteredArticles.length} Articles
 
-                          <div className="w-full h-full flex items-center justify-center">
+                  </div>
 
-                            <FileText className="w-16 h-16 text-[#c8a21a]" />
+                </div>
 
-                          </div>
-                        )}
+                {/* GRID */}
 
-                        {/* CATEGORY */}
-                        <div className="absolute top-5 left-5 bg-[#c8a21a] text-[#051933] text-[10px] uppercase tracking-[0.2em] font-bold px-4 py-2 rounded-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-                          {
-                            article.category
-                          }
+                  {filteredArticles.map(
+                    (article) => (
 
-                        </div>
+                      <ArticleCard
+                        key={article._id}
+                        article={article}
+                        variant="public"
+                        getFileUrl={getFileUrl}
+                      />
 
-                      </div>
+                    )
+                  )}
 
-                      {/* CONTENT */}
-                      <div className="p-8">
+                </div>
 
-                        {/* META */}
-                        <div className="flex items-center gap-5 text-[#94a3b8] text-xs mb-5">
+              </>
 
-                          <div className="flex items-center gap-2">
-
-                            <CalendarDays className="w-4 h-4" />
-
-                            {new Date(
-                              article.createdAt
-                            ).toLocaleDateString()}
-
-                          </div>
-
-                          <div className="flex items-center gap-2">
-
-                            <Clock3 className="w-4 h-4" />
-
-                            {
-                              article.readTime
-                            }
-
-                          </div>
-
-                        </div>
-
-                        {/* TITLE */}
-                        <h2 className="font-serif text-3xl leading-snug text-[#051933]">
-
-                          {
-                            article.title
-                          }
-
-                        </h2>
-
-                        {/* EXCERPT */}
-                        <p className="text-[#64748b] leading-8 text-[15px] mt-5 line-clamp-3">
-
-                          {
-                            article.excerpt
-                          }
-
-                        </p>
-
-                        {/* AUTHOR */}
-                        <div className="mt-6">
-
-                          <p className="text-sm text-[#94a3b8]">
-
-                            By{" "}
-
-                            <span className="text-[#051933] font-medium">
-
-                              {
-                                article.author
-                              }
-
-                            </span>
-
-                          </p>
-
-                        </div>
-
-                        {/* ACTIONS */}
-                        <div className="mt-8 flex items-center gap-4">
-
-                          {/* VIEW */}
-                          <a
-                            href={getFileUrl(
-                              article.pdfUrl
-                            )}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 h-12 rounded-2xl bg-[#051933] hover:bg-[#0d2748] transition-all text-white text-sm font-semibold flex items-center justify-center gap-2"
-                          >
-
-                            Read Article
-
-                            <ArrowRight className="w-4 h-4" />
-
-                          </a>
-
-                          {/* DOWNLOAD */}
-                          <a
-                            href={getFileUrl(
-                              article.pdfUrl
-                            )}
-                            download
-                            className="w-12 h-12 rounded-2xl border border-[#e7dfd2] hover:border-[#c8a21a] bg-[#faf7f2] flex items-center justify-center transition-all"
-                          >
-
-                            <Download className="w-5 h-5 text-[#051933]" />
-
-                          </a>
-
-                        </div>
-
-                      </div>
-
-                    </div>
-                  )
-                )}
-
-              </div>
             )}
 
           </div>
 
         </section>
-
       </main>
-
       <Footer />
 
     </>

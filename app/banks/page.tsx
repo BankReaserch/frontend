@@ -98,10 +98,6 @@ export default function BanksPage() {
         setBanks(
           formatted
         );
-
-        if (formatted.length > 0) {
-          setSelected(formatted[0]);
-        }
       } finally {
 
         setLoading(
@@ -255,8 +251,6 @@ const filtered = useMemo(() => {
             </div>
           </div>
         </section>
-
-        {/* ── WHY SECTION ─────────────────────────────────── */}
         <section className="bg-[#f0ebe0] py-14">
           <div className="mx-auto max-w-6xl px-6">
             <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#c8a21a] mb-8">
@@ -280,7 +274,6 @@ const filtered = useMemo(() => {
           </div>
         </section>
 
-        {/* ── DIRECTORY ───────────────────────────────────── */}
         <section className="py-14 pb-24">
           <div className="mx-auto max-w-6xl px-6">
             <div className="flex items-end justify-between gap-4 mb-8">
@@ -328,8 +321,6 @@ const filtered = useMemo(() => {
                 </button>
               </div>
             </div>
-
-            {/* Filter pills */}
             <div className="flex flex-wrap gap-2 mb-8">
               <button
                 onClick={() => { setFilter("all");  }}
@@ -395,8 +386,6 @@ const filtered = useMemo(() => {
                   )}
                 </div>
               )}
-
-              {/* ── LIST VIEW ─── */}
               {view === "list" && (
                 <div>
                   {filtered.length === 0 ? (
@@ -443,7 +432,6 @@ const filtered = useMemo(() => {
                 </div>
               )}
 
-              {/* ── DETAIL PANEL ─── */}
               {selected && (
                 <div className="lg:sticky lg:top-6">
                   <DetailPanel bank={selected} onClose={() => setSelected(null)} />
