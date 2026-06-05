@@ -1,9 +1,9 @@
 import { ArrowRight, Download, ExternalLink, FileText, X } from "lucide-react";
-import { Bank } from "./bank.types";
+import { BankType } from "../../components/admin/bank/bank.types";
 import { STATUS_CFG } from "./status.config";
 import StatusBadge from "./Statusbadge";
 
-const DetailPanel = ({ bank, onClose }: { bank: Bank; onClose: () => void }) => {
+const DetailPanel = ({ bank, onClose }: { bank: BankType; onClose: () => void }) => {
   const cfg = STATUS_CFG[bank.status];
   return (
     <div className="rounded-2xl overflow-hidden border border-[#e8e2d6] bg-white shadow-lg">
@@ -57,7 +57,7 @@ const DetailPanel = ({ bank, onClose }: { bank: Bank; onClose: () => void }) => 
             <button
               onClick={() =>
                 window.open(
-                  `${process.env.NEXT_PUBLIC_API_URL}api/banks/view-report/${bank.id}`,
+                  `${process.env.NEXT_PUBLIC_API_URL}api/banks/view-report/${bank._id}`,
                   "_blank"
                 )
               }
@@ -86,7 +86,7 @@ const DetailPanel = ({ bank, onClose }: { bank: Bank; onClose: () => void }) => 
             {/* DOWNLOAD REPORT */}
 
             <a
-              href={`${process.env.NEXT_PUBLIC_API_URL}api/banks/download-report/${bank.id}`}
+              href={`${process.env.NEXT_PUBLIC_API_URL}api/banks/download-report/${bank._id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="

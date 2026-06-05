@@ -1,3 +1,11 @@
+
+export type Status =
+  | "mehudar"
+  | "compliant"
+  | "conditional"
+  | "questionable"
+  | "noncompliant"
+  | "undetermined";
 export type BankType = {
   _id: string;
 
@@ -7,7 +15,7 @@ export type BankType = {
 
   location: string;
 
-  status: string;
+  status: Status;
 
   website?: string;
 
@@ -22,7 +30,9 @@ export type BankType = {
   reportAvailable?: boolean;
 
   reportUrl?: string;
+  summary?:string;
 
   coverImage?: string;
   hq?: string;
 };
+

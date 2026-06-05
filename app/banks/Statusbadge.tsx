@@ -1,5 +1,5 @@
 
-import { Status } from "./bank.types";
+import { Status } from "../../components/admin/bank/bank.types";
 import { STATUS_CFG } from "./status.config";
 
 const  StatusBadge=({ status }: { status: Status })=> {

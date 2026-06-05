@@ -4,9 +4,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useState, useMemo, useEffect } from "react";
 import {
-  Bank,
+  BankType,
   Status,
-} from "./bank.types";
+} from "../../components/admin/bank/bank.types";
 import {
   Search,
   LayoutGrid,
@@ -30,12 +30,12 @@ export default function BanksPage() {
   const [filter, setFilter] = useState<Status | "all">("all");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [selected, setSelected] =
-    useState<Bank | null>(null);
+    useState<BankType | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [sortKey, setSortKey] = useState<"name" | "type" | "status">("name");
   const [sortDir, setSortDir] = useState(1);
   const [banks, setBanks] =
-    useState<Bank[]>([]);
+    useState<BankType[]>([]);
 
   const [loading, setLoading] =
     useState(true);
@@ -107,7 +107,7 @@ export default function BanksPage() {
         b.type
           .toLowerCase()
           .includes(q) ||
-        b.hq
+        (b.hq ?? "")
           .toLowerCase()
           .includes(q);
 
@@ -145,8 +145,8 @@ export default function BanksPage() {
     else { setSortKey(key); setSortDir(1); }
   };
 
-  const handleSelect = (bank: Bank) => {
-    setSelected(selected?.id === bank.id ? null : bank);
+  const handleSelect = (bank: BankType) => {
+    setSelected(selected?._id === bank._id ? null : bank);
   };
 
   const SortIcon = ({ k }: { k: typeof sortKey }) => {
@@ -339,11 +339,11 @@ export default function BanksPage() {
                       {filtered.map((bank) => (
 
                         <BankCard
-                          key={bank.id}
+                          key={bank._id}
                           bank={bank}
                           selected={
-                            selected?.id ===
-                            bank.id
+                            selected?._id ===
+                            bank._id
                           }
                           onClick={() =>
                             handleSelect(bank)
@@ -380,8 +380,8 @@ export default function BanksPage() {
                         </thead>
                         <tbody>
                           {filtered.map((bank) => (
-                            <tr key={bank.id} onClick={() => handleSelect(bank)}
-                              className={`cursor-pointer border-b border-[#f1ede6] last:border-none transition-colors ${selected?.id === bank.id ? "bg-[#fffbf0] border-l-2 border-l-[#c8a21a]" : "hover:bg-[#fdfaf4]"}`}
+                            <tr key={bank._id} onClick={() => handleSelect(bank)}
+                              className={`cursor-pointer border-b border-[#f1ede6] last:border-none transition-colors ${selected?._id === bank._id ? "bg-[#fffbf0] border-l-2 border-l-[#c8a21a]" : "hover:bg-[#fdfaf4]"}`}
                             >
                               <td className="px-5 py-4">
                                 <p className="font-serif text-[15px] text-[#051933]">{bank.name}</p>

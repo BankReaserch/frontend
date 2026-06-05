@@ -1,4 +1,4 @@
-import { Status } from "./bank.types";
+import { Status } from "../../components/admin/bank/bank.types";
 
 export const STATUS_CFG: Record<
   Status,
