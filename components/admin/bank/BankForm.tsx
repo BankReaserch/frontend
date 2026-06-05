@@ -9,21 +9,18 @@ import {
 
 type Props = {
   formData: any;
-
   setFormData: React.Dispatch<
-    React.SetStateAction<any>
-  >;
-
+    React.SetStateAction<any>>;
   reportFile: File | null;
-
   setReportFile: (
     file: File | null
   ) => void;
-
+  coverImage: File | null;
+  setCoverImage: (
+    file: File | null
+  ) => void;
   saving: boolean;
-
   isEditing: boolean;
-
   onSubmit: () => void;
 };
 
@@ -32,6 +29,8 @@ export default function BankForm({
   setFormData,
   reportFile,
   setReportFile,
+  coverImage,
+  setCoverImage,
   saving,
   isEditing,
   onSubmit,
@@ -211,7 +210,61 @@ export default function BankForm({
           />
 
         </label>
+        <label className="flex items-center gap-3 border-2 border-dashed rounded-2xl p-4 cursor-pointer">
 
+          <Upload className="w-5 h-5" />
+
+          <div>
+
+            <p className="font-medium">
+              Upload Cover Image
+            </p>
+
+            <p className="text-xs text-gray-500">
+              JPG, PNG, WEBP
+            </p>
+
+            {coverImage && (
+
+              <p className="text-xs text-green-600 mt-1">
+
+                {coverImage.name}
+
+              </p>
+
+            )}
+
+          </div>
+
+          <input
+            hidden
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setCoverImage(
+                e.target.files?.[0] ||
+                null
+              )
+            }
+          />
+
+        </label>
+        {coverImage && (
+          <img
+            src={URL.createObjectURL(
+              coverImage
+            )}
+            alt="Preview"
+            className="
+      w-full
+      h-48
+      object-cover
+      rounded-2xl
+      border
+    "
+          />
+
+        )}
         <button
           onClick={onSubmit}
           disabled={saving}

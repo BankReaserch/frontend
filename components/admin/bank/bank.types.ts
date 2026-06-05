@@ -22,4 +22,7 @@ export type BankType = {
   reportAvailable?: boolean;
 
   reportUrl?: string;
+
+  coverImage?: string;
+  hq?: string;
 };

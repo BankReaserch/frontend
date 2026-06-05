@@ -65,14 +65,13 @@ export default function BanksAdmin() {
 
   const [isEditing, setIsEditing] =
     useState(false);
+  const [reportFile, setReportFile] =
+    useState<File | null>(null);
 
+  const [coverImage, setCoverImage] =
+    useState<File | null>(null);
   const [formData, setFormData] =
     useState(initialForm);
-
-  const [reportFile, setReportFile] =
-    useState<File | null>(
-      null
-    );
   const fetchBanks =
     async () => {
 
@@ -157,7 +156,14 @@ export default function BanksAdmin() {
             reportFile
           );
         }
+        if (coverImage) {
 
+          data.append(
+            "coverImage",
+            coverImage
+          );
+
+        }
         const response =
           await api.post(
             "/api/banks/create",
@@ -181,10 +187,8 @@ export default function BanksAdmin() {
             initialForm
           );
 
-          setReportFile(
-            null
-          );
-
+          setReportFile(null);
+          setCoverImage(null);
         }
 
       } catch (error) {
@@ -302,9 +306,8 @@ export default function BanksAdmin() {
             initialForm
           );
 
-          setReportFile(
-            null
-          );
+          setReportFile(null);
+          setCoverImage(null);
 
           setSelectedBank(
             null
@@ -328,12 +331,6 @@ export default function BanksAdmin() {
 
       }
     };
-
-  /*
-  ========================================
-  DELETE
-  ========================================
-  */
 
   const deleteBank =
     async (
@@ -473,31 +470,20 @@ export default function BanksAdmin() {
         />
 
         <BankForm
-          formData={
-            formData
-          }
-          setFormData={
-            setFormData
-          }
-          reportFile={
-            reportFile
-          }
-          setReportFile={
-            setReportFile
-          }
-          saving={
-            saving
-          }
-          isEditing={
-            isEditing
-          }
+          formData={formData}
+          setFormData={setFormData}
+          reportFile={reportFile}
+          setReportFile={setReportFile}
+          coverImage={coverImage}
+          setCoverImage={setCoverImage}
+          saving={saving}
+          isEditing={isEditing}
           onSubmit={
             isEditing
               ? updateBank
               : createBank
           }
         />
-
       </div>
 
       <BankDetailsModal

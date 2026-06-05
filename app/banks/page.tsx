@@ -23,6 +23,7 @@ import { STATUS_CFG, STATUS_DESCRIPTIONS } from "./status.config";
 import StatusBadge from "./Statusbadge";
 import DetailPanel from "./DetailPanel";
 import RequestModal from "./Requestmodal";
+import BankCard from "./BankCard";
 
 export default function BanksPage() {
   const [search, setSearch] = useState("");
@@ -47,50 +48,27 @@ export default function BanksPage() {
           await axios.get(
             `${process.env.NEXT_PUBLIC_API_URL}api/banks/all`
           );
-
         const formatted =
           res.data.data.map(
             (bank: any) => ({
-
               id: bank._id,
-
               name: bank.name,
-
               type: bank.type,
-
               hq: bank.location,
-
-              assets:
-                bank.assets ||
-                "N/A",
-
-              founded:
-                bank.founded ||
-                "-",
-
-              status:
-                (
-                  bank.status ||
-                  "undetermined"
-                ).toLowerCase(),
-
-              notes:
-                bank.publicInfo ||
-                "",
-
-              summary:
-                bank.publicInfo ||
-                "",
-
-              website:
-                bank.website ||
-                "",
-
-              reportUrl:
-                bank.reportUrl
-                  ? `${process.env.NEXT_PUBLIC_API_URL}api/banks/view-report/${bank._id}`
-                  : "",
-
+              assets: bank.assets || "N/A",
+              founded: bank.founded || "-",
+              status: (
+                bank.status ||
+                "undetermined"
+              ).toLowerCase(),
+              notes: bank.publicInfo || "",
+              summary: bank.publicInfo || "",
+              website: bank.website || "",
+              coverImage:
+                bank.coverImage || "",
+              reportUrl: bank.reportUrl
+                ? `${process.env.NEXT_PUBLIC_API_URL}api/banks/view-report/${bank._id}`
+                : "",
               poskim: [],
             })
           );
@@ -112,55 +90,55 @@ export default function BanksPage() {
 
   }, []);
 
-const filtered = useMemo(() => {
-  let data = banks.filter((b) => {
-    const matchFilter =
-      filter === "all" ||
-      b.status === filter;
+  const filtered = useMemo(() => {
+    let data = banks.filter((b) => {
+      const matchFilter =
+        filter === "all" ||
+        b.status === filter;
 
-    const q =
-      search.toLowerCase();
+      const q =
+        search.toLowerCase();
 
-    const matchSearch =
-      !q ||
-      b.name
-        .toLowerCase()
-        .includes(q) ||
-      b.type
-        .toLowerCase()
-        .includes(q) ||
-      b.hq
-        .toLowerCase()
-        .includes(q);
+      const matchSearch =
+        !q ||
+        b.name
+          .toLowerCase()
+          .includes(q) ||
+        b.type
+          .toLowerCase()
+          .includes(q) ||
+        b.hq
+          .toLowerCase()
+          .includes(q);
 
-    return (
-      matchFilter &&
-      matchSearch
-    );
-  });
+      return (
+        matchFilter &&
+        matchSearch
+      );
+    });
 
-  data.sort((a, b) => {
-    const av =
-      a[sortKey];
+    data.sort((a, b) => {
+      const av =
+        a[sortKey];
 
-    const bv =
-      b[sortKey];
+      const bv =
+        b[sortKey];
 
-    return av < bv
-      ? -sortDir
-      : av > bv
-      ? sortDir
-      : 0;
-  });
+      return av < bv
+        ? -sortDir
+        : av > bv
+          ? sortDir
+          : 0;
+    });
 
-  return data;
-}, [
-  banks,
-  search,
-  filter,
-  sortKey,
-  sortDir,
-]);
+    return data;
+  }, [
+    banks,
+    search,
+    filter,
+    sortKey,
+    sortDir,
+  ]);
 
   const handleSort = (key: typeof sortKey) => {
     if (sortKey === key) setSortDir((d) => d * -1);
@@ -323,7 +301,7 @@ const filtered = useMemo(() => {
             </div>
             <div className="flex flex-wrap gap-2 mb-8">
               <button
-                onClick={() => { setFilter("all");  }}
+                onClick={() => { setFilter("all"); }}
                 className={`rounded-full px-4 py-2 text-[12px] font-semibold transition-all ${filter === "all" ? "bg-[#051933] text-white" : "border border-[#e8e2d6] bg-white text-[#64748b] hover:border-[#051933]/30"}`}
               >
                 All Banks
@@ -359,28 +337,19 @@ const filtered = useMemo(() => {
                   ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {filtered.map((bank) => (
-                        <button
+
+                        <BankCard
                           key={bank.id}
-                          onClick={() => handleSelect(bank)}
-                          className={`group relative rounded-2xl bg-white p-5 border text-left transition-all hover:shadow-md ${selected?.id === bank.id ? "border-[#c8a21a] border-2 shadow-[0_0_0_3px_rgba(200,162,26,0.1)]" : "border-[#e8e2d6] hover:border-[#c8a21a]/40"}`}
-                        >
-                          {/* Initial avatar */}
-                          <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#051933]">
-                            <span className="font-serif text-lg text-[#c8a21a]">
-                              {bank.name.charAt(0)}
-                            </span>
-                          </div>
-                          <p className="font-serif text-[15px] text-[#051933] mb-1 leading-snug pr-2">{bank.name}</p>
-                          <p className="text-[11px] text-[#94a3b8] mb-3">{bank.type} · {bank.hq}</p>
-                          <StatusBadge status={bank.status} />
-                          {selected?.id === bank.id && (
-                            <div className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#c8a21a]">
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#051933" strokeWidth="3">
-                                <path d="M20 6 9 17l-5-5" />
-                              </svg>
-                            </div>
-                          )}
-                        </button>
+                          bank={bank}
+                          selected={
+                            selected?.id ===
+                            bank.id
+                          }
+                          onClick={() =>
+                            handleSelect(bank)
+                          }
+                        />
+
                       ))}
                     </div>
                   )}
