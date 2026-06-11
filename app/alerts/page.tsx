@@ -384,20 +384,20 @@ export default function AlertsPage() {
             </div>
             <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between mb-10">
 
-  <div className="flex-1 max-w-2xl">
+              <div className="flex-1 max-w-2xl">
 
-    <div className="relative">
+                <div className="relative">
 
-      <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" />
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" />
 
-      <input
-        type="text"
-        placeholder="Search alerts..."
-        value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-        className="
+                  <input
+                    type="text"
+                    placeholder="Search alerts..."
+                    value={search}
+                    onChange={(e) =>
+                      setSearch(e.target.value)
+                    }
+                    className="
           w-full
           h-14
           rounded-2xl
@@ -412,59 +412,57 @@ export default function AlertsPage() {
           outline-none
           focus:border-[#C8A21A]
         "
-      />
+                  />
 
-    </div>
+                </div>
 
-  </div>
+              </div>
 
-  <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
 
-    <button
-      onClick={() =>
-        setSortOrder("newest")
-      }
-      className={`
+                <button
+                  onClick={() =>
+                    setSortOrder("newest")
+                  }
+                  className={`
         rounded-xl
         px-5
         py-3
         text-sm
         font-medium
         transition
-        ${
-          sortOrder === "newest"
-            ? "bg-[#C8A21A] text-[#051933]"
-            : "bg-white text-[#64748B] border border-[#E8E2D6]"
-        }
+        ${sortOrder === "newest"
+                      ? "bg-[#C8A21A] text-[#051933]"
+                      : "bg-white text-[#64748B] border border-[#E8E2D6]"
+                    }
       `}
-    >
-      Newest
-    </button>
+                >
+                  Newest
+                </button>
 
-    <button
-      onClick={() =>
-        setSortOrder("oldest")
-      }
-      className={`
+                <button
+                  onClick={() =>
+                    setSortOrder("oldest")
+                  }
+                  className={`
         rounded-xl
         px-5
         py-3
         text-sm
         font-medium
         transition
-        ${
-          sortOrder === "oldest"
-            ? "bg-[#C8A21A] text-[#051933]"
-            : "bg-white text-[#64748B] border border-[#E8E2D6]"
-        }
+        ${sortOrder === "oldest"
+                      ? "bg-[#C8A21A] text-[#051933]"
+                      : "bg-white text-[#64748B] border border-[#E8E2D6]"
+                    }
       `}
-    >
-      Oldest
-    </button>
+                >
+                  Oldest
+                </button>
 
-  </div>
+              </div>
 
-</div>
+            </div>
 
             {/* ALERTS */}
             <div className="space-y-4">
@@ -630,7 +628,12 @@ export default function AlertsPage() {
         <div className="fixed inset-0 z-50">
 
           <div
-            className="absolute inset-0 bg-black/60"
+            className="
+    absolute
+    inset-0
+    bg-[#020817]/60
+    backdrop-blur-sm
+  "
             onClick={() =>
               setSelectedAlert(null)
             }
@@ -639,7 +642,7 @@ export default function AlertsPage() {
           <div className="absolute inset-0 flex items-center justify-center p-6">
 
             <div
-  className="
+              className="
     relative
     w-full
     max-w-3xl
@@ -651,34 +654,48 @@ export default function AlertsPage() {
     border-[#0E294A]
     shadow-2xl
   "
+            >
+
+              <div className="sticky top-0 z-10 bg-[#051933] border-b border-[#0E294A] p-8">
+
+                <button
+                  onClick={() =>
+                    setSelectedAlert(null)
+                  }
+                  className="absolute right-5 top-5 text-white"
+                >
+                  <X />
+                </button>
+
+                <p className="text-[#C8A21A] uppercase tracking-[0.25em] text-xs font-semibold mb-4">
+                  {selectedAlert.type}
+                </p>
+                <p className="text-[#94A3B8] text-sm mt-2">
+  {new Date(
+    selectedAlert.createdAt
+  ).toLocaleDateString()}
+</p>
+
+                <h2 className="font-serif text-4xl text-white">
+                  {selectedAlert.title}
+                </h2>
+
+              </div>
+
+              <div
+  className="
+    overflow-y-auto
+    max-h-[65vh]
+    p-8
+    scrollbar-thin
+    scrollbar-thumb-[#1E3A5F]
+    scrollbar-track-transparent
+  "
 >
-
-             <div className="sticky top-0 z-10 bg-[#051933] border-b border-[#0E294A] p-8">
-
-  <button
-    onClick={() =>
-      setSelectedAlert(null)
-    }
-    className="absolute right-5 top-5 text-white"
-  >
-    <X />
-  </button>
-
-  <p className="text-[#C8A21A] uppercase tracking-[0.25em] text-xs font-semibold mb-4">
-    {selectedAlert.type}
-  </p>
-
-  <h2 className="font-serif text-4xl text-white">
-    {selectedAlert.title}
-  </h2>
-
-</div>
-
-<div className="overflow-y-auto max-h-[60vh] p-8">
-  <p className="text-[#D3DCE8] leading-8 whitespace-pre-wrap">
-    {selectedAlert.message}
-  </p>
-</div>
+                <p className="text-[#D3DCE8] leading-8 whitespace-pre-wrap">
+                  {selectedAlert.message}
+                </p>
+              </div>
 
             </div>
 
