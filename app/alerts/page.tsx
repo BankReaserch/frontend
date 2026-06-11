@@ -485,7 +485,7 @@ const style =
   className="
     text-[#D3DCE8]
     leading-7
-    line-clamp-3
+    line-clamp-2
   "
 >
   {alert.message}
