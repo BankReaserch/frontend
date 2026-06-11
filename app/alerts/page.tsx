@@ -65,15 +65,16 @@ export default function AlertsPage() {
 
   const [search, setSearch] =
     useState("");
-const [hiddenAlerts, setHiddenAlerts] =
-  useState<string[]>([]);
-
-const hideAlert = (id: string) => {
-  setHiddenAlerts((prev) => [
-    ...prev,
-    id,
-  ]);
-};
+  const [hiddenAlerts, setHiddenAlerts] =
+    useState<string[]>([]);
+const [selectedAlert, setSelectedAlert] =
+  useState<Alert | null>(null);
+  const hideAlert = (id: string) => {
+    setHiddenAlerts((prev) => [
+      ...prev,
+      id,
+    ]);
+  };
 
   const api = axios.create({
     baseURL:
@@ -130,14 +131,42 @@ const hideAlert = (id: string) => {
       alerts,
       search,
     ]);
-const visibleAlerts =
-  filteredAlerts.filter(
-    (alert) =>
-      !hiddenAlerts.includes(
-        alert._id
-      )
-  );
-  
+  const visibleAlerts =
+    filteredAlerts.filter(
+      (alert) =>
+        !hiddenAlerts.includes(
+          alert._id
+        )
+    );
+const alertStyles = {
+  danger: {
+    border: "bg-red-500",
+    badge: "text-red-400",
+    icon: "text-red-400",
+    iconBg: "bg-red-500/15",
+  },
+
+  warning: {
+    border: "bg-amber-500",
+    badge: "text-amber-400",
+    icon: "text-amber-400",
+    iconBg: "bg-amber-500/15",
+  },
+
+  success: {
+    border: "bg-emerald-500",
+    badge: "text-emerald-400",
+    icon: "text-emerald-400",
+    iconBg: "bg-emerald-500/15",
+  },
+
+  info: {
+    border: "bg-[#C8A21A]",
+    badge: "text-[#C8A21A]",
+    icon: "text-[#C8A21A]",
+    iconBg: "bg-[#C8A21A]/15",
+  },
+};
   return (
     <>
       {/* NAVBAR */}
@@ -302,69 +331,75 @@ const visibleAlerts =
         </section>
 
         {/* ALERTS */}
-<section className="py-24 bg-[#F7F3EB]">
+        <section className="py-24 bg-[#F7F3EB]">
 
-  <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
 
-    {/* HEADER */}
+            {/* HEADER */}
 
-    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
 
-      <div>
+              <div>
 
-        <p className="text-[#C8A21A] uppercase tracking-[0.32em] text-xs font-semibold mb-4">
-          PUBLIC NOTICES
-        </p>
+                <p className="text-[#C8A21A] uppercase tracking-[0.32em] text-xs font-semibold mb-4">
+                  PUBLIC NOTICES
+                </p>
 
-        <h2 className="font-serif text-5xl md:text-6xl text-[#051933] leading-none">
+                <h2 className="font-serif text-5xl md:text-6xl text-[#051933] leading-none">
 
-          Latest{" "}
+                  Latest{" "}
 
-          <span className="italic text-[#C8A21A]">
-            Alerts
-          </span>
+                  <span className="italic text-[#C8A21A]">
+                    Alerts
+                  </span>
 
-        </h2>
+                </h2>
 
-        <p className="mt-6 max-w-2xl text-[#64748B] leading-8">
+                <p className="mt-6 max-w-2xl text-[#64748B] leading-8">
 
-          Important financial updates, ribis developments,
-          public notices, and halachic guidance curated for
-          the frum community and modern financial realities.
+                  Important financial updates, ribis developments,
+                  public notices, and halachic guidance curated for
+                  the frum community and modern financial realities.
 
-        </p>
+                </p>
 
-      </div>
+              </div>
 
-      <div className="inline-flex items-center gap-3 rounded-2xl bg-white border border-[#E9E1D2] px-5 py-4 shadow-sm">
+              <div className="inline-flex items-center gap-3 rounded-2xl bg-white border border-[#E9E1D2] px-5 py-4 shadow-sm">
 
-        <div className="w-3 h-3 rounded-full bg-[#C8A21A] animate-pulse" />
+                <div className="w-3 h-3 rounded-full bg-[#C8A21A] animate-pulse" />
 
-        <span className="font-medium text-[#051933]">
+                <span className="font-medium text-[#051933]">
 
-          {visibleAlerts.length} Active Alerts
+                  {visibleAlerts.length} Active Alerts
 
-        </span>
+                </span>
 
-      </div>
+              </div>
 
-    </div>
+            </div>
 
-    {/* ALERTS */}
-<div className="space-y-4">
+            {/* ALERTS */}
+            <div className="space-y-4">
 
-  {visibleAlerts.map((alert) => {
+              {visibleAlerts.map((alert) => {
 
-    const Icon =
-      alertIcons[
-        alert.type?.toLowerCase() as AlertType
-      ] || AlertTriangle;
+               const type =
+  alert.type?.toLowerCase() as AlertType;
 
-    return (
+const Icon =
+  alertIcons[type] ||
+  AlertTriangle;
 
-      <div
-        key={alert._id}
-        className="
+const style =
+  alertStyles[type] ||
+  alertStyles.info;
+
+                return (
+
+                  <div
+                    key={alert._id}
+                    className="
           relative
           overflow-hidden
           rounded-3xl
@@ -373,95 +408,114 @@ const visibleAlerts =
           border-[#0E294A]
           shadow-xl
         "
-      >
+                  >
 
-        <div className="absolute left-0 top-0 h-full w-1.5 bg-[#C8A21A]" />
+                    <div
+  className={`absolute left-0 top-0 h-full w-1.5 ${style.border}`}
+/>
 
-        <div className="flex items-start justify-between gap-6 p-7">
+                    <div className="flex items-start justify-between gap-6 p-7">
 
-          <div className="flex gap-5 flex-1">
+                      <div className="flex gap-5 flex-1">
 
-            <div
-              className="
+                        <div
+                          className="
                 h-14
                 w-14
                 rounded-2xl
-                bg-[#C8A21A]/15
+               ${style.iconBg}
                 flex
                 items-center
                 justify-center
                 shrink-0
               "
-            >
-              <Icon
-                className="
+                        >
+                          <Icon
+                            className="
                   h-6
                   w-6
-                  text-[#C8A21A]
+                  ${style.icon}
                 "
-              />
-            </div>
+                          />
+                        </div>
 
-            <div className="flex-1">
+                        <div className="flex-1">
 
-              <div className="flex items-center gap-4 mb-2">
+                          <div className="flex items-center gap-4 mb-2">
 
-                <span
-                  className="
+                            <span
+                              className="
                     text-[11px]
                     uppercase
                     tracking-[0.30em]
-                    text-[#C8A21A]
+                   ${style.badge}
                     font-semibold
                   "
-                >
-                  {alert.type}
-                </span>
+                            >
+                              {alert.type}
+                            </span>
 
-                <span className="text-sm text-[#8CA0B8]">
-                  {new Date(
-                    alert.createdAt
-                  ).toLocaleDateString(
-                    "en-US",
-                    {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    }
-                  )}
-                </span>
+                            <span className="text-sm text-[#8CA0B8]">
+                              {new Date(
+                                alert.createdAt
+                              ).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "long",
+                                  day: "numeric",
+                                  year: "numeric",
+                                }
+                              )}
+                            </span>
 
-              </div>
+                          </div>
 
-              <h3
-                className="
+                          <h3
+                            className="
                   font-serif
                   text-3xl
                   text-white
                   mb-3
                 "
-              >
-                {alert.title}
-              </h3>
+                          >
+                            {alert.title}
+                          </h3>
 
-              <p
-                className="
-                  text-[#D3DCE8]
-                  leading-8
-                "
-              >
-                {alert.message}
-              </p>
+                         <p
+  className="
+    text-[#D3DCE8]
+    leading-7
+    line-clamp-3
+  "
+>
+  {alert.message}
+</p>
 
-            </div>
+{alert.message.length > 160 && (
+  <button
+    onClick={() =>
+      setSelectedAlert(alert)
+    }
+    className="
+      mt-3
+      text-sm
+      font-medium
+      text-[#C8A21A]
+      hover:underline
+    "
+  >
+    Read More
+  </button>
+)}
+                        </div>
 
-          </div>
+                      </div>
 
-          <button
-            onClick={() =>
-              hideAlert(alert._id)
-            }
-            className="
+                      <button
+                        onClick={() =>
+                          hideAlert(alert._id)
+                        }
+                        className="
               shrink-0
               h-10
               w-10
@@ -474,25 +528,67 @@ const visibleAlerts =
               items-center
               justify-center
             "
-          >
-            <X size={16} />
-          </button>
+                      >
+                        <X size={16} />
+                      </button>
 
-        </div>
+                    </div>
+
+                  </div>
+
+                );
+
+              })}
+
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+{selectedAlert && (
+
+  <div className="fixed inset-0 z-50">
+
+    <div
+      className="absolute inset-0 bg-black/60"
+      onClick={() =>
+        setSelectedAlert(null)
+      }
+    />
+
+    <div className="absolute inset-0 flex items-center justify-center p-6">
+
+      <div className="w-full max-w-3xl rounded-3xl bg-[#051933] border border-[#0E294A] p-8 relative">
+
+        <button
+          onClick={() =>
+            setSelectedAlert(null)
+          }
+          className="absolute right-5 top-5 text-white"
+        >
+          <X />
+        </button>
+
+        <p className="text-[#C8A21A] uppercase tracking-[0.25em] text-xs font-semibold mb-4">
+          {selectedAlert.type}
+        </p>
+
+        <h2 className="font-serif text-4xl text-white mb-6">
+          {selectedAlert.title}
+        </h2>
+
+        <p className="text-[#D3DCE8] leading-8 whitespace-pre-wrap">
+          {selectedAlert.message}
+        </p>
 
       </div>
 
-    );
+    </div>
 
-  })}
-
-</div>
   </div>
 
-</section>
-
-      </main>
-
+)}
       <Footer />
     </>
   );
