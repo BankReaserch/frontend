@@ -267,14 +267,9 @@ export default function FAQSection() {
 
                                       <div className="border-l-4 border-[#c9a84c] pl-5">
 
-                                        <p className="text-[#526173] leading-loose text-[16px]">
-
-                                          {
-                                            item.answer
-                                          }
-
-                                        </p>
-
+                                        <p className="text-[#526173] leading-loose text-[16px] whitespace-pre-line">
+  {item.answer}
+</p>
                                       </div>
 
                                     </div>
