@@ -65,6 +65,10 @@ export default function AlertsPage() {
 
   const [search, setSearch] =
     useState("");
+  const [sortOrder, setSortOrder] =
+    useState<"newest" | "oldest">(
+      "newest"
+    );
   const [hiddenAlerts, setHiddenAlerts] =
     useState<string[]>([]);
   const [selectedAlert, setSelectedAlert] =
@@ -113,23 +117,45 @@ export default function AlertsPage() {
   const filteredAlerts =
     useMemo(() => {
 
-      return alerts.filter(
-        (alert) =>
-          alert.title
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            ) ||
-          alert.message
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            )
+      const filtered =
+        alerts.filter(
+          (alert) =>
+            alert.title
+              .toLowerCase()
+              .includes(
+                search.toLowerCase()
+              ) ||
+            alert.message
+              .toLowerCase()
+              .includes(
+                search.toLowerCase()
+              )
+        );
+
+      return filtered.sort(
+        (a, b) => {
+
+          const aDate =
+            new Date(
+              a.createdAt
+            ).getTime();
+
+          const bDate =
+            new Date(
+              b.createdAt
+            ).getTime();
+
+          return sortOrder ===
+            "newest"
+            ? bDate - aDate
+            : aDate - bDate;
+        }
       );
 
     }, [
       alerts,
       search,
+      sortOrder,
     ]);
   const visibleAlerts =
     filteredAlerts.filter(
@@ -233,29 +259,7 @@ export default function AlertsPage() {
 
                 </p>
 
-                {/* SEARCH */}
-                <div className="relative max-w-xl mt-10">
 
-                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94a3b8]" />
-
-                  <input
-                    type="text"
-                    placeholder="Search alerts..."
-                    value={
-                      search
-                    }
-                    onChange={(
-                      e
-                    ) =>
-                      setSearch(
-                        e.target
-                          .value
-                      )
-                    }
-                    className="w-full h-14 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl pl-14 pr-5 text-white placeholder:text-[#64748b] outline-none"
-                  />
-
-                </div>
 
               </div>
 
@@ -378,6 +382,89 @@ export default function AlertsPage() {
               </div>
 
             </div>
+            <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between mb-10">
+
+  <div className="flex-1 max-w-2xl">
+
+    <div className="relative">
+
+      <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" />
+
+      <input
+        type="text"
+        placeholder="Search alerts..."
+        value={search}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
+        className="
+          w-full
+          h-14
+          rounded-2xl
+          border
+          border-[#E8E2D6]
+          bg-white
+          pl-14
+          pr-5
+          text-[#051933]
+          placeholder:text-[#94A3B8]
+          shadow-sm
+          outline-none
+          focus:border-[#C8A21A]
+        "
+      />
+
+    </div>
+
+  </div>
+
+  <div className="flex items-center gap-2">
+
+    <button
+      onClick={() =>
+        setSortOrder("newest")
+      }
+      className={`
+        rounded-xl
+        px-5
+        py-3
+        text-sm
+        font-medium
+        transition
+        ${
+          sortOrder === "newest"
+            ? "bg-[#C8A21A] text-[#051933]"
+            : "bg-white text-[#64748B] border border-[#E8E2D6]"
+        }
+      `}
+    >
+      Newest
+    </button>
+
+    <button
+      onClick={() =>
+        setSortOrder("oldest")
+      }
+      className={`
+        rounded-xl
+        px-5
+        py-3
+        text-sm
+        font-medium
+        transition
+        ${
+          sortOrder === "oldest"
+            ? "bg-[#C8A21A] text-[#051933]"
+            : "bg-white text-[#64748B] border border-[#E8E2D6]"
+        }
+      `}
+    >
+      Oldest
+    </button>
+
+  </div>
+
+</div>
 
             {/* ALERTS */}
             <div className="space-y-4">
@@ -416,10 +503,10 @@ export default function AlertsPage() {
 
                     <div className="flex items-start justify-between gap-6 p-7">
 
-                     <div className="flex gap-5 flex-1">
+                      <div className="flex gap-5 flex-1">
 
-  <div
-    className={`
+                        <div
+                          className={`
       flex
       h-16
       w-16
@@ -429,79 +516,79 @@ export default function AlertsPage() {
       rounded-3xl
       ${style.iconBg}
     `}
-  >
-    <Icon
-      className={`
+                        >
+                          <Icon
+                            className={`
         h-8
         w-8
         ${style.icon}
       `}
-    />
-  </div>
+                          />
+                        </div>
 
-  <div className="flex-1">
+                        <div className="flex-1">
 
-    <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center justify-between mb-3">
 
-      <span
-        className={`
+                            <span
+                              className={`
           text-[11px]
           font-semibold
           uppercase
           tracking-[0.3em]
           ${style.badge}
         `}
-      >
-        {alert.type}
-      </span>
+                            >
+                              {alert.type}
+                            </span>
 
-      <span className="rounded-full bg-emerald-500/15 px-4 py-1.5 text-xs font-semibold text-emerald-400">
-        Active
-      </span>
+                            <span className="rounded-full bg-emerald-500/15 px-4 py-1.5 text-xs font-semibold text-emerald-400">
+                              Active
+                            </span>
 
-    </div>
+                          </div>
 
-    <h3
-      className="
+                          <h3
+                            className="
         font-serif
         text-3xl
         text-white
         mb-3
       "
-    >
-      {alert.title}
-    </h3>
+                          >
+                            {alert.title}
+                          </h3>
 
-    <p
-      className="
+                          <p
+                            className="
         text-[#D3DCE8]
         leading-7
         line-clamp-2
       "
-    >
-      {alert.message}
-    </p>
+                          >
+                            {alert.message}
+                          </p>
 
-    {alert.message.length > 100 && (
-      <button
-        onClick={() =>
-          setSelectedAlert(alert)
-        }
-        className="
+                          {alert.message.length > 100 && (
+                            <button
+                              onClick={() =>
+                                setSelectedAlert(alert)
+                              }
+                              className="
           mt-3
           text-sm
           font-medium
           text-[#C8A21A]
           hover:underline
         "
-      >
-        Read More
-      </button>
-    )}
+                            >
+                              Read More
+                            </button>
+                          )}
 
-  </div>
+                        </div>
 
-</div>
+                      </div>
 
                       <button
                         onClick={() =>
