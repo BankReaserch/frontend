@@ -19,7 +19,8 @@ type GroupedQNA = {
 export default function FAQSection() {
   const [faqData, setFaqData] =useState<GroupedQNA[]>([]);
   const [loading, setLoading] =useState(true);
-  const [openCategory,setOpenCategory,] = useState<number | null>(0);
+  const [openCategory, setOpenCategory] =
+  useState<number | null>(null);
   const [openQuestion,setOpenQuestion,] = useState<string | null>(null);
 
   useEffect(() => {
