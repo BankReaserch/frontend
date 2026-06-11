@@ -638,28 +638,47 @@ export default function AlertsPage() {
 
           <div className="absolute inset-0 flex items-center justify-center p-6">
 
-            <div className="w-full max-w-3xl rounded-3xl bg-[#051933] border border-[#0E294A] p-8 relative">
+            <div
+  className="
+    relative
+    w-full
+    max-w-3xl
+    max-h-[85vh]
+    overflow-hidden
+    rounded-3xl
+    bg-[#051933]
+    border
+    border-[#0E294A]
+    shadow-2xl
+  "
+>
 
-              <button
-                onClick={() =>
-                  setSelectedAlert(null)
-                }
-                className="absolute right-5 top-5 text-white"
-              >
-                <X />
-              </button>
+             <div className="sticky top-0 z-10 bg-[#051933] border-b border-[#0E294A] p-8">
 
-              <p className="text-[#C8A21A] uppercase tracking-[0.25em] text-xs font-semibold mb-4">
-                {selectedAlert.type}
-              </p>
+  <button
+    onClick={() =>
+      setSelectedAlert(null)
+    }
+    className="absolute right-5 top-5 text-white"
+  >
+    <X />
+  </button>
 
-              <h2 className="font-serif text-4xl text-white mb-6">
-                {selectedAlert.title}
-              </h2>
+  <p className="text-[#C8A21A] uppercase tracking-[0.25em] text-xs font-semibold mb-4">
+    {selectedAlert.type}
+  </p>
 
-              <p className="text-[#D3DCE8] leading-8 whitespace-pre-wrap">
-                {selectedAlert.message}
-              </p>
+  <h2 className="font-serif text-4xl text-white">
+    {selectedAlert.title}
+  </h2>
+
+</div>
+
+<div className="overflow-y-auto max-h-[60vh] p-8">
+  <p className="text-[#D3DCE8] leading-8 whitespace-pre-wrap">
+    {selectedAlert.message}
+  </p>
+</div>
 
             </div>
 
