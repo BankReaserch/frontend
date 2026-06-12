@@ -1,17 +1,17 @@
 "use client";
 
+import { Suspense } from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle, Loader2, AlertCircle } from "lucide-react";
 
-export default function PlanSuccessPage() {
+function SuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -28,8 +28,6 @@ export default function PlanSuccessPage() {
             withCredentials: true,
           }
         );
-
-        setVerified(true);
       } catch (err: any) {
         setError(
           err?.response?.data?.message ||
@@ -70,7 +68,7 @@ export default function PlanSuccessPage() {
           <p className="mt-4 text-slate-600">{error}</p>
 
           <button
-            onClick={() => router.push("/plan")}
+            onClick={() => router.push("/plans")}
             className="mt-8 w-full rounded-2xl bg-[#051933] text-white py-4"
           >
             Back to Plans
@@ -101,5 +99,19 @@ export default function PlanSuccessPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function PlanSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-10 h-10 animate-spin" />
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 }
