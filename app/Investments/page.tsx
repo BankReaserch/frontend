@@ -160,83 +160,86 @@ export default function InvestmentsPage() {
                 </div>
 
               </div>
+              <div className="relative">
 
-              <div className="grid gap-6">
+                {/* Glow */}
+                <div className="absolute -inset-6 bg-[#c8a21a]/10 blur-3xl rounded-[40px]" />
 
-                {investments
-                  .slice(0, 3)
-                  .map(
-                    (
-                      investment
-                    ) => (
+                {/* Image Container */}
+                <div className="relative overflow-hidden rounded-[36px] border border-white/10 shadow-2xl">
 
-                      <div
-                        key={
-                          investment._id
-                        }
-                        className="
-            rounded-3xl
-            bg-white/5
-            backdrop-blur-xl
-            border
-            border-white/10
-            p-6
-          "
-                      >
+                  <img
+                    src="/assets/investment-hero.webp"
+                    alt="Investment Opportunities"
+                    className="w-full h-[520px] object-cover"
+                  />
 
-                        <div className="flex items-center justify-between">
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#051933]/90 via-[#051933]/30 to-transparent" />
 
-                          <h3 className="text-white text-xl font-semibold">
+                  {/* Bottom Card */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
 
-                            {
-                              investment.name
-                            }
+                    <div className="backdrop-blur-xl bg-white/10 border border-white/10 rounded-3xl p-6">
 
-                          </h3>
+                      <p className="text-[#c8a21a] uppercase tracking-[0.25em] text-xs font-semibold">
+                        Investment Opportunities
+                      </p>
 
-                          <span className="text-[#c8a21a] text-xs uppercase">
+                      <h3 className="text-white text-3xl font-serif mt-3">
+                        Structured & Compliant
+                      </h3>
 
-                            {
-                              investment.riskLevel
-                            }
+                      <p className="text-[#cbd5e1] mt-4 leading-7 text-sm">
+                        Carefully reviewed opportunities designed
+                        with halachic integrity, financial clarity,
+                        and long-term growth in mind.
+                      </p>
 
-                          </span>
+                      <div className="grid grid-cols-3 gap-4 mt-6">
 
+                        <div>
+                          <p className="text-[#c8a21a] text-2xl font-serif">
+                            {investments.length}
+                          </p>
+                          <p className="text-[#94a3b8] text-xs uppercase">
+                            Listings
+                          </p>
                         </div>
 
-                        <p className="text-[#94a3b8] mt-2">
+                        <div>
+                          <p className="text-[#c8a21a] text-2xl font-serif">
+                            {
+                              investments.filter(
+                                i => i.status === "Approved"
+                              ).length
+                            }
+                          </p>
+                          <p className="text-[#94a3b8] text-xs uppercase">
+                            Approved
+                          </p>
+                        </div>
 
-                          {
-                            investment.provider
-                          }
-
-                        </p>
-
-                        <button
-                          onClick={() =>
-                            setSelected(
-                              investment
-                            )
-                          }
-                          className="
-              mt-5
-              w-full
-              h-12
-              rounded-xl
-              bg-[#c8a21a]
-              text-[#051933]
-              font-semibold
-            "
-                        >
-
-                          View Details
-
-                        </button>
+                        <div>
+                          <p className="text-[#c8a21a] text-2xl font-serif">
+                            {
+                              investments.filter(
+                                i => i.riskLevel === "Low"
+                              ).length
+                            }
+                          </p>
+                          <p className="text-[#94a3b8] text-xs uppercase">
+                            Low Risk
+                          </p>
+                        </div>
 
                       </div>
 
-                    )
-                  )}
+                    </div>
+
+                  </div>
+
+                </div>
 
               </div>
 
@@ -251,72 +254,164 @@ export default function InvestmentsPage() {
 
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-              {investments.map(
-                (
-                  investment
-                ) => (
+              {investments.map((investment) => (
+                <div
+                  key={investment._id}
+                  className="
+      bg-white
+      rounded-[32px]
+      border border-[#e7dfd2]
+      shadow-sm
+      overflow-hidden
+      transition-all
+      duration-300
+      hover:-translate-y-1
+      hover:shadow-xl
+    "
+                >
+                  {/* Header */}
+                  <div className="bg-[#051933] p-6">
+                    <div className="flex items-start justify-between gap-3">
 
-                  <div
-                    key={
-                      investment._id
-                    }
-                    className="
-              bg-white
-              rounded-3xl
+                      <div>
+                        <h3 className="font-serif text-2xl text-white">
+                          {investment.name}
+                        </h3>
+
+                        <p className="text-[#c8a21a] mt-1">
+                          {investment.type}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${investment.status === "Approved"
+                            ? "bg-green-500/20 text-green-300"
+                            : "bg-yellow-500/20 text-yellow-300"
+                          }`}
+                      >
+                        {investment.status}
+                      </span>
+
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+
+                    <div className="grid grid-cols-2 gap-5">
+
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-[#94a3b8]">
+                          Risk Level
+                        </p>
+
+                        <p
+                          className={`mt-2 font-semibold ${investment.riskLevel === "Low"
+                              ? "text-green-600"
+                              : investment.riskLevel === "Moderate"
+                                ? "text-yellow-600"
+                                : "text-red-600"
+                            }`}
+                        >
+                          {investment.riskLevel}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-[#94a3b8]">
+                          Provider
+                        </p>
+
+                        <p className="mt-2 font-medium text-[#051933]">
+                          {investment.provider || "N/A"}
+                        </p>
+                      </div>
+
+                      <div className="col-span-2">
+                        <p className="text-xs uppercase tracking-wider text-[#94a3b8]">
+                          Minimum Investment
+                        </p>
+
+                        <p className="mt-2 text-2xl font-serif text-[#051933]">
+                          $
+                          {Number(
+                            investment.minimumInvestment || 0
+                          ).toLocaleString()}
+                        </p>
+                      </div>
+
+                    </div>
+
+                    <div className="mt-5 h-[120px]">
+                      <p className="text-[#64748b] text-sm leading-7 line-clamp-4">
+                        {investment.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 flex gap-3">
+
+                      {investment.website && (
+                        <a
+                          href={`https://${investment.website.replace(
+                            /^https?:\/\//,
+                            ""
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="
+              flex-1
+              h-11
+              rounded-xl
               border
-              shadow-sm
-              p-6
+              border-[#c8a21a]
+              text-[#051933]
+              font-medium
+              flex
+              items-center
+              justify-center
             "
-                  >
+                        >
+                          Website
+                        </a>
+                      )}
 
-                    <h3 className="font-serif text-2xl text-[#051933]">
+                      {investment.reportAvailable && (
+                        <button
+                          className="
+              flex-1
+              h-11
+              rounded-xl
+              bg-[#c8a21a]
+              text-[#051933]
+              font-semibold
+            "
+                        >
+                          Report
+                        </button>
+                      )}
 
-                      {
-                        investment.name
-                      }
-
-                    </h3>
-
-                    <p className="text-gray-500 mt-2">
-
-                      {
-                        investment.provider
-                      }
-
-                    </p>
-
-                    <p className="mt-4 text-sm text-gray-600 line-clamp-4">
-
-                      {
-                        investment.description
-                      }
-
-                    </p>
+                    </div>
 
                     <button
-                      onClick={() =>
-                        setSelected(
-                          investment
-                        )
-                      }
+                      onClick={() => setSelected(investment)}
                       className="
-                mt-6
-                w-full
-                h-11
-                rounded-xl
-                bg-[#051933]
-                text-white
-              "
+          mt-4
+          w-full
+          h-12
+          rounded-xl
+          bg-[#051933]
+          text-white
+          font-semibold
+          hover:bg-[#0b2440]
+          transition-colors
+        "
                     >
-
-                      View Opportunity
-
+                      View Full Details
                     </button>
 
                   </div>
-
-                )
-              )}
+                </div>
+              ))}
 
             </div>
 
@@ -325,7 +420,7 @@ export default function InvestmentsPage() {
         </section>
 
         {/* EXTRA INFO */}
-        <section className="py-20">
+        {/* <section className="py-20">
 
           <div className="max-w-6xl mx-auto px-6">
 
@@ -333,7 +428,7 @@ export default function InvestmentsPage() {
 
               <div className="grid lg:grid-cols-3 gap-10">
 
-                {/* ITEM */}
+               
                 <div>
 
                   <div className="w-14 h-14 rounded-2xl bg-[#051933] text-[#c8a21a] flex items-center justify-center">
@@ -359,7 +454,7 @@ export default function InvestmentsPage() {
 
                 </div>
 
-                {/* ITEM */}
+             
                 <div>
 
                   <div className="w-14 h-14 rounded-2xl bg-[#051933] text-[#c8a21a] flex items-center justify-center">
@@ -385,7 +480,7 @@ export default function InvestmentsPage() {
 
                 </div>
 
-                {/* ITEM */}
+                
                 <div>
 
                   <div className="w-14 h-14 rounded-2xl bg-[#051933] text-[#c8a21a] flex items-center justify-center">
@@ -417,7 +512,7 @@ export default function InvestmentsPage() {
 
           </div>
 
-        </section>
+        </section> */}
 
       </main>
 

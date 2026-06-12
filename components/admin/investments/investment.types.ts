@@ -26,4 +26,5 @@ export type Investment = {
   reportUrl?: string;
 
   createdAt?: string;
+  reportAvailable?: boolean;
 };
