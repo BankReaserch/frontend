@@ -1,77 +1,114 @@
 "use client";
 
-import {useEffect,useState,} from "react";
-import {ChevronDown,ChevronUp,} from "lucide-react";
+import { useEffect, useState, } from "react";
+import { ChevronDown, ChevronUp, } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
 type QNAType = {
   _id: string;
   category: string;
+  categoryPriority: number;
   question: string;
   answer: string;
   priority: number;
 };
+
 type GroupedQNA = {
   category: string;
+  categoryPriority: number;
   questions: QNAType[];
 };
 
 export default function FAQSection() {
-  const [faqData, setFaqData] =useState<GroupedQNA[]>([]);
-  const [loading, setLoading] =useState(true);
+  const [faqData, setFaqData] = useState<GroupedQNA[]>([]);
+  const [loading, setLoading] = useState(true);
   const [openCategory, setOpenCategory] =
-  useState<number | null>(null);
-  const [openQuestion,setOpenQuestion,] = useState<string | null>(null);
+    useState<number | null>(null);
+  const [openQuestion, setOpenQuestion,] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchQNA =
-      async () => {
-        try {
-          const response =await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/qna`);
-          const data =await response.json();
-          const qnas =data.data || [];
-          const grouped =qnas.reduce((acc: any,item: QNAType) => {
-                const existing =acc.find((group: GroupedQNA) =>
-                      group.category ===
-                      item.category);
-                if (existing) {
-                  existing.questions.push(item);
-                } else {
-                  acc.push({
-                    category:
-                    item.category,
-                    questions: [
-                      item,
-                    ],
-                  });
+useEffect(() => {
+  const fetchQNA =async () => {
+      try {
+        const response =await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/qna`);
+        const data = await response.json();
+        const qnas: QNAType[] = data.data || [];
+        const groupedMap =new Map<string,GroupedQNA>();
+        qnas.forEach((item) => {
+            const categoryName =
+              item.category;
+            if (!groupedMap.has(categoryName)) {
+              groupedMap.set(
+                categoryName,
+                {
+                  category:categoryName,
+                  categoryPriority: item.categoryPriority,
+                  questions: [],
                 }
-                return acc;
-              },
-              []
-            );
-          grouped.forEach((
-              group: GroupedQNA
-            ) => {
-              group.questions.sort(
-                (a,b) =>
-                  a.priority -
-                  b.priority
               );
-            }
-          );
-          setFaqData(grouped);
-        } catch (error) {
-          console.error(
-            "QNA Fetch Error:",
-            error
-          );
-        } finally {
-          setLoading(false);
-        }
-      };
-    fetchQNA();
-  }, []);
 
+            }
+            groupedMap.get(categoryName)?.questions.push(item);
+          }
+        );
+
+        const grouped =
+          Array.from(
+            groupedMap.values()
+          );
+
+        grouped.forEach(
+          (
+            group
+          ) => {
+
+            group.questions.sort(
+              (
+                a,
+                b
+              ) =>
+                a.priority -
+                b.priority
+            );
+
+          }
+        );
+
+        grouped.sort(
+          (
+            a,
+            b
+          ) =>
+            a.categoryPriority -
+            b.categoryPriority
+        );
+
+        setFaqData(
+          grouped
+        );
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          "QNA Fetch Error:",
+          error
+        );
+
+      } finally {
+
+        setLoading(
+          false
+        );
+
+      }
+
+    };
+
+  fetchQNA();
+
+}, []);
   return (
     <>
       {/* HERO */}
@@ -143,11 +180,10 @@ export default function FAQSection() {
                       key={
                         section.category
                       }
-                      className={`rounded-3xl transition-all duration-300 ${
-                        isSectionOpen
+                      className={`rounded-3xl transition-all duration-300 ${isSectionOpen
                           ? "bg-[#e9eef4] border border-[#d7e0ea]"
                           : "bg-white border border-[#e5ddd0]"
-                      }`}
+                        }`}
                     >
 
                       {/* CATEGORY */}
@@ -224,11 +260,10 @@ export default function FAQSection() {
                                           : key
                                       )
                                     }
-                                    className={`w-full flex items-center justify-between gap-6 px-7 py-6 text-left transition ${
-                                      isQuestionOpen
+                                    className={`w-full flex items-center justify-between gap-6 px-7 py-6 text-left transition ${isQuestionOpen
                                         ? "border-b border-[#edf1f5]"
                                         : ""
-                                    }`}
+                                      }`}
                                   >
 
                                     <span className="text-lg font-medium text-[#0d1b2a] leading-relaxed">
@@ -269,8 +304,8 @@ export default function FAQSection() {
                                       <div className="border-l-4 border-[#c9a84c] pl-5">
 
                                         <p className="text-[#526173] leading-loose text-[16px] whitespace-pre-line">
-  {item.answer}
-</p>
+                                          {item.answer}
+                                        </p>
                                       </div>
 
                                     </div>

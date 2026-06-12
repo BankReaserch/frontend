@@ -71,4 +71,4 @@ export default function BankCard({ bank, selected, onClick }: Props) {
       )}
     </button>
   );
-}
+} 
