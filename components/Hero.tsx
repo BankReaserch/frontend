@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center bg-[#0B1C2C] overflow-hidden">
@@ -33,13 +35,17 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <button className="bg-[#C8A75B] text-black px-6 py-3 rounded-md font-medium">
+            <Link href={'/banks'} className="bg-[#C8A75B] text-black px-6 py-3 rounded-md font-medium">
               Explore Bank Directory
-            </button>
+            </Link>
 
-            <button className="border border-gray-500 text-white px-6 py-3 rounded-md">
-              Ask a Sha'alah →
-            </button>
+            <Link href={'/contact'} className="group border border-gray-500 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:border-white hover:bg-white/5 transition-all duration-300">
+              <span>Ask a Sha'alah</span>
+              <ArrowUpRight
+                size={18}
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </Link>
           </div>
         </div>
 

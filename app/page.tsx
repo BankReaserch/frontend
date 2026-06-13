@@ -1,7 +1,7 @@
 import AboutSection from "@/components/AboutSection";
 import AskSection from "@/components/AskSection";
 import BankDirectorySection from "@/components/BankDirectory";
-import ContactSection from "@/components/ContactSection";
+// import ContactSection from "@/components/ContactSection";
 import EducationSection from "@/components/EducationSection";
 import FeaturesGrid from "@/components/Features";
 import Footer from "@/components/Footer";
@@ -25,7 +25,7 @@ const Home = () => {
       <HeterIskaSection/>
       <AboutSection/>
       <StoreSection/>
-      <ContactSection/>
+      {/* <ContactSection/> */}
       <Footer/>
 
     </>

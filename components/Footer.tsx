@@ -40,47 +40,36 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* COLUMNS */}
           <FooterColumn
             title="SERVICES"
             links={[
-              "Bank Directory",
-              "Kosher Brokers",
-              "Investments",
-              "Businesses",
+              { label: "Bank Directory", href: "/banks" },
+              { label: "Kosher Brokers", href: "/brokers" },
+              { label: "Investments", href: "/Investments" },
+              { label: "Businesses", href: "/businesses" },
+            ]}
+          />
+           <FooterColumn
+            title="EDUCATION"
+            links={[
+              { label: "Shiurim", href: "/banks" },
+              { label: "Bulletins", href: "/brokers" },
+              { label: "FAQ", href: "/Q&A" },
+              { label: "Programs", href: "/programs" },
+              { label: "Alerts", href: "/alerts" },
             ]}
           />
 
-          <FooterColumn
-            title="EDUCATION"
-            links={[
-              "Shiurim",
-              "Bulletins",
-              "FAQ",
-              "Programs",
-              "Alerts",
-            ]}
-          />
 
           <FooterColumn
             title="DEPARTMENTS"
             links={[
-              "Bais Hora'ah",
-              "Heter Iska",
-              "Donate",
-              "Contact",
+              { label: "Bais Horaah", href: "/bais-horaah" },
+              { label: "Heter Iska", href: "/heter-iska" },
+              { label: "Donate", href: "/donate" },
+              { label: "Contact", href: "/contact" },
             ]}
           />
-
-          {/* <FooterColumn
-            title="MORE"
-            links={[
-              "About Us",
-              "Our Team",
-              "Seforim Store",
-              "Programs",
-            ]}
-          /> */}
         </div>
 
         {/* DIVIDER */}
