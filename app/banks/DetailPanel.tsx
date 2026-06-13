@@ -140,15 +140,12 @@ export default function DetailPanel({ bank, onClose }: Props) {
           setShowGate(true);
           return;
         }
-
-        // Trigger real download
         window.open(url, "_blank");
       }
     } catch {
       setShowGate(true);
     }
   };
-
   return (
     <>
       {showGate && <PremiumGate onClose={() => setShowGate(false)} />}
