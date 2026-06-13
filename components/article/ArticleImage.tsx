@@ -16,6 +16,7 @@ export default function ArticleImage({
   category,
   getFileUrl,
 }: Props) {
+  
   return (
     <div className="relative h-[220px] overflow-hidden bg-[#051933]">
 

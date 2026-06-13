@@ -2,27 +2,22 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  Search,
-} from "lucide-react";
-
-import {
-  useEffect,
-  useState,
-} from "react";
-
+import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "@/components/article/ArticleCard";
 import { Article } from "@/components/article/article.types";
-const getFileUrl = (
-  path: string
-) => {
 
-  return `${process.env.NEXT_PUBLIC_API_URL}${path}`.replace(
-    /([^:]\/)\/+/g,
-    "$1"
-  );
+// ── Defined outside component so they're never recreated on render ────────────
+const API = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
+
+const api = axios.create({ baseURL: API });
+
+const getFileUrl = (filePath: string) => {
+  const normalized = filePath.startsWith("/") ? filePath : `/${filePath}`;
+  return `${API}${normalized}`;
 };
+
 
 export default function ArticlesPage() {
   const [articles, setArticles] =
@@ -33,11 +28,6 @@ export default function ArticlesPage() {
 
   const [search, setSearch] =
     useState("");
-  const api = axios.create({
-    baseURL:
-      process.env
-        .NEXT_PUBLIC_API_URL,
-  });
 
   useEffect(() => {
 
