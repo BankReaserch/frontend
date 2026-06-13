@@ -6,8 +6,10 @@ import {
 } from "react";
 
 import DashboardHeader from "./components/DashboardHeader";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
+  const router = useRouter()
 
   const [loading, setLoading] =
     useState(true);
@@ -43,26 +45,18 @@ export default function DashboardPage() {
             );
 
           if (!response.ok) {
-
-            window.location.href =
-              "/login";
-
+            router.push("/login")
             return;
           }
 
           const data =
             await response.json();
-
-          // ONLY USER
           if (
             !data?.user ||
             data.user.role !==
             "user"
           ) {
-
-            window.location.href =
-              "/login";
-
+            router.push('/login');
             return;
           }
 
@@ -71,12 +65,8 @@ export default function DashboardPage() {
           }
 
         } catch (error) {
-
           console.error(error);
-
-          window.location.href =
-            "/login";
-
+          router.push('/login');
         } finally {
 
           if (isMounted) {

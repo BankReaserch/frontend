@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { CartProvider } from "@/context/CartContext";
+import { ToastContainer } from "react-toastify";
+import '../node_modules/react-toastify/dist/ReactToastify.css'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -32,6 +34,11 @@ export default function RootLayout({
         <CartProvider>
           {children}
         </CartProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          theme="light"
+        />
       </body>
     </html>
   );

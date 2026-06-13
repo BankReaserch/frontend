@@ -54,7 +54,20 @@ export default function SignupPage() {
       setIsLoading(false);
     }
   };
+  const getPasswordStrength = (password: string) => {
+    let score = 0;
 
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    return score;
+  };
+
+  const passwordStrength = getPasswordStrength(form.password);
   return (
     <div className="min-h-screen bg-[#0d1b2a] flex">
       <Navbar /> <Navbar /> <Navbar /> <Navbar />
@@ -147,8 +160,8 @@ export default function SignupPage() {
                   <div className="flex items-center gap-1.5">
                     <div
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${i <= step
-                          ? "bg-[#c9a84c] text-[#0d1b2a]"
-                          : "bg-white/10 text-[#4a5568]"
+                        ? "bg-[#c9a84c] text-[#0d1b2a]"
+                        : "bg-white/10 text-[#4a5568]"
                         }`}
                     >
                       {i + 1}
@@ -156,8 +169,8 @@ export default function SignupPage() {
 
                     <span
                       className={`text-xs tracking-wide ${i <= step
-                          ? "text-[#c9a84c]"
-                          : "text-[#4a5568]"
+                        ? "text-[#c9a84c]"
+                        : "text-[#4a5568]"
                         }`}
                     >
                       {label}
@@ -275,20 +288,37 @@ export default function SignupPage() {
                     </button>
                   </div>
 
-                  {/* Strength indicator */}
                   {form.password && (
-                    <div className="flex gap-1 mt-2">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div
-                          key={i}
-                          className={`flex-1 h-0.5 rounded-full transition-all ${form.password.length >= i * 2
-                              ? i <= 2
-                                ? "bg-orange-400"
-                                : "bg-[#c9a84c]"
-                              : "bg-white/10"
-                            }`}
-                        />
-                      ))}
+                    <div className="mt-2">
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div
+                            key={i}
+                            className={`flex-1 h-1 rounded-full transition-all ${passwordStrength >= i
+                                ? passwordStrength <= 2
+                                  ? "bg-red-500"
+                                  : passwordStrength <= 4
+                                    ? "bg-yellow-500"
+                                    : "bg-green-500"
+                                : "bg-white/10"
+                              }`}
+                          />
+                        ))}
+                      </div>
+
+                      <p className="mt-1 text-xs">
+                        {passwordStrength <= 2 && (
+                          <span className="text-red-400">Weak password</span>
+                        )}
+
+                        {passwordStrength > 2 && passwordStrength <= 4 && (
+                          <span className="text-yellow-400">Medium password</span>
+                        )}
+
+                        {passwordStrength > 4 && (
+                          <span className="text-green-400">Strong password</span>
+                        )}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -310,9 +340,9 @@ export default function SignupPage() {
                     placeholder="••••••••"
                     required
                     className={`w-full bg-white/[0.04] border rounded-lg px-4 py-3 text-white placeholder-[#4a5568] text-sm focus:outline-none transition-all ${form.confirmPassword &&
-                        form.confirmPassword !== form.password
-                        ? "border-red-500/60"
-                        : "border-white/10 focus:border-[#c9a84c]/60 focus:bg-white/[0.06]"
+                      form.confirmPassword !== form.password
+                      ? "border-red-500/60"
+                      : "border-white/10 focus:border-[#c9a84c]/60 focus:bg-white/[0.06]"
                       }`}
                   />
 
@@ -400,8 +430,6 @@ export default function SignupPage() {
               </form>
             </>
           )}
-
-          {/* Step 1: Success */}
           {step === 1 && (
             <div className="text-center py-8">
               <div className="w-16 h-16 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/30 flex items-center justify-center mx-auto mb-6">
