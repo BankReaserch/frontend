@@ -13,7 +13,7 @@ const API = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
 
 const api = axios.create({ baseURL: API });
 
-const getFileUrl = (filePath: string) => {
+export const getFileUrl = (filePath: string) => {
   const normalized = filePath.startsWith("/") ? filePath : `/${filePath}`;
   return `${API}${normalized}`;
 };
