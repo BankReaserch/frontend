@@ -337,20 +337,11 @@ export default function BanksPage() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#94a3b8] mb-5">
               {loading ? "Loading…" : `${filtered.length} bank${filtered.length !== 1 ? "s" : ""}`}
             </p>
-
-            {/* ── MAIN CONTENT AREA ── */}
-            {/*
-              KEY FIX: The detail panel is now part of the normal document flow.
-              On desktop: 2-column grid (list/grid | detail panel).
-              On mobile: detail panel appears below the list, auto-scrolled into view.
-              NO overlay, NO fixed positioning.
-            */}
             <div
               className={`grid gap-5 items-start transition-all duration-300 ${
                 selected ? "lg:grid-cols-[1fr_360px]" : "grid-cols-1"
               }`}
             >
-              {/* Left column: bank grid or table */}
               <div>
                 {/* ── GRID VIEW ── */}
                 {view === "grid" && (
