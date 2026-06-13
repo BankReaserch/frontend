@@ -50,6 +50,26 @@ type BookType = {
 };
 
 export default function StorePage() {
+  const API =
+    (
+      process.env
+        .NEXT_PUBLIC_API_URL ?? ""
+    ).replace(/\/$/, "");
+
+  function coverUrl(
+    coverImage?: string
+  ) {
+
+    if (!coverImage)
+      return "";
+
+    const path =
+      coverImage.startsWith("/")
+        ? coverImage
+        : `/${coverImage}`;
+
+    return `${API}${path}`;
+  }
 
   const [activeCategory, setActiveCategory] =
     useState("All");
@@ -86,8 +106,8 @@ export default function StorePage() {
         );
 
       setBooks(
-  response.data.data.books || []
-);
+        response.data.data.books || []
+      );
 
     } catch (error) {
 
@@ -212,12 +232,11 @@ export default function StorePage() {
                         cat
                       )
                     }
-                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
-                      activeCategory ===
+                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${activeCategory ===
                       cat
-                        ? "bg-[#0d1b2a] text-white"
-                        : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
-                    }`}
+                      ? "bg-[#0d1b2a] text-white"
+                      : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
+                      }`}
                   >
                     {cat}
                   </button>
@@ -325,13 +344,16 @@ export default function StorePage() {
                   >
 
                     <img
-                      src={`${process.env.NEXT_PUBLIC_API_URL}${book.coverImage}`}
-                      alt={
-                        book.title
-                      }
-                      className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
+                      src={coverUrl(
+                        book.coverImage
+                      )}
+                      alt={book.title}
+                      className="w-full h-full  object-contain transition duration-300 group-hover:scale-105"
+                      onError={(e) => {
+                        e.currentTarget.style.display =
+                          "none";
+                      }}
                     />
-
                     {book.badge && (
 
                       <span
@@ -432,7 +454,7 @@ export default function StorePage() {
                               updateQuantity(
                                 book._id,
                                 cartItem.qty -
-                                  1
+                                1
                               )
                             }
                             className="px-3 py-2 text-sm bg-[#f5f0e8] hover:bg-[#e5ddd0] transition"
@@ -517,7 +539,7 @@ export default function StorePage() {
         {/* EMPTY */}
         {!loading &&
           filtered.length ===
-            0 && (
+          0 && (
 
             <div className="text-center py-20">
 
