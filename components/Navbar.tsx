@@ -82,14 +82,21 @@ export default function Navbar() {
 
           <span className="text-white text-lg font-bold">
             Ribis
-            <span className="text-[#C8A75B] text-3xl inline-block translate-y-[2px]">
-              .
-            </span>
+            <span
+              className="
+      inline-block
+      w-1.5
+      h-1.5
+      bg-[#C8A75B]
+      rounded-full
+      mx-[2px]
+      translate-y-[1px]
+    "
+            />
             <span className="text-white text-lg font-bold">
               org
             </span>
           </span>
-
         </Link>
 
         {/* DESKTOP NAV */}

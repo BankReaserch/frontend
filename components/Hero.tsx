@@ -702,7 +702,7 @@ export default function Hero() {
 
           {/* Eyebrow */}
           <p className="text-[#c8a75b] text-[10px] tracking-[0.25em] mb-5">
-            INFORMATION · AWARENESS · Resources
+            INFORMATION · AWARENESS · RESOURCES
           </p>
 
           {/* Heading */}
