@@ -54,7 +54,7 @@ export default function BankDirectorySection() {
           </p>
 
           {/* BADGES */}
-          <div className="flex flex-wrap gap-3 mb-8">
+          {/* <div className="flex flex-wrap gap-3 mb-8">
 
             <BankStatusBadge
               status="mehudar"
@@ -86,7 +86,7 @@ export default function BankDirectorySection() {
               label="Undetermined"
             />
 
-          </div>
+          </div> */}
 
           {/* BUTTON */}
           <Link href={'/banks'} className="bg-[#C8A75B] text-black px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">

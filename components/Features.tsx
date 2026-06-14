@@ -9,19 +9,19 @@ import {
 const features = [
   {
     icon: Landmark,
-    title: "Bank Directory",
+    title: "Banks",
     description:
       "In-depth research on hundreds of financial institutions, with clear kashrus status ratings you can rely on.",
     linkText: "Browse directory",
-    link:"/banks"
+    link: "/banks"
   },
   {
     icon: Handshake,
-    title: "Kosher Brokers",
+    title: "Brokers",
     description:
       "Connect with vetted loan brokers who ensure every agreement is properly structured with halacha in mind.",
     linkText: "Find brokers",
-    link:"/brokers"
+    link: "/brokers"
   },
   {
     icon: TrendingUp,
@@ -29,15 +29,15 @@ const features = [
     description:
       "Carefully structured investment opportunities reviewed by our Kashrus Department — free of ribis concerns.",
     linkText: "View opportunities",
-     link:"/Investments" 
+    link: "/Investments"
   },
   {
     icon: Store,
-    title: "Kosher Businesses",
+    title: "Businesses",
     description:
       "A curated list of businesses operating under a properly structured heter iska, verified by our team.",
     linkText: "See businesses",
-    link:"/businesses"
+    link: "/businesses"
   },
 ];
 
@@ -52,11 +52,14 @@ export default function FeaturesSection() {
           </p>
           <h2 className="text-[#1A2B3C] font-serif text-4xl md:text-5xl leading-tight mb-6">
             One Place for All <br />
-            Your <span className="text-[#C8A75B] italic">Ribis</span> Needs
+            Your <span className="text-[#C8A75B] italic">Ribis</span> Information
           </h2>
           <p className="text-[#6B7280] text-lg leading-relaxed">
-            From researching your bank to structuring a loan, Ribis.org provides
-            practical, halacha-based guidance at every step.
+            From researching your bank to structuring a loan,{" "}
+            <span className="font-semibold text-[#C8A75B]">
+              Ribis.org {" "}
+            </span>
+            provides practical, halacha-based guidance at every step.
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
