@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
       { name: "Team", href: "/about/#team" },
       { name: "Highlights", href: "/highlights" },
       { name: "Contact", href: "/contact" },
-        { name: "Donate", href: "/donate" }
+      { name: "Donate", href: "/donate" }
     ],
   },
   {
@@ -45,11 +45,11 @@ const NAV_ITEMS: NavItem[] = [
   },
 
   {
-    name: "Application",
+    name: "Resources",
     children: [
       { name: "Bais Horaah", href: "/bais-horaah" },
       { name: "Heter Iska", href: "/heter-iska" },
-    
+
     ],
   },
   {
@@ -85,7 +85,11 @@ export default function Navbar() {
             <span className="text-[#C8A75B] text-3xl inline-block translate-y-[2px]">
               .
             </span>
+            <span className="text-white text-lg font-bold">
+              org
+            </span>
           </span>
+
         </Link>
 
         {/* DESKTOP NAV */}
