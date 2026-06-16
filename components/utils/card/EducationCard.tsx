@@ -1,64 +1,55 @@
+import type { LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
 type Props = {
   title: string;
   description: string;
   label: string;
-  icon: string;
+  icon: LucideIcon;
   gradient: string;
-  link?: string;
-  button?: string;
-  variant?: "default" | "large" | "wide";
+  cta: string;
 };
 
 export default function EducationCard({
   title,
   description,
   label,
-  icon,
+  icon: Icon,
   gradient,
-  link,
-  button,
-  variant = "default",
+  cta,
 }: Props) {
   return (
-    <div
-      className={`rounded-2xl overflow-hidden bg-[#F8F6F2] border border-[#E7E2D9] flex flex-col ${
-        variant === "large" ? "h-full" : ""
-      }`}
-    >
-      {/* TOP VISUAL */}
+    <div className="group relative flex h-full flex-col rounded-2xl border border-[#E7E2D9] bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#C8A75B]/40 hover:shadow-[0_12px_32px_-8px_rgba(200,167,91,0.25)]">
+      {/* ICON BADGE */}
       <div
-        className={`bg-gradient-to-br ${gradient} flex items-center justify-center text-4xl ${
-          variant === "large" ? "h-56" : variant === "wide" ? "h-40" : "h-32"
-        }`}
+        className={`mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} shadow-sm transition-transform duration-300 group-hover:scale-105`}
       >
-        {icon}
+        <Icon className="h-6 w-6 text-white" strokeWidth={1.75} />
       </div>
 
-      {/* CONTENT */}
-      <div className="p-6 flex flex-col flex-grow">
-        <p className="text-[#C8A75B] text-xs tracking-[0.25em] mb-2">
-          {label}
-        </p>
+      {/* EYEBROW */}
+      <p className="mb-3 text-xs font-medium tracking-[0.2em] text-[#C8A75B]">
+        {label}
+      </p>
 
-        <h3 className="text-[#1A2B3C] font-serif text-xl mb-2">
-          {title}
-        </h3>
+      {/* TITLE */}
+      <h3 className="mb-3 font-serif text-xl leading-snug text-[#1A2B3C]">
+        {title}
+      </h3>
 
-        <p className="text-gray-500 text-sm mb-6 flex-grow">
-          {description}
-        </p>
+      {/* DESCRIPTION */}
+      <p className="mb-8 flex-grow text-sm leading-relaxed text-gray-500">
+        {description}
+      </p>
 
-        {/* ACTION */}
-        {button ? (
-          <button className="bg-[#C8A75B] text-black px-4 py-2 rounded-md w-fit">
-            {button} →
-          </button>
-        ) : (
-          <span className="text-[#C8A75B] text-sm font-medium">
-            {link} →
-          </span>
-        )}
-      </div>
+      {/* CTA */}
+      <span className="inline-flex items-center gap-2 text-sm font-medium text-[#1A2B3C] transition-colors group-hover:text-[#C8A75B] cursor-pointer">
+        {cta}
+        <ArrowRight
+          className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+          strokeWidth={2}
+        />
+      </span>
     </div>
   );
 }
