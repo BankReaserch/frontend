@@ -5,16 +5,16 @@ import {
   ArrowRight,
   Phone,
   Mail,
-  BookOpen,
+  Users,
 } from "lucide-react";
 
 const cards = [
   {
-    icon: BookOpen,
+    icon: Users,
     title:
       "Rabbinical Guidance",
     description:
-      "Receive trusted guidance from experienced Rabbanim on ribis and financial halacha.",
+      "Receive personal guidance from experienced Rabbanim on ribis and financial halacha.",
   },
 
   {
@@ -47,22 +47,16 @@ export default function AskSection() {
           {/* HEADER */}
           <div className="relative z-10 text-center max-w-4xl mx-auto">
 
-            <p className="text-[#C8A75B] text-xs tracking-[0.3em] uppercase">
+            <h2 className="mt-5 text-[#C8A75B] font-serif text-5xl">
 
-              Bais Hora'ah
-
-            </p>
-
-            <h2 className="mt-5 text-white font-serif text-5xl">
-
-              Ask a Sha&apos;alah
+                 Bais Hora'ah
 
             </h2>
 
             <p className="mt-6 text-gray-300 text-lg leading-8">
 
               Have a question regarding ribis, loans,
-              investments, partnerships, or financial halacha?
+              investments, partnerships, or financial halacha? <br/>
 
               Our Rabbanim are available to provide
               clear and trusted guidance.
@@ -129,7 +123,7 @@ export default function AskSection() {
               className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#C8A75B] text-[#0B1C2C] font-semibold hover:scale-[1.02] transition"
             >
 
-              Learn More
+              Ask a Sha&apos;alah
 
               <ArrowRight
                 size={18}
