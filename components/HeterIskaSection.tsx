@@ -71,7 +71,7 @@ export default function HeterIskaSection() {
     {
       icon: ShieldCheck,
       color: "bg-[#1D3A5F]",
-    
+
       title: "Avoid Ribis Issues",
       description:
         "Even well-intentioned agreements can result in prohibited ribis without proper structuring.",
@@ -80,7 +80,7 @@ export default function HeterIskaSection() {
     {
       icon: FileCheck,
       color: "bg-[#0E8A3D]",
-   
+
       title: "Clarity and Protection",
       description:
         "A well-drafted heter iska ensures both parties understand the terms and operate within halachic guidelines.",
@@ -89,7 +89,7 @@ export default function HeterIskaSection() {
     {
       icon: BadgeCheck,
       color: "bg-[#6D28D9]",
-     
+
       title: "Peace of Mind",
       description:
         "Proper rabbinic oversight ensures your financial dealings remain fully compliant.",
@@ -121,7 +121,7 @@ export default function HeterIskaSection() {
             </p>
           </div>
 
-          
+
         </div>
 
         {/* Cards */}
@@ -173,11 +173,11 @@ export default function HeterIskaSection() {
             );
           })}
         </div>
-       {/* Buttons */}
-<div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-  <Link
-    href="/heter-iska"
-    className="
+        {/* Buttons */}
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/heter-iska"
+            className="
       inline-flex
       items-center
       justify-center
@@ -193,14 +193,14 @@ export default function HeterIskaSection() {
       whitespace-nowrap
       min-w-[240px]
     "
-  >
-     Download a Heter Iska →
-    <ArrowRight size={18} />
-  </Link>
+          >
+            Download a Heter Iska →
+            <ArrowRight size={18} />
+          </Link>
 
-  <Link
-    href="/heter-iska/request"
-    className="
+          <Link
+            href="/heter-iska/request"
+            className="
       inline-flex
       items-center
       justify-center
@@ -217,11 +217,11 @@ export default function HeterIskaSection() {
       whitespace-nowrap
       min-w-[240px]
     "
-  >
-    Request Custom Agreement
-    <ArrowRight size={18} />
-  </Link>
-</div>
+          >
+            Request Custom Agreement
+            <ArrowRight size={18} />
+          </Link>
+        </div>
       </div>
     </section>
   );
