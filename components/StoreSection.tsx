@@ -82,7 +82,7 @@ export default function StoreSection() {
         <div className="relative rounded-[40px] p-[10px]">
 
           {/* OUTER BORDER */}
-          <div className="absolute inset-0 rounded-[40px] border border-[#D8D1C5]" />
+          <div className="absolute inset-0 rounded-[40px] border-4 border-[#D8D1C5]" />
 
           {/* INNER CONTAINER */}
           <div className="relative overflow-hidden rounded-[34px] border border-[#E8E2D8] bg-gradient-to-br from-[#F8F6F2] to-[#EFE8DA] min-h-[430px] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
@@ -123,42 +123,10 @@ export default function StoreSection() {
 
                 {/* DESCRIPTION */}
                 <p className="text-gray-600 text-lg leading-relaxed max-w-lg mb-10">
-                  A curated selection of seforim on hilchos ribis authored by
-                  leading Rabbanim. Expand your knowledge with trusted,
-                  authoritative texts available for online purchase.
+                  A curated selection of seforim on Hilchos Ribis authored by leading Rabbanim.
+                  Expand your knowledge with trusted, authoritative works, available for purchase online.
                 </p>
 
-                {/* STATS */}
-                <div className="flex gap-10 mb-10">
-
-                  <div>
-                    <div className="text-[#10253B] text-4xl font-serif">
-                      25+
-                    </div>
-                    <div className="text-gray-500">
-                      Seforim
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-[#10253B] text-4xl font-serif">
-                      10+
-                    </div>
-                    <div className="text-gray-500">
-                      Rabbanim
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-[#10253B] text-4xl font-serif">
-                      100%
-                    </div>
-                    <div className="text-gray-500">
-                      Authentic
-                    </div>
-                  </div>
-
-                </div>
 
                 {/* CTA */}
                 <Link
@@ -177,12 +145,24 @@ export default function StoreSection() {
 
               {/* RIGHT SIDE */}
               <div className="hidden lg:flex justify-center items-center relative h-[360px]">
-
                 {/* LEFT BOOK */}
-                <div className="absolute left-8 rotate-[-12deg]">
+                <div
+                  className="
+    absolute left-8
+    -rotate-12
+    origin-bottom-right
+    transition-all duration-500 ease-out
+    hover:rotate-1
+    hover:translate-x-0.5
+    hover:-translate-y-0.5
+    hover:scale-95
+    hover:z-30
+    cursor-pointer
+  "
+                >
                   <div className="relative w-[190px] h-[280px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.18)] border border-white bg-white">
                     <Image
-                      src="/assets/book1.jpg"
+                      src="/assets/center.png"
                       alt="Book"
                       fill
                       className="object-cover"
@@ -194,7 +174,7 @@ export default function StoreSection() {
                 <div className="absolute z-20">
                   <div className="relative w-[220px] h-[320px] rounded-2xl overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.25)] border border-white bg-white">
                     <Image
-                      src="/assets/book3.jpeg"
+                      src="/assets/left.png"
                       alt="Book"
                       fill
                       className="object-cover"
@@ -203,27 +183,29 @@ export default function StoreSection() {
                 </div>
 
                 {/* RIGHT BOOK */}
-                <div className="absolute right-8 rotate-[12deg]">
+                <div
+                  className="
+    absolute right-8
+    rotate-12
+    origin-bottom-left
+    transition-all duration-500 ease-out
+    hover:-rotate-1
+    hover:-translate-x-0.5
+    hover:-translate-0.5
+    hover:scale-95
+    hover:z-30
+    cursor-pointer
+  "
+                >
                   <div className="relative w-[190px] h-[280px] rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.18)] border border-white bg-white">
                     <Image
-                      src="/assets/book2.webp"
+                      src="/assets/right.png"
                       alt="Book"
                       fill
                       className="object-cover"
                     />
                   </div>
                 </div>
-
-                {/* BADGE */}
-                <div className="absolute -bottom-5 right-16 bg-white/95 backdrop-blur border border-[#E7E2D9] rounded-2xl px-5 py-3 shadow-xl">
-                  <p className="text-[10px] tracking-[0.3em] text-[#C8A75B] mb-1">
-                    FEATURED
-                  </p>
-                  <p className="text-[#10253B] font-medium">
-                    Bestselling Titles
-                  </p>
-                </div>
-
               </div>
 
             </div>
