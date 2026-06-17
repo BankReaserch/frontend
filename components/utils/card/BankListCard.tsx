@@ -120,7 +120,7 @@ export default function BankListCard() {
       {/* HEADER */}
       <div className="px-5 py-4 border-b border-white/10 text-[#C8A75B] text-sm flex items-center gap-2">
 
-        🔍 KOSHER BANK DIRECTORY
+         KOSHER BANK DIRECTORY
 
       </div>
 
