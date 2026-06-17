@@ -59,150 +59,170 @@
 // }
 
 import Link from "next/link";
-import Step from "./utils/Step";
-import Image from "next/image";
+import {
+  FileCheck,
+  BadgeCheck,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
 
 export default function HeterIskaSection() {
+  const items = [
+    {
+      icon: ShieldCheck,
+      color: "bg-[#1D3A5F]",
+    
+      title: "Avoid Ribis Issues",
+      description:
+        "Even well-intentioned agreements can result in prohibited ribis without proper structuring.",
+      link: "Get Agreement",
+    },
+    {
+      icon: FileCheck,
+      color: "bg-[#0E8A3D]",
+   
+      title: "Clarity and Protection",
+      description:
+        "A well-drafted heter iska ensures both parties understand the terms and operate within halachic guidelines.",
+      link: "Review Details",
+    },
+    {
+      icon: BadgeCheck,
+      color: "bg-[#6D28D9]",
+     
+      title: "Peace of Mind",
+      description:
+        "Proper rabbinic oversight ensures your financial dealings remain fully compliant.",
+      link: "View Process",
+    },
+  ];
+
   return (
-    <section className="bg-[#F4F1EC] py-4 overflow-hidden">
+    <section className="bg-[#F4F1EC] py-28">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          {/* LEFT */}
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 mb-20">
           <div>
-            {/* <p className="text-[#C8A75B] text-xs tracking-[0.35em] uppercase mb-5">
-              Heter Iska
-            </p> */}
-
-            <h2 className="font-serif text-[#C8A75B] text-5xl md:text-6xl leading-tight">
-              Heter Iska
-              {/* <br />
-              with{" "} */}
-              {/* {" "} 
-              <span className="italic text-[#C8A75B]">
-                Iska
-              </span> */}
-            </h2>
-
-            <p className="mt-2 text-lg text-slate-900 leading-relaxed max-w-xl">
-              Ensure your business and personal financial agreements are properly structured in full alignment with halacha. 
-              A heter iska converts standard loans into compliant investment partnerships, protecting you from potential ribis concerns.
+            <p className="text-[#C8A75B] uppercase tracking-[0.35em] text-sm mb-6">
+              HETER ISKA
             </p>
 
-            <div className="space-y-5 mt-12">
-              <Step
-                number="1"
-                title="Avoid Ribis Issues"
-                text="Even well-intentioned agreements can result in prohibited ribis without proper structuring."
-              />
+            <h2 className="font-serif text-[#1A2B3C] text-5xl md:text-6xl leading-none">
+              Modern Commerce Through{" "}
+              <span className="text-[#C8A75B] italic">
+                Heter Iska
+              </span>
+            </h2>
 
-              <Step
-                number="2"
-                title="Clarity and Protection"
-                text="A well-drafted heter iska ensures both parties understand the terms and operate within halachic guidelines."
-              />
-
-              <Step
-                number="3"
-                title="Peace of Mind"
-                text="Proper rabbinic oversight ensures your financial dealings remain fully compliant."
-              />
-            </div>
-
-            <Link
-              href="/heter-iska"
-              className="inline-flex items-center gap-3 mt-10 bg-[#C8A75B] hover:opacity-90 transition px-8 py-4 rounded-xl font-medium text-black shadow-lg"
-            >
-              Learn More About Heter Iska
-              <span>→</span>
-            </Link>
+            <p className="mt-8 text-slate-500 text-xl max-w-3xl leading-relaxed">
+              Ensure your business and personal financial agreements are
+              structured according to Halacha through a clear and accepted
+              Heter Iska framework.
+            </p>
           </div>
 
-          {/* RIGHT */}
-          <div className="relative">
-            {/* glow */}
-            <div className="absolute -top-12 -right-12 w-64 h-64 bg-[#C8A75B]/10 rounded-full blur-3xl" />
+          
+        </div>
 
-            <div className="relative">
-              {/* main image */}
-              <div className="overflow-hidden rounded-[32px] border border-[#E7E2D9] shadow-2xl bg-white">
-                <Image
-                  src="/assets/certificate.png"
-                  alt="Heter Iska Agreement"
-                  width={900}
-                  height={1200}
-                  className="w-full h-[650px] object-contain"
-                />
-              </div>
+        {/* Cards */}
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+          {items.map((item, index) => {
+            const Icon = item.icon;
 
-              {/* floating info card */}
-              <div className="absolute -bottom-8 -left-8 bg-[#0B1C2C] rounded-2xl p-7 shadow-2xl max-w-sm">
-                <p className="text-xs uppercase tracking-[0.3em] text-[#C8A75B] mb-3">
-                  TRUSTED GUIDANCE
-                </p>
+            return (
+              <div
+                key={index}
+                className="
+                  bg-white
+                  border
+                  border-[#E5DDD0]
+                  rounded-[28px]
+                  p-10
+                  min-h-[360px]
+                  flex
+                  flex-col
+                  transition-all
+                  duration-300
+                  hover:-translate-y-2
+                  hover:shadow-xl
+                "
+              >
+                <div
+                  className={`${item.color} w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg`}
+                >
+                  <Icon className="w-7 h-7 text-white" />
+                </div>
 
-                <h3 className="text-white text-2xl font-semibold leading-snug">
-                  Built on Accepted
-                  <br />
-                  Halachic Standards
+                {/* <p className="mt-8 text-[#C8A75B] text-sm tracking-[0.25em] uppercase">
+                  {item.label}
+                </p> */}
+
+                <h3 className="mt-4 text-[#1A2B3C] text-3xl font-serif leading-snug">
+                  {item.title}
                 </h3>
 
-                <p className="text-slate-300 mt-4 text-sm leading-relaxed">
-                  Properly structured agreements designed to address modern financial
-                  arrangements while maintaining halachic compliance.
+                <p className="mt-5 text-slate-500 leading-relaxed flex-grow">
+                  {item.description}
                 </p>
 
-                <Link
-                  href="/heter-iska"
-                  className="inline-flex items-center gap-2 mt-5 text-[#C8A75B] font-medium"
-                >
-                  Explore Resources →
-                </Link>
+                {/* <div className="mt-8 flex items-center gap-2 text-[#1A2B3C] font-medium">
+                  {item.link}
+                  <ArrowRight size={18} />
+                </div> */}
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
+       {/* Buttons */}
+<div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+  <Link
+    href="/heter-iska"
+    className="
+      inline-flex
+      items-center
+      justify-center
+      gap-3
+      bg-[#C8A75B]
+      hover:opacity-90
+      transition
+      px-8
+      py-5
+      rounded-2xl
+      text-lg
+      text-black
+      whitespace-nowrap
+      min-w-[240px]
+    "
+  >
+     Download a Heter Iska →
+    <ArrowRight size={18} />
+  </Link>
 
-        {/* Bottom Trust Row */}
-        <div className="grid md:grid-cols-3 gap-6 mt-24">
-          <TrustCard
-            title="Halachically Reviewed"
-            text="Prepared according to accepted heter iska frameworks."
-          />
-
-          <TrustCard
-            title="Business & Personal Use"
-            text="Applicable to loans, partnerships, guarantors and more."
-          />
-
-          <TrustCard
-            title="Clear Documentation"
-            text="Designed to create transparency and understanding."
-          />
-        </div>
+  <Link
+    href="/heter-iska/request"
+    className="
+      inline-flex
+      items-center
+      justify-center
+      gap-3
+      border
+      border-[#C8A75B]
+      text-[#1A2B3C]
+      hover:bg-white
+      transition
+      px-8
+      py-5
+      rounded-2xl
+      text-lg
+      whitespace-nowrap
+      min-w-[240px]
+    "
+  >
+    Request Custom Agreement
+    <ArrowRight size={18} />
+  </Link>
+</div>
       </div>
     </section>
-  );
-}
-function TrustCard({
-  title,
-  text,
-}: {
-  title: string;
-  text: string;
-}) {
-  return (
-    <div className="group bg-white/90 backdrop-blur border border-[#E7E2D9] rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-      <div className="w-14 h-14 rounded-2xl bg-[#F3E8D0] flex items-center justify-center text-[#C8A75B] text-xl mb-5">
-        ✦
-      </div>
-
-      <h3 className="font-semibold text-[#1A2B3C] text-xl mb-3">
-        {title}
-      </h3>
-
-      <p className="text-slate-500 leading-relaxed">
-        {text}
-      </p>
-    </div>
   );
 }
