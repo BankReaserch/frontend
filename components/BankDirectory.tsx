@@ -1,7 +1,6 @@
 // BankDirectorySection.tsx
 
 import Link from "next/link";
-import BankStatusBadge from "./BankStatusBadge";
 
 import BankListCard from "./utils/card/BankListCard";
 

@@ -497,6 +497,7 @@ import {
   Search,
   LayoutGrid,
   List,
+  X,
   ShieldCheck,
   Microscope,
   Users,
@@ -510,6 +511,7 @@ import StatusBadge from "./Statusbadge";
 import DetailPanel from "./DetailPanel";
 import RequestModal from "./Requestmodal";
 import BankCard from "./BankCard";
+import BankStatusBadge from "@/components/BankStatusBadge";
 
 export default function BanksPage() {
   const [search, setSearch] = useState("");
@@ -704,44 +706,8 @@ export default function BanksPage() {
                 <Plus className="h-4 w-4" /> Request a Bank
               </button>
             </div>
-
-            {/* ── STATUS LEGEND — now lives here near the directory ── */}
-            <div className="mb-7 overflow-hidden rounded-2xl border border-[#e8e2d6] bg-white shadow-sm">
-              <div className="px-5 py-3 border-b border-[#f1ede6] bg-[#fafaf8] flex items-center justify-between">
-                <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#c8a21a]">
-                  Kashrus Status Guide
-                </p>
-                <p className="text-[11px] text-[#94a3b8]">
-                  Select a status below to filter the directory
-                </p>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 divide-x divide-y divide-[#f1ede6]">
-                {(Object.entries(STATUS_CFG) as [Status, (typeof STATUS_CFG)[Status]][]).map(
-                  ([key, cfg]) => (
-                    <button
-                      key={key}
-                      onClick={() => { setFilter(key); setSelected(null); }}
-                      className={`flex flex-col items-start gap-1.5 px-4 py-3.5 text-left transition-colors hover:bg-[#fdfaf4] ${
-                        filter === key ? "bg-[#fffbf0]" : ""
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className={`h-2.5 w-2.5 rounded-full ${cfg.dotClass}`} />
-                        <span className={`text-[12px] font-semibold ${filter === key ? "text-[#051933]" : "text-[#374151]"}`}>
-                          {cfg.label}
-                        </span>
-                      </div>
-                      <p className="text-[10.5px] leading-[1.5] text-[#94a3b8] pl-[18px]">
-                        {STATUS_DESCRIPTIONS[key]}
-                      </p>
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-
             {/* Toolbar: search + view toggle */}
-            <div className="flex items-center gap-3 mb-5 flex-wrap">
+            <div className="flex items-center gap-3 mb-6 flex-wrap">
               <div className="relative flex-1 min-w-[200px]">
                 <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94a3b8]" />
                 <input
@@ -770,30 +736,61 @@ export default function BanksPage() {
               </div>
             </div>
 
-            {/* Filter pills — now secondary, since the legend above is the primary filter UI */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              <button
-                onClick={() => { setFilter("all"); setSelected(null); }}
-                className={`rounded-full px-4 py-2 text-[12px] font-semibold transition-all ${filter === "all" ? "bg-[#051933] text-white" : "border border-[#e8e2d6] bg-white text-[#64748b] hover:border-[#051933]/30"}`}
-              >
-                All Banks
-              </button>
-              {(Object.entries(STATUS_CFG) as [Status, (typeof STATUS_CFG)[Status]][]).map(
-                ([key, cfg]) => (
+
+            {/* ── STATUS LEGEND / FILTER ── */}
+            <div className="mb-8 overflow-hidden rounded-2xl border border-[#e8e2d6] bg-white shadow-sm">
+              <div className="px-5 py-3 border-b border-[#f1ede6] bg-[#fafaf8] flex items-center justify-between">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#c8a21a]">
+                  Filter by Kashrus Status
+                </p>
+                {filter !== "all" ? (
                   <button
-                    key={key}
-                    onClick={() => { setFilter(key); setSelected(null); }}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12px] font-semibold transition-all ${
-                      filter === key
-                        ? `${cfg.badgeBg} ${cfg.badgeText} ring-2 ring-current/20`
-                        : "border border-[#e8e2d6] bg-white text-[#64748b] hover:border-gray-300"
-                    }`}
+                    onClick={() => { setFilter("all"); setSelected(null); }}
+                    className="text-[11px] text-[#94a3b8] hover:text-[#051933] transition-colors flex items-center gap-1"
                   >
-                    <span className={`h-1.5 w-1.5 rounded-full ${cfg.dotClass}`} />
-                    {cfg.label}
+                    <X className="h-3 w-3" /> Clear filter
                   </button>
-                )
-              )}
+                ) : (
+                  <p className="text-[11px] text-[#94a3b8]">Click any status to filter</p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 divide-x divide-y divide-[#f1ede6]">
+
+                {/* All — first cell */}
+                <button
+                  onClick={() => { setFilter("all"); setSelected(null); }}
+                  className={`flex flex-col items-start gap-2 px-4 py-3.5 text-left transition-colors hover:bg-[#fdfaf4] ${filter === "all" ? "bg-[#fffbf0]" : ""
+                    }`}
+                >
+                  <span className="px-3 py-1 text-xs rounded-full bg-[#051933]/8 text-[#051933] border border-[#051933]/12 whitespace-nowrap font-medium">
+                    All Banks
+                  </span>
+                  <p className="text-[10.5px] leading-[1.5] text-[#94a3b8]">
+                    Show every listing
+                  </p>
+                </button>
+
+                {(Object.entries(STATUS_CFG) as [Status, (typeof STATUS_CFG)[Status]][]).map(
+                  ([key, cfg]) => (
+                    <button
+                      key={key}
+                      onClick={() => { setFilter(key); setSelected(null); }}
+                      className={`flex flex-col items-start gap-2 px-4 py-3.5 text-left transition-colors hover:bg-[#fdfaf4] ${filter === key ? "bg-[#fffbf0]" : ""
+                        }`}
+                    >
+                      <BankStatusBadge
+                        status={key}
+                        label={cfg.label}
+                      />
+                      <p className="text-[10.5px] leading-[1.5] text-[#94a3b8]">
+                        {STATUS_DESCRIPTIONS[key]}
+                      </p>
+                    </button>
+                  )
+                )}
+
+              </div>
             </div>
 
             {/* Count */}
@@ -802,9 +799,8 @@ export default function BanksPage() {
             </p>
 
             <div
-              className={`grid gap-5 items-start transition-all duration-300 ${
-                selected ? "lg:grid-cols-[1fr_360px]" : "grid-cols-1"
-              }`}
+              className={`grid gap-5 items-start transition-all duration-300 ${selected ? "lg:grid-cols-[1fr_360px]" : "grid-cols-1"
+                }`}
             >
               <div>
                 {/* ── GRID VIEW ── */}
@@ -880,11 +876,10 @@ export default function BanksPage() {
                               <tr
                                 key={bank._id}
                                 onClick={() => handleSelect(bank)}
-                                className={`cursor-pointer border-b border-[#f1ede6] last:border-none transition-colors ${
-                                  selected?._id === bank._id
-                                    ? "bg-[#fffbf0] border-l-[3px] border-l-[#c8a21a]"
-                                    : "hover:bg-[#fdfaf4]"
-                                }`}
+                                className={`cursor-pointer border-b border-[#f1ede6] last:border-none transition-colors ${selected?._id === bank._id
+                                  ? "bg-[#fffbf0] border-l-[3px] border-l-[#c8a21a]"
+                                  : "hover:bg-[#fdfaf4]"
+                                  }`}
                               >
                                 <td className="px-5 py-4">
                                   <p className="font-serif text-[15px] text-[#051933]">{bank.name}</p>

@@ -1,14 +1,56 @@
+"use client";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { frankRuhl } from "@/app/fonts";
+import Counter from "./utils/ui/Counter";
 
 export default function Hero() {
   const stats = [
-    { num: "300+", label: "Banks Listed" },
-    { num: "1500+", label: "Hours Researched" },
-    { num: "10+", label: "Poskim Guiding" },
-    { num: "2000+", label: "People Served" },
+    { value: 300, suffix: "+", label: "Banks Listed" },
+    { value: 1500, suffix: "+", label: "Hours Researched" },
+    { value: 10, suffix: "+", label: "Poskim Guiding" },
+    { value: 2000, suffix: "+", label: "People Served" },
   ];
+  const fadeUp = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      filter: "blur(8px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
 
+  const staggerContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12,
+      },
+    },
+  };
+
+  const statItem = {
+    hidden: {
+      opacity: 0,
+      y: 16,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0d1b2a]">
 
@@ -39,10 +81,31 @@ export default function Hero() {
         <div>
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#c8a75b] text-[#c8a75b] text-[10px] font-medium tracking-[0.1em] px-3.5 py-1.5 mb-6">
+          {/* <div className="inline-flex items-center gap-2 rounded-full border border-[#c8a75b] text-[#c8a75b] text-[10px] font-medium tracking-[0.1em] px-3.5 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#c8a75b] shrink-0" />
             Welcome To RIBIS
-          </div>
+          </div> */}
+          <motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  className="inline-flex items-center gap-2 rounded-full border border-[#c8a75b] text-[#c8a75b] text-[10px] font-medium tracking-[0.1em] px-3.5 py-1.5 mb-6 overflow-hidden"
+>
+  <span className="w-1.5 h-1.5 rounded-full bg-[#c8a75b]" />
+
+  <motion.span
+    initial={{ width: 0 }}
+    animate={{ width: "100%" }}
+    transition={{
+      duration: 1.4,
+      delay: 0.3,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    className="overflow-hidden whitespace-nowrap"
+  >
+    WELCOME TO RIBIS
+  </motion.span>
+</motion.div>
 
           {/* Eyebrow */}
           <p className="text-[#c8a75b] text-[10px] tracking-[0.25em] mb-5 uppercase">
@@ -172,7 +235,10 @@ export default function Hero() {
                         "'Playfair Display', Georgia, serif",
                     }}
                   >
-                    {item.num}
+                    <Counter
+                      value={item.value}
+                      suffix={item.suffix}
+                    />
                   </div>
 
                   <div className="text-xs text-[#7a8fa3]">
