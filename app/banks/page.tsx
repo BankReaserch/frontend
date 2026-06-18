@@ -736,37 +736,34 @@ export default function BanksPage() {
               </div>
             </div>
 
-
             {/* ── STATUS LEGEND / FILTER ── */}
-            <div className="mb-8 overflow-hidden rounded-2xl border border-[#e8e2d6] bg-white shadow-sm">
-              <div className="px-5 py-3 border-b border-[#f1ede6] bg-[#fafaf8] flex items-center justify-between">
+            <div className="mb-6 overflow-hidden rounded-2xl border border-white/8 bg-[#0d1f35] shadow-sm">
+              <div className="px-5 py-3 border-b border-white/8 flex items-center justify-between">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#c8a21a]">
                   Filter by Kashrus Status
                 </p>
                 {filter !== "all" ? (
                   <button
                     onClick={() => { setFilter("all"); setSelected(null); }}
-                    className="text-[11px] text-[#94a3b8] hover:text-[#051933] transition-colors flex items-center gap-1"
+                    className="text-[11px] text-[#537491] hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
                   >
                     <X className="h-3 w-3" /> Clear filter
                   </button>
                 ) : (
-                  <p className="text-[11px] text-[#94a3b8]">Click any status to filter</p>
+                  <p className="text-[11px] text-[#537491]">Click any status to filter</p>
                 )}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 divide-x divide-y divide-[#f1ede6]">
-
-                {/* All — first cell */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 divide-x divide-y divide-white/[0.06]">
                 <button
                   onClick={() => { setFilter("all"); setSelected(null); }}
-                  className={`flex flex-col items-start gap-2 px-4 py-3.5 text-left transition-colors hover:bg-[#fdfaf4] ${filter === "all" ? "bg-[#fffbf0]" : ""
+                  className={`flex flex-col items-start gap-2 px-4 py-3.5 text-left transition-colors hover:bg-white/[0.04] ${filter === "all" ? "bg-white/[0.07]" : ""
                     }`}
                 >
-                  <span className="px-3 py-1 text-xs rounded-full bg-[#051933]/8 text-[#051933] border border-[#051933]/12 whitespace-nowrap font-medium">
+                  <span className="px-3 py-1 text-xs rounded-full bg-white/10 text-white/80 border border-white/15 whitespace-nowrap font-medium">
                     All Banks
                   </span>
-                  <p className="text-[10.5px] leading-[1.5] text-[#94a3b8]">
+                  <p className="text-[10.5px] leading-[1.5] text-[#537491]">
                     Show every listing
                   </p>
                 </button>
@@ -776,20 +773,16 @@ export default function BanksPage() {
                     <button
                       key={key}
                       onClick={() => { setFilter(key); setSelected(null); }}
-                      className={`flex flex-col items-start gap-2 px-4 py-3.5 text-left transition-colors hover:bg-[#fdfaf4] ${filter === key ? "bg-[#fffbf0]" : ""
+                      className={`flex flex-col items-start gap-2 px-4 py-3.5 text-left transition-colors hover:bg-white/[0.04] ${filter === key ? "bg-white/[0.07]" : ""
                         }`}
                     >
-                      <BankStatusBadge
-                        status={key}
-                        label={cfg.label}
-                      />
-                      <p className="text-[10.5px] leading-[1.5] text-[#94a3b8]">
+                      <BankStatusBadge status={key} label={cfg.label} />
+                      <p className="text-[10.5px] leading-[1.5] text-[#537491]">
                         {STATUS_DESCRIPTIONS[key]}
                       </p>
                     </button>
                   )
                 )}
-
               </div>
             </div>
 
