@@ -45,7 +45,7 @@ export default function Hero() {
           </div>
 
           {/* Eyebrow */}
-          <p className="text-[#c8a75b] text-[10px] tracking-[0.25em] mb-5">
+          <p className="text-[#c8a75b] text-[10px] tracking-[0.25em] mb-5 uppercase">
             INFORMATION · AWARENESS · Resources
           </p>
 

@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function FooterColumn({ title, links }: Props) {
   return (
     <div>
-      <p className="text-[#C8A75B] text-xs tracking-[0.3em] mb-4">
+      <p className="text-[#C8A75B] text-xs tracking-[0.3em] mb-4 uppercase">
         {title}
       </p>
 

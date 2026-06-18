@@ -79,7 +79,24 @@ export default function AlertsPage() {
       id,
     ]);
   };
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,{
+          withCredentials: true,
+        });
 
+        setUser(res.data.user);
+      } catch {
+        setUser(null);
+      }
+    };
+
+    getUser();
+  }, []);
   const api = axios.create({
     baseURL:
       process.env
@@ -113,7 +130,40 @@ export default function AlertsPage() {
     fetchAlerts();
 
   }, []);
+  const handleSubscribe = async () => {
+    alert("heyyy")
+    try {
+      setLoading(true);
 
+      await api.post(
+        "/api/subscribers/subscribe",
+        user ? {} : { email },
+        {
+          withCredentials: true,
+        }
+      );
+
+      alert(
+        user
+          ? "Subscribed successfully"
+          : "Verification email sent"
+      );
+
+      setEmail("");
+
+    } catch (error: any) {
+
+      alert(
+        error?.response?.data?.message ||
+        "Something went wrong"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
   const filteredAlerts =
     useMemo(() => {
 
@@ -299,25 +349,65 @@ export default function AlertsPage() {
 
                     </p>
 
-                    {/* INPUT */}
                     <div className="mt-8 space-y-4">
 
-                      <div className="relative">
+                      {!user && (
+                        <div className="relative">
 
-                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94a3b8]" />
+                          <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94a3b8]" />
 
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          className="w-full h-14 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl pl-14 pr-5 text-white placeholder:text-[#64748b] outline-none"
-                        />
+                          <input
+                            type="email"
+                            value={email}
+                            onChange={(e) =>
+                              setEmail(e.target.value)
+                            }
+                            placeholder="Enter your email"
+                            className="
+          w-full
+          h-14
+          rounded-2xl
+          border
+          border-white/10
+          bg-white/5
+          backdrop-blur-xl
+          pl-14
+          pr-5
+          text-white
+          placeholder:text-[#64748b]
+          outline-none
+        "
+                          />
 
-                      </div>
+                        </div>
+                      )}
 
-                      <button className="w-full h-14 rounded-2xl bg-[#c8a21a] hover:bg-[#d8b84a] transition-all text-[#051933] font-semibold">
+                      {/* {user && (
+                        <div className="rounded-2xl border border-[#C8A21A]/30 bg-[#C8A21A]/10 p-4 text-[#C8A21A] text-sm">
+                          You are signed in as {user.email}
+                        </div>
+                      )} */}
 
-                        Subscribe Now
-
+                      <button
+                        onClick={handleSubscribe}
+                        disabled={loading}
+                        className="
+      w-full
+      h-14
+      rounded-2xl
+      bg-[#c8a21a]
+      hover:bg-[#d8b84a]
+      transition-all
+      text-[#051933]
+      font-semibold
+      disabled:opacity-50
+    "
+                      >
+                        {loading
+                          ? "Processing..."
+                          : user
+                            ? "Subscribe Now"
+                            : "Send Verification Email"}
                       </button>
 
                     </div>
@@ -671,10 +761,10 @@ export default function AlertsPage() {
                   {selectedAlert.type}
                 </p>
                 <p className="text-[#94A3B8] text-sm mt-2">
-  {new Date(
-    selectedAlert.createdAt
-  ).toLocaleDateString()}
-</p>
+                  {new Date(
+                    selectedAlert.createdAt
+                  ).toLocaleDateString()}
+                </p>
 
                 <h2 className="font-serif text-4xl text-white">
                   {selectedAlert.title}
@@ -683,7 +773,7 @@ export default function AlertsPage() {
               </div>
 
               <div
-  className="
+                className="
     overflow-y-auto
     max-h-[65vh]
     p-8
@@ -691,7 +781,7 @@ export default function AlertsPage() {
     scrollbar-thumb-[#1E3A5F]
     scrollbar-track-transparent
   "
->
+              >
                 <p className="text-[#D3DCE8] leading-8 whitespace-pre-wrap">
                   {selectedAlert.message}
                 </p>

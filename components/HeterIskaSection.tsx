@@ -164,11 +164,6 @@ export default function HeterIskaSection() {
                 <p className="mt-5 text-slate-500 leading-relaxed flex-grow">
                   {item.description}
                 </p>
-
-                {/* <div className="mt-8 flex items-center gap-2 text-[#1A2B3C] font-medium">
-                  {item.link}
-                  <ArrowRight size={18} />
-                </div> */}
               </div>
             );
           })}
@@ -194,7 +189,7 @@ export default function HeterIskaSection() {
       min-w-[240px]
     "
           >
-            Download a Heter Iska →
+            Download a Heter Iska
             <ArrowRight size={18} />
           </Link>
 

@@ -1,5 +1,12 @@
+import Link from "next/link";
 import FooterColumn from "./utils/FooterColumn";
 import { MailIcon, PhoneIcon } from "./utils/icons";
+import { Noto_Rashi_Hebrew } from "next/font/google";
+
+const notoRashi = Noto_Rashi_Hebrew({
+  subsets: ["hebrew"],
+  weight: ["900"],
+});
 
 
 export default function Footer() {
@@ -8,20 +15,44 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* TOP */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
+
+
 
           {/* BRAND */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-[#C8A75B] rounded-lg flex items-center justify-center text-black font-bold">
-                ר
-              </div>
-              <span className="text-xl font-semibold">Ribis.org</span>
+              <Link href="/" className="flex items-center gap-2">
+                <div
+                  className={`w-9 h-9 rounded-md bg-[#C8A75B] flex items-center justify-center text-3xl  text-black font-bold ${notoRashi.className}`}
+                >
+                  ר
+                </div>
+
+                <span className="text-white text-lg font-bold">
+                  Ribis
+                  <span
+                    className="
+      inline-block
+      w-1.5
+      h-1.5
+      bg-[#C8A75B]
+      rounded-full
+      mx-[2px]
+      translate-y-[1px]
+    "
+                  />
+                  <span className="text-white text-lg font-bold">
+                    org
+                  </span>
+                </span>
+              </Link>
+
             </div>
 
             <p className="text-gray-400 mb-6 max-w-sm">
-              Awareness. Information. Application. Standing at the intersection
-              of halachic law and modern finance.
+              INFORMATION · AWARENESS · RESOURCES <br />
+              Halachic Guidance for Modern Finance.
             </p>
 
             {/* CONTACT */}
@@ -39,22 +70,32 @@ export default function Footer() {
 
             </div>
           </div>
+          <FooterColumn
+            title="Home"
+            links={[
+              { label: "About", href: "/about" },
+              { label: "Team", href: "/about/#team" },
+              { label: "Highlights", href: "/highlights" },
+              { label: "Contact", href: "/contact" },
+              { label: "Donate", href: "/donate" }
+            ]}
+          />
 
           <FooterColumn
-            title="SERVICES"
+            title="Information"
             links={[
-              { label: "Bank Directory", href: "/banks" },
-              { label: "Kosher Brokers", href: "/brokers" },
+              { label: "Banks", href: "/banks" },
+              { label: "Brokers", href: "/brokers" },
               { label: "Investments", href: "/Investments" },
               { label: "Businesses", href: "/businesses" },
             ]}
           />
-           <FooterColumn
-            title="EDUCATION"
+          <FooterColumn
+            title="Awareness"
             links={[
               { label: "Shiurim", href: "/banks" },
-              { label: "Bulletins", href: "/brokers" },
-              { label: "FAQ", href: "/Q&A" },
+              { label: "Q&A", href: "/Q&A" },
+              { label: "Articles", href: "/article" },
               { label: "Programs", href: "/programs" },
               { label: "Alerts", href: "/alerts" },
             ]}
@@ -62,12 +103,10 @@ export default function Footer() {
 
 
           <FooterColumn
-            title="DEPARTMENTS"
+            title="Resources"
             links={[
               { label: "Bais Horaah", href: "/bais-horaah" },
               { label: "Heter Iska", href: "/heter-iska" },
-              { label: "Donate", href: "/donate" },
-              { label: "Contact", href: "/contact" },
             ]}
           />
         </div>
