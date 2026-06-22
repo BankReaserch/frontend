@@ -1,11 +1,7 @@
-// app/alerts/page.tsx
-
 "use client";
-
 import Navbar from "@/components/Navbar";
-
 import Footer from "@/components/Footer";
-
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 
 import {
@@ -60,6 +56,10 @@ const alertIcons = {
 };
 
 export default function AlertsPage() {
+  const searchParams = useSearchParams();
+
+  const subscriptionStatus =
+    searchParams.get("subscription");
   const [alerts, setAlerts] =
     useState<Alert[]>([]);
 
@@ -85,7 +85,7 @@ export default function AlertsPage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,{
+        const res = await api.get(`${process.env.NEXT_PUBLIC_API_URL}api/auth/me`, {
           withCredentials: true,
         });
 
@@ -109,7 +109,7 @@ export default function AlertsPage() {
 
           const res =
             await api.get(
-              "/api/alerts/active"
+              "api/alerts/active"
             );
 
           setAlerts(
@@ -131,12 +131,11 @@ export default function AlertsPage() {
 
   }, []);
   const handleSubscribe = async () => {
-    alert("heyyy")
     try {
       setLoading(true);
 
       await api.post(
-        "/api/subscribers/subscribe",
+        "api/subscribers/subscribe",
         user ? {} : { email },
         {
           withCredentials: true,
@@ -253,7 +252,26 @@ export default function AlertsPage() {
       </div>
 
       <main className="min-h-screen bg-gradient-to-br from-[#f5f1ea] via-[#f8f5ef] to-[#f2ece3] overflow-hidden">
+        {subscriptionStatus === "verified" && (
+          <div className="max-w-7xl mx-auto px-6 pt-6">
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+              <h3 className="text-emerald-600 font-semibold text-lg">
+                Subscription Confirmed
+              </h3>
 
+              <p className="text-emerald-700 mt-1">
+                Thank you for subscribing to Ribis Alerts.
+                You will now receive important updates,
+                financial notices, and halachic alerts.
+              </p>
+            </div>
+          </div>
+        )}
+        {subscriptionStatus === "failed" && (
+          <div className="bg-red-500 text-white py-4 text-center font-medium">
+            Verification link is invalid or has expired.
+          </div>
+        )}
         {/* HERO */}
         <section className="relative bg-[#051933] overflow-hidden pt-24 pb-24">
 

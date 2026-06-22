@@ -1,6 +1,6 @@
 export type NavChild = {
   name: string;
-  href?: string;
+  href: string;
 };
 
 export type NavItem = {

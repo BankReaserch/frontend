@@ -173,33 +173,63 @@ export default function Navbar() {
           <CloseIcon />
         </button>
 
-        <div className="flex flex-col items-center justify-center h-full gap-6 text-white text-lg">
-
+        <div className="pt-24 px-8 h-full overflow-y-auto">
           {NAV_ITEMS.map((item, index) => (
-            <div key={item.name} className="text-center">
+            <div
+              key={item.name}
+              className="border-b border-white/10 py-4"
+            >
               <button
                 onClick={() =>
                   setActive(active === index ? null : index)
                 }
-                className="flex items-center gap-2"
+                className="w-full flex items-center justify-between text-white text-lg font-medium"
               >
                 {item.name}
+
+                <span
+                  className={`transition-transform ${active === index ? "rotate-180" : ""
+                    }`}
+                >
+                  ▼
+                </span>
               </button>
 
-              {active === index && item.children && (
-                <div className="mt-3 flex flex-col gap-3 text-base text-gray-300">
-                  {item.children.map((child) => (
-                    <span
+              {active === index && (
+                <div className="mt-4 flex flex-col gap-3 pl-4 text-gray-300">
+                  {item.children?.map((child) => (
+                    <Link
                       key={child.name}
-                      className="hover:text-[#C8A75B]"
+                      href={child.href}
+                      onClick={() => setOpen(false)}
+                      className="hover:text-[#C8A75B] transition-colors"
                     >
                       {child.name}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               )}
             </div>
           ))}
+          <div className="mt-10 flex flex-col gap-4">
+            {totalItems > 0 && (
+              <Link
+                href="/cart"
+                onClick={() => setOpen(false)}
+                className="w-full flex items-center justify-center border border-white/10 bg-white/5 py-3 rounded-xl text-white"
+              >
+                Cart ({totalItems})
+              </Link>
+            )}
+
+            <Link
+              href="/contact"
+              onClick={() => setOpen(false)}
+              className="w-full bg-[#C8A75B] text-black py-3 rounded-xl text-center font-semibold"
+            >
+              CONTACT US
+            </Link>
+          </div>
           {/* RIGHT SIDE */}
           <div className="hidden md:flex items-center gap-4">
 

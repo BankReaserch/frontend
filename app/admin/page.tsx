@@ -33,6 +33,8 @@ import AdminAlertsPage from "./Alert";
 import axios from "axios";
 import AdminBrokersPage from "./BrokersPage";
 import InvestmentsPageAdmim from "./InvestmentsPage";
+import SubscribersPage from "./subscribers";
+import AdminSubscriptionsPage from "./subscribers";
 
 export default function DashboardPage() {
 
@@ -333,18 +335,16 @@ export default function DashboardPage() {
 
           </div>
         );
+         case "Subscribers":
 
-      // case "Analytics":
+        return (
+          <div className="mt-6">
 
-      //   return (
-      //     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+            <AdminSubscriptionsPage />
 
-      //       <RevenueChart />
+          </div>
+        );
 
-
-
-      //     </div>
-      //   );
       case "Users":
 
         return (

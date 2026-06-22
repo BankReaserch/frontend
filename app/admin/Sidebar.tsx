@@ -69,10 +69,10 @@ const menu = [
     name: "Q&A",
     icon: CircleQuestionMark,
   },
-  // {
-  //   name: "Settings",
-  //   icon: Settings,
-  // },
+  {
+    name: "Subscribers",
+    icon: Users,
+  },
 ];
 
 export default function Sidebar({
