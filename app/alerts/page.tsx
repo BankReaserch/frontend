@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import axios from "axios";
 
 import {
@@ -55,7 +56,7 @@ const alertIcons = {
   info: Info,
 };
 
-export default function AlertsPage() {
+function AlertsPageContent() {
   const searchParams = useSearchParams();
 
   const subscriptionStatus =
@@ -814,5 +815,12 @@ export default function AlertsPage() {
       )}
       <Footer />
     </>
+  );
+}
+export default function AlertsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AlertsPageContent />
+    </Suspense>
   );
 }
