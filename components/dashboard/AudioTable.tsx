@@ -23,6 +23,8 @@ interface AudioItem {
   _id: string;
   title: string;
   artist: string;
+  category: string;
+  series: string;
   filename: string;
   createdAt: string;
 }
@@ -39,6 +41,11 @@ export default function AudioTable() {
 
   const [audioData, setAudioData] =
     useState<AudioItem[]>([]);
+  const [category, setCategory] =
+    useState("English");
+
+  const [series, setSeries] =
+    useState("");
 
   const [loading, setLoading] =
     useState(true);
@@ -76,7 +83,7 @@ export default function AudioTable() {
       if (!response.ok) {
         throw new Error(
           data.message ||
-            "Failed to fetch audios"
+          "Failed to fetch audios"
         );
       }
 
@@ -165,7 +172,7 @@ export default function AudioTable() {
       if (!response.ok) {
         throw new Error(
           data.message ||
-            "Delete failed"
+          "Delete failed"
         );
       }
 
@@ -216,7 +223,15 @@ export default function AudioTable() {
         "artist",
         artist
       );
+      formData.append(
+        "category",
+        category
+      );
 
+      formData.append(
+        "series",
+        series
+      );
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}api/audio/upload`,
         {
@@ -232,12 +247,14 @@ export default function AudioTable() {
       if (!response.ok) {
         throw new Error(
           data.message ||
-            "Upload failed"
+          "Upload failed"
         );
       }
 
       setTitle("");
       setArtist("");
+      setCategory("English");
+      setSeries("");
       setSelectedFile(null);
 
       await fetchAudios();
@@ -330,7 +347,46 @@ export default function AudioTable() {
           }
           className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white"
         />
+        <select
+          value={category}
+          onChange={(e) =>
+            setCategory(e.target.value)
+          }
+          className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white"
+        >
+          <option value="English">
+            English
+          </option>
+          <option value="Hebrew">
+            Hebrew
+          </option>
+          <option value="Yiddish">
+            Yiddish
+          </option>
+        </select>
+        <select
+          value={series}
+          onChange={(e) =>
+            setSeries(e.target.value)
+          }
+          className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white"
+        >
+          <option value="">
+            Regular Shiur
+          </option>
 
+          <option value="5 Minute English Series">
+            5 Minute English Series
+          </option>
+
+          <option value="5 Minute Hebrew Series">
+            5 Minute Hebrew Series
+          </option>
+
+          <option value="5 Minute Yiddish Series">
+            5 Minute Yiddish Series
+          </option>
+        </select>
         {/* FILE */}
         <label
           htmlFor="audio-upload"
@@ -356,7 +412,7 @@ export default function AudioTable() {
               setSelectedFile(
                 e.target
                   .files?.[0] ||
-                  null
+                null
               )
             }
           />
@@ -403,6 +459,12 @@ export default function AudioTable() {
 
               <th className="pb-4 text-[#8a9bb0] text-sm">
                 Duration
+              </th>
+               <th className="pb-4 text-[#8a9bb0] text-sm">
+                Category
+              </th>
+               <th className="pb-4 text-[#8a9bb0] text-sm">
+                Series
               </th>
 
               <th className="pb-4 text-[#8a9bb0] text-sm">
@@ -492,6 +554,16 @@ export default function AudioTable() {
                         --:--
                       </div>
                     </td>
+                     <td className="py-5 text-white text-sm">
+                      {
+                        audio.category
+                      }
+                    </td>
+                     <td className="py-5 text-white text-sm">
+                      {
+                        audio.series || "Regular"
+                      }
+                    </td>
 
                     {/* DATE */}
                     <td className="py-5 text-[#9db0c3] text-sm">
@@ -532,15 +604,14 @@ export default function AudioTable() {
                             audio._id
                           )
                         }
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition ${
-                          playingId ===
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition ${playingId ===
                           audio._id
-                            ? "bg-red-500/10 text-red-400 border border-red-500/20"
-                            : "bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20"
-                        }`}
+                          ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                          : "bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20"
+                          }`}
                       >
                         {playingId ===
-                        audio._id ? (
+                          audio._id ? (
                           <Pause
                             size={16}
                           />
@@ -551,7 +622,7 @@ export default function AudioTable() {
                         )}
 
                         {playingId ===
-                        audio._id
+                          audio._id
                           ? "Pause"
                           : "Play"}
                       </button>
