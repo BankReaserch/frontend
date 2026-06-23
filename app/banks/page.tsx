@@ -225,13 +225,31 @@ export default function BanksPage() {
             <div className="flex items-center gap-3 mb-6 flex-wrap">
               <div className="relative flex-1 min-w-[200px]">
                 <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94a3b8]" />
+
                 <input
                   type="text"
                   placeholder="Search by name, type, or location..."
                   value={search}
-                  onChange={(e) => { setSearch(e.target.value); setSelected(null); }}
-                  className="h-11 w-full rounded-2xl border border-[#e8e2d6] bg-white pl-10 pr-4 text-[14px] text-[#0f172a] outline-none transition-all placeholder:text-[#94a3b8] focus:border-[#d0ab24] focus:ring-4 focus:ring-[#d0ab24]/10"
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setSelected(null);
+                  }}
+                  className="h-11 w-full rounded-2xl border border-[#e8e2d6] bg-white pl-10 pr-10 text-[14px] text-[#0f172a] outline-none transition-all placeholder:text-[#94a3b8] focus:border-[#d0ab24] focus:ring-4 focus:ring-[#d0ab24]/10"
                 />
+
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch("");
+                      setSelected(null);
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full text-[#94a3b8] hover:bg-[#f3f4f6] hover:text-[#051933] transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
               </div>
               <div className="flex overflow-hidden rounded-xl border border-[#e8e2d6] bg-white">
                 <button
@@ -292,7 +310,7 @@ export default function BanksPage() {
                         }`}
                     >
                       <BankStatusBadge status={key} label={cfg.label} />
-                      <p className="text-[10.5px] leading-[1.5] text-white">
+                      <p className="text-[10.5px] leading-[1.5] text-[#537491]">
                         {STATUS_DESCRIPTIONS[key]}
                       </p>
                     </button>
