@@ -57,7 +57,12 @@ export default function BrokersPage() {
           );
 
         setBrokers(
-          res.data.data || []
+          (res.data.data || []).sort(
+            (a: Broker, b: Broker) =>
+              a.name.localeCompare(b.name, undefined, {
+                sensitivity: "base",
+              })
+          )
         );
 
       } catch (error) {
@@ -282,149 +287,149 @@ export default function BrokersPage() {
               {brokers.map(
                 (broker) => (
 
-                 <div
-  key={broker._id}
-  className="group h-[620px] rounded-[32px] border border-[#ece4d8] bg-white p-8 shadow-[0_10px_40px_rgba(5,25,51,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(5,25,51,0.08)] flex flex-col"
->
+                  <div
+                    key={broker._id}
+                    className="group h-[620px] rounded-[32px] border border-[#ece4d8] bg-white p-8 shadow-[0_10px_40px_rgba(5,25,51,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(5,25,51,0.08)] flex flex-col"
+                  >
 
-  {/* TOP */}
-  <div className="flex items-start justify-between mb-7 flex-shrink-0">
+                    {/* TOP */}
+                    <div className="flex items-start justify-between mb-7 flex-shrink-0">
 
-    <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#c8a21a]/10">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#c8a21a]/10">
 
-      <Building2
-        size={30}
-        className="text-[#c8a21a]"
-      />
+                        <Building2
+                          size={30}
+                          className="text-[#c8a21a]"
+                        />
 
-    </div>
+                      </div>
 
-    <div className="rounded-full bg-[#f8f5ef] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#9b7b16]">
+                      <div className="rounded-full bg-[#f8f5ef] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#9b7b16]">
 
-      Verified
+                        Verified
 
-    </div>
+                      </div>
 
-  </div>
+                    </div>
 
-  {/* TITLE */}
-  <div className="flex-shrink-0">
+                    {/* TITLE */}
+                    <div className="flex-shrink-0">
 
-    <h3 className="font-serif text-3xl leading-tight text-[#051933] min-h-[80px]">
+                      <h3 className="font-serif text-3xl leading-tight text-[#051933] min-h-[80px]">
 
-      {broker.name}
+                        {broker.name}
 
-    </h3>
+                      </h3>
 
-  </div>
+                    </div>
 
-  {/* SCROLLABLE INFO */}
-  <div className="mt-5 flex-1 overflow-hidden">
+                    {/* SCROLLABLE INFO */}
+                    <div className="mt-5 flex-1 overflow-hidden">
 
-    <div className="h-full overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="h-full overflow-y-auto pr-2 custom-scrollbar">
 
-      <p className="text-[15px] leading-8 text-[#64748b]">
+                        <p className="text-[15px] leading-8 text-[#64748b]">
 
-        {broker.info}
+                          {broker.info}
 
-      </p>
+                        </p>
 
-    </div>
+                      </div>
 
-  </div>
+                    </div>
 
-  {/* FIXED FOOTER */}
-  <div className="mt-7 border-t border-[#f1eadf] pt-7 space-y-5 flex-shrink-0">
+                    {/* FIXED FOOTER */}
+                    <div className="mt-7 border-t border-[#f1eadf] pt-7 space-y-5 flex-shrink-0">
 
-    {/* LOCATION */}
-    <div className="flex items-start gap-4 min-h-[52px]">
+                      {/* LOCATION */}
+                      <div className="flex items-start gap-4 min-h-[52px]">
 
-      <MapPin
-        size={18}
-        className="mt-1 text-[#c8a21a] flex-shrink-0"
-      />
+                        <MapPin
+                          size={18}
+                          className="mt-1 text-[#c8a21a] flex-shrink-0"
+                        />
 
-      <div>
+                        <div>
 
-        <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
 
-          Location
+                            Location
 
-        </p>
+                          </p>
 
-        <p className="mt-1 text-[#051933] font-medium">
+                          <p className="mt-1 text-[#051933] font-medium">
 
-          {broker.location}
+                            {broker.location}
 
-        </p>
+                          </p>
 
-      </div>
+                        </div>
 
-    </div>
+                      </div>
 
-    {/* PHONE */}
-    <div className="flex items-start gap-4 min-h-[52px]">
+                      {/* PHONE */}
+                      <div className="flex items-start gap-4 min-h-[52px]">
 
-      <Phone
-        size={18}
-        className="mt-1 text-[#c8a21a] flex-shrink-0"
-      />
+                        <Phone
+                          size={18}
+                          className="mt-1 text-[#c8a21a] flex-shrink-0"
+                        />
 
-      <div>
+                        <div>
 
-        <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
 
-          Telephone
+                            Telephone
 
-        </p>
+                          </p>
 
-        <p className="mt-1 text-[#051933] font-medium">
+                          <p className="mt-1 text-[#051933] font-medium">
 
-          {broker.phone}
+                            {broker.phone}
 
-        </p>
+                          </p>
 
-      </div>
+                        </div>
 
-    </div>
+                      </div>
 
-    {/* WEBSITE */}
-    <div className="flex items-start gap-4 min-h-[60px]">
+                      {/* WEBSITE */}
+                      <div className="flex items-start gap-4 min-h-[60px]">
 
-      <Globe
-        size={18}
-        className="mt-1 text-[#c8a21a] flex-shrink-0"
-      />
+                        <Globe
+                          size={18}
+                          className="mt-1 text-[#c8a21a] flex-shrink-0"
+                        />
 
-      <div className="min-w-0">
+                        <div className="min-w-0">
 
-        <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
 
-          Website
+                            Website
 
-        </p>
+                          </p>
 
-        <a
-          href={`https://${broker.website.replace(
-            /^https?:\/\//,
-            ""
-          )}`}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-1 inline-block text-[#051933] font-medium underline hover:text-[#c8a21a] transition break-words"
-        >
+                          <a
+                            href={`https://${broker.website.replace(
+                              /^https?:\/\//,
+                              ""
+                            )}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-1 inline-block text-[#051933] font-medium underline hover:text-[#c8a21a] transition break-words"
+                          >
 
-          {broker.website}
+                            {broker.website}
 
-        </a>
+                          </a>
 
-      </div>
+                        </div>
 
-    </div>
+                      </div>
 
-  </div>
+                    </div>
 
-</div>
+                  </div>
                 )
               )}
 

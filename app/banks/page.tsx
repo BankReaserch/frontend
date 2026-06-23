@@ -292,7 +292,7 @@ export default function BanksPage() {
                         }`}
                     >
                       <BankStatusBadge status={key} label={cfg.label} />
-                      <p className="text-[10.5px] leading-[1.5] text-[#537491]">
+                      <p className="text-[10.5px] leading-[1.5] text-white">
                         {STATUS_DESCRIPTIONS[key]}
                       </p>
                     </button>
