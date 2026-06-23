@@ -1,6 +1,7 @@
 "use client";
 
 import StatusBadge from "./Statusbadge";
+import { Calendar } from "lucide-react";
 import { BankType } from "../../components/admin/bank/bank.types";
 
 type Props = {
@@ -56,9 +57,25 @@ export default function BankCard({ bank, selected, onClick }: Props) {
           <StatusBadge status={bank.status} />
         </div>
 
-        {bank.hq && (
-          <p className="text-[11px] text-[#64748b] truncate">{bank.hq}</p>
-        )}
+        <div className="mt-3 border-t border-[#f1ede6] pt-3 space-y-2">
+          {bank.hq && (
+            <p className="text-[11px] text-[#64748b] truncate">
+              {bank.hq}
+            </p>
+          )}
+
+          {bank.lastReviewed && (
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#faf6ea] border border-[#eadfb9] px-2.5 py-1 text-[10px] font-medium text-[#8b6b00]">
+              <Calendar className="h-3 w-3" />
+              Reviewed{" "}
+              {new Date(bank.lastReviewed).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Selected checkmark badge */}

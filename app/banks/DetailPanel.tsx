@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Download, ExternalLink, FileText, X, Crown, Lock, Sparkles } from "lucide-react";
+import { ArrowRight, Download, ExternalLink, FileText, X, Crown, Lock, Sparkles,Calendar } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -196,32 +196,58 @@ export default function DetailPanel({ bank, onClose }: Props) {
           )}
 
           {/* Founded + Website */}
-          <div className="grid grid-cols-2 gap-3 pb-4 border-b border-[#f1ede6]">
-            {bank.founded && bank.founded !== "-" && (
-              <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-[#94a3b8] mb-1">
-                  Founded
-                </p>
-                <p className="text-[13px] text-[#0f172a]">{bank.founded}</p>
-              </div>
-            )}
-            {bank.website && (
-              <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-[#94a3b8] mb-1">
-                  Website
-                </p>
-                <a
-                  href={bank.website.startsWith("http") ? bank.website : `https://${bank.website}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-[12px] text-[#c8a21a] hover:underline"
-                >
-                  {bank.website.replace(/^https?:\/\//, "")}
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              </div>
-            )}
-          </div>
+      {/* Bank Information */}
+<div className="grid gap-4 pb-4 border-b border-[#f1ede6]">
+
+  {bank.founded && bank.founded !== "-" && (
+    <div>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-[#94a3b8] mb-1">
+        Founded
+      </p>
+      <p className="text-[13px] text-[#0f172a]">{bank.founded}</p>
+    </div>
+  )}
+
+  {bank.lastReviewed && (
+    <div>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-[#94a3b8] mb-1">
+        Last Reviewed
+      </p>
+
+      <div className="inline-flex items-center gap-2 rounded-full bg-[#faf6ea] border border-[#eadfb9] px-3 py-1.5 text-[11px] font-medium text-[#8b6b00]">
+        <Calendar className="h-3.5 w-3.5" />
+        {new Date(bank.lastReviewed).toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </div>
+    </div>
+  )}
+
+  {bank.website && (
+    <div>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-[#94a3b8] mb-1">
+        Website
+      </p>
+
+      <a
+        href={
+          bank.website.startsWith("http")
+            ? bank.website
+            : `https://${bank.website}`
+        }
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-1 text-[12px] text-[#c8a21a] hover:underline"
+      >
+        {bank.website.replace(/^https?:\/\//, "")}
+        <ExternalLink className="h-3 w-3" />
+      </a>
+    </div>
+  )}
+
+</div>
 
           {/* Report actions */}
           {bank.reportUrl ? (

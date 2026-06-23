@@ -5,26 +5,13 @@ import {
   useState,
 } from "react";
 
-import {
-  useRouter,
-} from "next/navigation";
-
 import Sidebar from "./Sidebar";
-
 import Topbar from "@/components/dashboard/Topbar";
-
 import StatCard from "@/components/dashboard/StatCard";
-
 import RevenueChart from "@/components/dashboard/RevenueChart";
-
 import OrdersTable from "@/components/dashboard/OrdersTable";
-
-
-
 import AudioTable from "@/components/dashboard/AudioTable";
-
 import Books from "./Books";
-
 import QNA from "./Q&A";
 import Customers from "./Customers";
 import BanksAdmin from "./Bank";
@@ -33,13 +20,10 @@ import AdminAlertsPage from "./Alert";
 import axios from "axios";
 import AdminBrokersPage from "./BrokersPage";
 import InvestmentsPageAdmim from "./InvestmentsPage";
-import SubscribersPage from "./subscribers";
 import AdminSubscriptionsPage from "./subscribers";
 
 export default function DashboardPage() {
 
-  const router =
-    useRouter();
 
   const [loading, setLoading] =
     useState(true);

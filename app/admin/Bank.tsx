@@ -18,7 +18,6 @@ import BankForm from "@/components/admin/bank/BankForm";
 import BankTable from "@/components/admin/bank/BankTable";
 
 export default function BanksAdmin() {
-
   const api = axios.create({
     baseURL:
       process.env
