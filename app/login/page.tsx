@@ -30,57 +30,113 @@ export default function LoginPage() {
 
   const [userId, setUserId] = useState("");
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (isLoading) return;
+
+  //   try {
+  //     setIsLoading(true);
+
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_URL}api/auth/login`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         credentials: "include",
+  //         body: JSON.stringify({
+  //           email: email.trim().toLowerCase(),
+  //           password,
+  //         }),
+  //       }
+  //     );
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(
+  //         data.message || "Authentication failed"
+  //       );
+  //     }
+
+  //     // ADMIN OTP FIRST
+  //     if (data.requiresOtp) {
+  //       setUserId(data.userId);
+  //       setStep("otp");
+  //       return;
+  //     }
+
+  //     // THEN PASSWORD CHANGE
+  //     if (data.requirePasswordChange) {
+  //       sessionStorage.setItem("passwordChangeUserId", data.userId);
+  //       router.push("/change-password");
+  //       return;
+  //     }
+  //     router.push("/dashboard");
+  //   } catch (error: any) {
+  //     setError(error.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+ 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (isLoading) return;
+  if (isLoading) return;
 
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}api/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            email: email.trim().toLowerCase(),
-            password,
-          }),
-        }
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}api/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Authentication failed"
+      );
+    }
+
+    // Password change flow
+    if (data.requirePasswordChange) {
+      sessionStorage.setItem(
+        "passwordChangeUserId",
+        data.userId
       );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Authentication failed"
-        );
-      }
-
-      // ADMIN OTP FIRST
-      if (data.requiresOtp) {
-        setUserId(data.userId);
-        setStep("otp");
-        return;
-      }
-
-      // THEN PASSWORD CHANGE
-      if (data.requirePasswordChange) {
-        sessionStorage.setItem("passwordChangeUserId", data.userId);
-        router.push("/change-password");
-        return;
-      }
-      router.push("/dashboard");
-    } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+      router.push("/change-password");
+      return;
     }
-  };
+
+    // Redirect based on role
+    if (data.user?.role === "admin") {
+      router.push("/admin");
+    } else {
+      router.push("/dashboard");
+    }
+
+  } catch (error: any) {
+    setError(error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
