@@ -248,7 +248,7 @@ export default function InvestmentsPage() {
           </div>
 
         </section>
-        <section className="py-20">
+        <section className="py-20" id="investments_Info">
 
           <div className="max-w-7xl mx-auto px-6">
 
