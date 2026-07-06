@@ -49,6 +49,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { name: "Bais Horaah", href: "/bais-horaah" },
       { name: "Heter Iska", href: "/heter-iska" },
+      { name: "Bank Research", href: "/banks#bankrequest" },
 
     ],
   },
