@@ -7,6 +7,7 @@ import {
     Pause,
     Play,
     Search,
+    X,
 } from "lucide-react";
 import {
     useEffect,
@@ -222,11 +223,11 @@ export default function AudioPage() {
                         </p>
 
                     </div>
-                     <h2 className="text-2xl font-serif text-[#0d1b2a] mb-6">
-                            Featured 5-Minute Series
-                        </h2>
+                    <h2 className="text-2xl font-serif text-[#0d1b2a] mb-6">
+                        Featured 5-Minute Series
+                    </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                       
+
                         <button
                             onClick={() =>
                                 setSelectedSeries("5 Minute English Series")
@@ -287,6 +288,7 @@ export default function AudioPage() {
                     {/* SEARCH + FILTER */}
                     <div className="flex flex-col md:flex-row gap-4 mb-10">
 
+
                         {/* SEARCH */}
                         <div className="relative flex-1">
 
@@ -306,7 +308,16 @@ export default function AudioPage() {
                                 }
                                 className="w-full h-14 rounded-xl border border-[#d9d2c6] bg-white pl-11 pr-4 outline-none focus:ring-2 focus:ring-[#c9a84c]"
                             />
-
+                            {search && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearch("")}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition"
+                                    aria-label="Clear search"
+                                >
+                                    <X />
+                                </button>
+                            )}
                         </div>
 
                         {/* CATEGORY */}

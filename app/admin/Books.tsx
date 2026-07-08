@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Plus } from "lucide-react";
 import Addbook from "./Addbook";
+import SearchInput from "./SearchInput";
 
 const CATEGORIES = ["All", "Halacha", "Finance", "Responsa", "Education", "Audio"];
 
@@ -89,22 +90,27 @@ export default function Books() {
         }}
       />
 
-      {/* TOP BAR */}
       <div className="flex flex-wrap items-center gap-4 border-b border-[#e5ddd0] bg-white px-6 py-4 lg:px-12">
         <div className="relative max-w-xs min-w-[220px] flex-1">
+          {/* Search Icon */}
           <svg
             className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8a9bb0]"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
-          <input
-            type="text"
-            placeholder="Search titles, authors..."
+
+          <SearchInput
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-[#e5ddd0] bg-[#faf8f5] py-2 pl-9 pr-4 text-sm text-[#1a2535] placeholder-[#b0a898] transition focus:border-[#c9a84c] focus:outline-none"
+            onChange={setSearch}
+            placeholder="Search titles, authors..."
           />
         </div>
 
@@ -113,11 +119,10 @@ export default function Books() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all ${
-                activeCategory === cat
-                  ? "bg-[#0d1b2a] text-white"
-                  : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
-              }`}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all ${activeCategory === cat
+                ? "bg-[#0d1b2a] text-white"
+                : "bg-[#f0ece4] text-[#6b5e4e] hover:bg-[#e5ddd0]"
+                }`}
             >
               {cat}
             </button>
@@ -211,13 +216,12 @@ export default function Books() {
                     <button
                       onClick={() => { setSelectedBook(book); setShowaddForm(true); }}
                       disabled={!book.inStock}
-                      className={`rounded-lg px-4 py-2 text-xs font-bold tracking-wide transition-all ${
-                        !book.inStock
-                          ? "cursor-not-allowed bg-[#f0ece4] text-[#b0a898]"
-                          : cart.includes(book._id || "")
+                      className={`rounded-lg px-4 py-2 text-xs font-bold tracking-wide transition-all ${!book.inStock
+                        ? "cursor-not-allowed bg-[#f0ece4] text-[#b0a898]"
+                        : cart.includes(book._id || "")
                           ? "bg-[#0d1b2a] text-[#c9a84c]"
                           : "bg-[#c9a84c] text-[#0d1b2a] hover:bg-[#d4b567]"
-                      }`}
+                        }`}
                     >
                       {!book.inStock ? "Unavailable" : cart.includes(book._id || "") ? "✓ Added" : "Edit"}
                     </button>

@@ -4,7 +4,8 @@ import {
   useEffect,
   useState,
 } from "react";
-
+  import axios from "axios";
+  import { useRouter } from "next/navigation";
 import Sidebar from "./Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 import StatCard from "@/components/dashboard/StatCard";
@@ -17,7 +18,6 @@ import Customers from "./Customers";
 import BanksAdmin from "./Bank";
 import AdminArticlesPage from "./Article";
 import AdminAlertsPage from "./Alert";
-import axios from "axios";
 import AdminBrokersPage from "./BrokersPage";
 import InvestmentsPageAdmim from "./InvestmentsPage";
 import AdminSubscriptionsPage from "./subscribers";
@@ -66,95 +66,48 @@ export default function DashboardPage() {
         );
       }
     };
+  const router = useRouter();
 
-  // VERIFY ADMIN
   useEffect(() => {
+    const controller = new AbortController();
 
-    let isMounted = true;
-
-    const verifyAdmin =
-      async () => {
-
-        try {
-
-          const response =
-            await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,
-              {
-                method: "GET",
-
-                credentials:
-                  "include",
-
-                headers: {
-                  "Content-Type":
-                    "application/json",
-                },
-
-                cache: "no-store",
-              }
-            );
-
-          // UNAUTHORIZED
-          if (!response.ok) {
-
-            window.location.href =
-              "/login";
-
-            return;
+    const verifyAdmin = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}api/auth/me`,
+          {
+            withCredentials: true,
+            signal: controller.signal,
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
+        );
 
-          const data =
-            await response.json();
-
-          console.log(
-            "AUTH DATA:",
-            data
-          );
-
-          // NOT ADMIN
-          if (
-            !data?.user ||
-            data.user.role !==
-            "admin"
-          ) {
-
-            window.location.href =
-              "/login";
-
-            return;
-          }
-
-          // SUCCESS
-          if (isMounted) {
-            setAuthorized(true);
-          }
-
-        } catch (error) {
-
-          console.error(
-            "Admin verify failed:",
-            error
-          );
-
-          window.location.href =
-            "/login";
-
-        } finally {
-
-          if (isMounted) {
-            setLoading(false);
-          }
+        if (!data?.user || data.user.role !== "admin") {
+          router.replace("/login");
+          return;
         }
-      };
+
+        setAuthorized(true);
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error("Admin verify failed:", error);
+          router.replace("/login");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    };
 
     verifyAdmin();
 
     return () => {
-      isMounted = false;
+      controller.abort();
     };
-
-  }, []);
+  }, [router]);
 
   // LOADING SCREEN
   if (loading) {
@@ -233,7 +186,7 @@ export default function DashboardPage() {
 
                 <div className="h-full overflow-y-auto custom-scrollbar pr-1">
 
-                 <OrdersTable dashboardMode />
+                  <OrdersTable dashboardMode />
 
                 </div>
 
@@ -247,16 +200,16 @@ export default function DashboardPage() {
         return (
           <div className="mt-6">
 
-             <OrdersTable />
+            <OrdersTable />
 
           </div>
-        ); 
-         case "Brokers":
+        );
+      case "Brokers":
 
         return (
           <div className="mt-6">
 
-             <AdminBrokersPage />
+            <AdminBrokersPage />
 
           </div>
         );
@@ -319,7 +272,7 @@ export default function DashboardPage() {
 
           </div>
         );
-         case "Subscribers":
+      case "Subscribers":
 
         return (
           <div className="mt-6">
@@ -346,13 +299,13 @@ export default function DashboardPage() {
             <BanksAdmin />
 
           </div>
-        );  
+        );
 
-        case "Investments":
+      case "Investments":
 
         return (
           <div className="mt-6">
-           <InvestmentsPageAdmim/>
+            <InvestmentsPageAdmim />
           </div>
         );
 

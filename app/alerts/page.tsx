@@ -522,6 +522,16 @@ function AlertsPageContent() {
           focus:border-[#C8A21A]
         "
                   />
+                    {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition cursor-pointer"
+                  aria-label="Clear search"
+                >
+               <X/>
+                </button>
+              )}
 
                 </div>
 
@@ -540,6 +550,7 @@ function AlertsPageContent() {
         text-sm
         font-medium
         transition
+        cursor-pointer
         ${sortOrder === "newest"
                       ? "bg-[#C8A21A] text-[#051933]"
                       : "bg-white text-[#64748B] border border-[#E8E2D6]"
@@ -555,6 +566,7 @@ function AlertsPageContent() {
                   }
                   className={`
         rounded-xl
+        cursor-pointer
         px-5
         py-3
         text-sm

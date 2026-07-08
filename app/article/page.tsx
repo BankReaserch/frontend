@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "@/components/article/ArticleCard";
@@ -157,6 +157,16 @@ export default function ArticlesPage() {
                 }
                 className="w-full h-14 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl pl-14 pr-5 text-white placeholder:text-[#64748b] outline-none"
               />
+                {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition"
+                  aria-label="Clear search"
+                >
+               <X/>
+                </button>
+              )}
 
             </div>
 

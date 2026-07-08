@@ -300,22 +300,32 @@ export default function AudioTable() {
 
         {/* SEARCH */}
         <div className="relative w-full lg:w-80">
-          <Search
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6f8296]"
-          />
+          <div className="relative w-full lg:w-80">
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6f8296]"
+            />
 
-          <input
-            type="text"
-            value={search}
-            onChange={(e) =>
-              setSearch(
-                e.target.value
-              )
-            }
-            placeholder="Search audio..."
-            className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white placeholder:text-[#6f8296] focus:outline-none focus:border-[#c9a84c]/50"
-          />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search audio..."
+              className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-11 pr-11 py-3 text-white placeholder:text-[#6f8296] focus:outline-none focus:border-[#c9a84c]/50"
+            />
+
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center text-[#8a9bb0] hover:text-white hover:bg-white/10 transition"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
         </div>
       </div>
 
@@ -460,10 +470,10 @@ export default function AudioTable() {
               <th className="pb-4 text-[#8a9bb0] text-sm">
                 Duration
               </th>
-               <th className="pb-4 text-[#8a9bb0] text-sm">
+              <th className="pb-4 text-[#8a9bb0] text-sm">
                 Category
               </th>
-               <th className="pb-4 text-[#8a9bb0] text-sm">
+              <th className="pb-4 text-[#8a9bb0] text-sm">
                 Series
               </th>
 
@@ -554,12 +564,12 @@ export default function AudioTable() {
                         --:--
                       </div>
                     </td>
-                     <td className="py-5 text-white text-sm">
+                    <td className="py-5 text-white text-sm">
                       {
                         audio.category
                       }
                     </td>
-                     <td className="py-5 text-white text-sm">
+                    <td className="py-5 text-white text-sm">
                       {
                         audio.series || "Regular"
                       }

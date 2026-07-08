@@ -163,106 +163,106 @@ export default function AdminArticlesPage() {
       articles,
       search,
     ]);
-  const handleSubmit =async (e: any) => {
-      e.preventDefault();
-      try {
-        setSubmitting(true);
-        const body =
-          new FormData();
-        body.append(
-          "title",
-          formData.title
-        );
-        body.append(
-          "excerpt",
-          formData.excerpt
-        );
-        body.append(
-          "category",
-          formData.category
-        );
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      setSubmitting(true);
+      const body =
+        new FormData();
+      body.append(
+        "title",
+        formData.title
+      );
+      body.append(
+        "excerpt",
+        formData.excerpt
+      );
+      body.append(
+        "category",
+        formData.category
+      );
 
+      body.append(
+        "author",
+        formData.author
+      );
+      body.append(
+        "readTime",
+        formData.readTime
+      );
+      if (
+        coverImage
+      ) {
         body.append(
-          "author",
-          formData.author
-        );
-        body.append(
-          "readTime",
-          formData.readTime
-        );
-        if (
+          "coverImage",
           coverImage
-        ) {
-          body.append(
-            "coverImage",
-            coverImage
-          );
-        }
-        if (
-          pdfFile
-        ) {
-          body.append(
-            "pdf",
-            pdfFile
-          );
-        }
-
-        if (
-          editingId
-        ) {
-
-          await api.put(
-            `/api/articles/update/${editingId}`,
-            body
-          );
-
-        } else {
-
-          await api.post(
-            "/api/articles/create",
-            body
-          );
-        }
-
-        setOpenModal(
-          false
-        );
-
-        setEditingId(
-          null
-        );
-
-        setFormData({
-          title: "",
-          excerpt: "",
-          category: "",
-          author: "",
-          readTime: "",
-        });
-
-        setCoverImage(
-          null
-        );
-
-        setPdfFile(
-          null
-        );
-
-        fetchArticles();
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-      } finally {
-
-        setSubmitting(
-          false
         );
       }
-    };
+      if (
+        pdfFile
+      ) {
+        body.append(
+          "pdf",
+          pdfFile
+        );
+      }
+
+      if (
+        editingId
+      ) {
+
+        await api.put(
+          `/api/articles/update/${editingId}`,
+          body
+        );
+
+      } else {
+
+        await api.post(
+          "/api/articles/create",
+          body
+        );
+      }
+
+      setOpenModal(
+        false
+      );
+
+      setEditingId(
+        null
+      );
+
+      setFormData({
+        title: "",
+        excerpt: "",
+        category: "",
+        author: "",
+        readTime: "",
+      });
+
+      setCoverImage(
+        null
+      );
+
+      setPdfFile(
+        null
+      );
+
+      fetchArticles();
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+    } finally {
+
+      setSubmitting(
+        false
+      );
+    }
+  };
   const handleDelete =
     async (
       id: string
@@ -374,26 +374,26 @@ export default function AdminArticlesPage() {
 
           {/* SEARCH */}
           <div className="relative max-w-md mb-8">
-
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94a3b8]" />
 
             <input
               type="text"
               placeholder="Search articles..."
-              value={
-                search
-              }
-              onChange={(
-                e
-              ) =>
-                setSearch(
-                  e.target
-                    .value
-                )
-              }
-              className="w-full h-12 rounded-2xl border border-[#e7dfd2] bg-white pl-12 pr-4 outline-none"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full h-12 rounded-2xl border border-[#e7dfd2] bg-white pl-12 pr-12 outline-none"
             />
 
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#051933] transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           {/* LOADING */}
@@ -422,26 +422,26 @@ export default function AdminArticlesPage() {
 
           ) : (
 
-           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-  {filtered.map((article) => (
+              {filtered.map((article) => (
 
-    <ArticleCard
-      key={article._id}
-      article={article}
-      variant="admin"
-      getFileUrl={getFileUrl}
-      onEdit={() =>
-        handleEdit(article)
-      }
-      onDelete={() =>
-        handleDelete(article._id)
-      }
-    />
+                <ArticleCard
+                  key={article._id}
+                  article={article}
+                  variant="admin"
+                  getFileUrl={getFileUrl}
+                  onEdit={() =>
+                    handleEdit(article)
+                  }
+                  onDelete={() =>
+                    handleDelete(article._id)
+                  }
+                />
 
-  ))}
+              ))}
 
-</div>
+            </div>
           )}
 
         </div>

@@ -15,6 +15,7 @@ import {
   Loader2,
   Mail,
   Shield,
+  X,
 } from "lucide-react";
 
 type UserType = {
@@ -45,11 +46,6 @@ export default function Customers() {
   const [actionLoading, setActionLoading] =
     useState("");
 
-  /*
-  ========================================
-  AXIOS INSTANCE
-  ========================================
-  */
 
   const api = axios.create({
     baseURL:
@@ -167,12 +163,12 @@ export default function Customers() {
               prev.map(
                 (user) =>
                   user._id ===
-                  userId
+                    userId
                     ? {
-                        ...user,
-                        isActive:
-                          !currentStatus,
-                      }
+                      ...user,
+                      isActive:
+                        !currentStatus,
+                    }
                     : user
               )
           );
@@ -242,21 +238,26 @@ export default function Customers() {
 
         {/* SEARCH */}
         <div className="relative w-full lg:w-[340px]">
-
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
 
           <input
             type="text"
             placeholder="Search customer..."
             value={search}
-            onChange={(e) =>
-              setSearch(
-                e.target.value
-              )
-            }
-            className="w-full pl-11 pr-4 py-3 rounded-2xl border bg-[#f7f3eb] outline-none focus:ring-2 focus:ring-[#d4af37]"
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-11 pr-11 py-3 rounded-2xl border bg-[#f7f3eb] outline-none focus:ring-2 focus:ring-[#d4af37]"
           />
 
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0B1D34] transition"
+              aria-label="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
       </div>
@@ -309,7 +310,7 @@ export default function Customers() {
             <tbody>
 
               {filteredUsers.length ===
-              0 ? (
+                0 ? (
 
                 <tr>
 
@@ -407,11 +408,10 @@ export default function Customers() {
                       <td className="px-6 py-5">
 
                         <span
-                          className={`px-4 py-1 rounded-full text-sm font-medium ${
-                            user.isActive
+                          className={`px-4 py-1 rounded-full text-sm font-medium ${user.isActive
                               ? "bg-green-100 text-green-700"
                               : "bg-red-100 text-red-700"
-                          }`}
+                            }`}
                         >
 
                           {user.isActive
@@ -436,15 +436,14 @@ export default function Customers() {
                             actionLoading ===
                             user._id
                           }
-                          className={`inline-flex items-center gap-2 px-5 py-2 rounded-2xl font-medium transition ${
-                            user.isActive
+                          className={`inline-flex items-center gap-2 px-5 py-2 rounded-2xl font-medium transition ${user.isActive
                               ? "bg-red-500 hover:bg-red-600 text-white"
                               : "bg-green-600 hover:bg-green-700 text-white"
-                          }`}
+                            }`}
                         >
 
                           {actionLoading ===
-                          user._id ? (
+                            user._id ? (
 
                             <Loader2 className="w-4 h-4 animate-spin" />
 

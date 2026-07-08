@@ -10,6 +10,7 @@ import axios from "axios";
 import Link from "next/link";
 
 import { useCart } from "@/context/CartContext";
+import { X } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -201,24 +202,27 @@ export default function StorePage() {
 
           {/* LEFT */}
           <div className="flex flex-1 flex-wrap items-center gap-4">
-
             {/* SEARCH */}
             <div className="relative flex-1 min-w-[220px] max-w-xs">
-
               <input
                 type="text"
                 placeholder="Search titles, authors..."
                 value={search}
-                onChange={(e) =>
-                  setSearch(
-                    e.target.value
-                  )
-                }
-                className="w-full px-4 py-2.5 border border-[#e5ddd0] rounded-xl text-sm bg-[#faf8f5] focus:outline-none focus:border-[#c9a84c]"
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full px-4 pr-10 py-2.5 border border-[#e5ddd0] rounded-xl text-sm bg-[#faf8f5] focus:outline-none focus:border-[#c9a84c]"
               />
 
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition"
+                  aria-label="Clear search"
+                >
+               <X/>
+                </button>
+              )}
             </div>
-
             {/* CATEGORIES */}
             <div className="flex items-center gap-2 flex-wrap">
 

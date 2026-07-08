@@ -11,6 +11,7 @@ import axios from "axios";
 import {
   Loader2,
   Search,
+  X,
 } from "lucide-react";
 import { BankType } from "@/components/admin/bank/bank.types";
 import BankDetailsModal from "@/components/admin/bank/BankDetailsModal";
@@ -425,19 +426,28 @@ export default function BanksAdmin() {
 
           <div className="relative w-full md:w-[320px]">
 
-            <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <div className="relative w-full md:w-[320px]">
+              <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
 
-            <input
-              type="text"
-              placeholder="Search bank..."
-              value={search}
-              onChange={(e) =>
-                setSearch(
-                  e.target.value
-                )
-              }
-              className="w-full rounded-2xl border bg-[#f7f3eb] py-3 pl-11 pr-4 outline-none focus:ring-2 focus:ring-[#d4af37]"
-            />
+              <input
+                type="text"
+                placeholder="Search bank..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full rounded-2xl border bg-[#f7f3eb] py-3 pl-11 pr-11 outline-none focus:ring-2 focus:ring-[#d4af37]"
+              />
+
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0B1D34] transition"
+                  aria-label="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
 
           </div>
 

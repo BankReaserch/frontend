@@ -111,49 +111,65 @@ export default function Navbar() {
 
         {/* CTA */}
         {/* RIGHT SIDE */}
-        <div className="hidden md:flex items-center gap-4">
+       {/* RIGHT SIDE */}
+<div className="hidden md:flex items-center gap-3">
 
-          {/* CART */}
-          {totalItems > 0 && (
-            <Link
-              href="/cart"
-              className="relative flex items-center gap-2 border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition"
-            >
-              {/* Icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 6.2a1 1 0 001 .8h12.6"
-                />
-              </svg>
+  {/* Subscribe */}
+  <Link
+    href="/subscribe"
+    className="border border-[#C8A75B] text-[#C8A75B] px-5 py-2 rounded-md text-sm font-medium hover:bg-[#C8A75B] hover:text-black transition"
+  >
+    SUBSCRIBE
+  </Link>
 
-              <span className="text-white text-sm font-medium">
-                Cart
-              </span>
+  {/* Login */}
+  <Link
+    href="/login"
+    className="border border-white/20 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-white hover:text-black transition"
+  >
+    LOGIN
+  </Link>
 
-              {/* Badge */}
-              <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#C8A75B] text-black text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-[#0B1C2C]">
-                {totalItems}
-              </div>
-            </Link>
-          )}
+  {/* CART */}
+  {totalItems > 0 && (
+    <Link
+      href="/cart"
+      className="relative flex items-center gap-2 border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-5 h-5 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 6.2a1 1 0 001 .8h12.6"
+        />
+      </svg>
 
-          {/* CONTACT BUTTON */}
-          <Link
-            href={"/contact"}
-            className="bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition"
-          >
-            CONTACT US
-          </Link>
-        </div>
+      <span className="text-white text-sm font-medium">
+        Cart
+      </span>
+
+      <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#C8A75B] text-black text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-[#0B1C2C]">
+        {totalItems}
+      </div>
+    </Link>
+  )}
+
+  {/* Contact */}
+  <Link
+    href="/contact"
+    className="bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition"
+  >
+    CONTACT US
+  </Link>
+
+</div>
 
         {/* MOBILE MENU BUTTON */}
         <button
