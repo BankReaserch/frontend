@@ -1,19 +1,20 @@
 "use client";
 
-import { ArrowRight, Download, ExternalLink, FileText, X, Crown, Lock, Sparkles,Calendar } from "lucide-react";
+import { ArrowRight, Download, ExternalLink, FileText, X, Crown, Lock, Sparkles, Calendar } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BankType } from "../../components/admin/bank/bank.types";
 import { STATUS_CFG } from "./status.config";
 import StatusBadge from "./Statusbadge";
+import ReportPreviewModal from "./ReportPreviewModal";
 
 interface Props {
   bank: BankType;
   onClose: () => void;
 }
 
-// ─── Premium Gate Modal ────────────────────────────────────────────────────────
+// ─── Premium Gate Modal (used for Download, which stays fully gated) ──────────
 
 function PremiumGate({ onClose }: { onClose: () => void }) {
   const router = useRouter();
@@ -105,24 +106,31 @@ function PremiumGate({ onClose }: { onClose: () => void }) {
 export default function DetailPanel({ bank, onClose }: Props) {
   const cfg = STATUS_CFG[bank.status] ?? STATUS_CFG["undetermined"];
   const [showGate, setShowGate] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+
+  const previewUrl = `${process.env.NEXT_PUBLIC_API_URL}api/banks/preview-report/${bank._id}`;
 
   const handleProtectedAction = async (
     action: "view" | "download"
   ) => {
     try {
-      // Ping the view-report endpoint with a HEAD-like check first.
-      // We use a GET but intercept the 403 before the browser navigates.
       if (action === "view") {
         const url = `${process.env.NEXT_PUBLIC_API_URL}api/banks/view-report/${bank._id}`;
-        // Try fetching with credentials — if 403, show gate; if ok, open tab
+
+        // Try the full (gated) report first — active-plan users go
+        // straight through, same as before.
         const res = await axios.get(url, {
           withCredentials: true,
-          // Tell axios to resolve even on 4xx so we can inspect the code
           validateStatus: () => true,
         });
 
-        if (res.status === 403 && res.data?.code === "NO_ACTIVE_PLAN") {
-          setShowGate(true);
+        if (res.status !== 200) {
+          // Anything other than a successful fetch means this visitor
+          // can't see the full report — whether that's 401 (not logged
+          // in at all, the common case on a public directory page) or
+          // 403 NO_ACTIVE_PLAN (logged in, no plan). Either way, show
+          // the free preview instead of a hard wall.
+          setShowPreview(true);
           return;
         }
 
@@ -136,7 +144,9 @@ export default function DetailPanel({ bank, onClose }: Props) {
           validateStatus: () => true,
         });
 
-        if (res.status === 403 && res.data?.code === "NO_ACTIVE_PLAN") {
+        if (res.status !== 200) {
+          // Downloading the full file stays a hard gate — no partial
+          // download makes sense the way a partial view does.
           setShowGate(true);
           return;
         }
@@ -149,6 +159,14 @@ export default function DetailPanel({ bank, onClose }: Props) {
   return (
     <>
       {showGate && <PremiumGate onClose={() => setShowGate(false)} />}
+
+      {showPreview && (
+        <ReportPreviewModal
+          bankName={bank.name}
+          previewUrl={previewUrl}
+          onClose={() => setShowPreview(false)}
+        />
+      )}
 
       <div className="rounded-2xl overflow-hidden border border-[#e8e2d6] bg-white shadow-lg">
         {/* Header */}
@@ -283,7 +301,7 @@ export default function DetailPanel({ bank, onClose }: Props) {
               </button>
             </div>
           ) : (
-    
+
             <button
               onClick={() => setShowGate(true)}
               className="w-full flex items-center justify-center gap-2 rounded-xl border border-dashed border-[#e8e2d6] bg-[#fafaf8] py-3 text-[12px] text-[#94a3b8] hover:border-[#c8a21a]/40 hover:text-[#c8a21a] transition-all"
