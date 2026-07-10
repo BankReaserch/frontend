@@ -6,12 +6,10 @@ import {
 } from "react";
 
 import axios from "axios";
-
 import Link from "next/link";
 
 import { useCart } from "@/context/CartContext";
 import { X } from "lucide-react";
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -554,7 +552,6 @@ export default function StorePage() {
             </div>
 
           )}
-
       </div>
 
       <Footer />

@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import HeterIskaSection from "@/components/HeterIskaSection";
 import Navbar from "@/components/Navbar"
+import ProgramsHighlights from "@/components/ProgramsHighlights";
 import StoreSection from "@/components/StoreSection";
 import Link from "next/link";
 
@@ -26,6 +27,7 @@ const Home = () => {
       <HeterIskaSection/>
       <AboutSection/>
       <StoreSection/>
+         <ProgramsHighlights/>
       <section className="bg-[#0d1b2a] px-6 lg:px-16 py-20 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.04]"
@@ -52,6 +54,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+   
       <Footer/>
 
     </>

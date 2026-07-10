@@ -63,7 +63,7 @@ export default function page() {
                 </section>
 
                 {/* SCHOOL & COMMUNITY */}
-                <section className="pb-24">
+                <section className="pb-24" id="school-program">
                     <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* IMAGE */}
                         <div className="relative">
@@ -123,7 +123,7 @@ export default function page() {
                 </section>
 
                 {/* BUSINESS OUTREACH */}
-                <section className="pb-24">
+                <section className="pb-24" id="rabbinical-training">
                     <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* CONTENT */}
                         <div className="order-2 lg:order-1" id="investments">

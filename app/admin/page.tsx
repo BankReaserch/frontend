@@ -21,6 +21,7 @@ import AdminAlertsPage from "./Alert";
 import AdminBrokersPage from "./BrokersPage";
 import InvestmentsPageAdmim from "./InvestmentsPage";
 import AdminSubscriptionsPage from "./subscribers";
+import VideoTable from "./VideoTable";
 
 export default function DashboardPage() {
 
@@ -223,17 +224,13 @@ export default function DashboardPage() {
 
           </div>
         );
-
-      case "Products":
+        case "Video":
 
         return (
           <div className="mt-6">
-
-
-
+           <VideoTable/>
           </div>
         );
-
       case "Books":
 
         return (

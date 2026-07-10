@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   ShoppingCart,
   FileVolume,
+  FileVideoCamera,
   CircleAlert,
   HandCoins,
   Users,
@@ -34,7 +35,10 @@ const menu = [
     name: "Audio",
     icon: FileVolume,
   },
- 
+   {
+    name: "Video",
+    icon: FileVideoCamera,
+  },
   {
     name: "Books",
     icon: BookUser,

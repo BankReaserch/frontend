@@ -108,69 +108,62 @@ export default function Navbar() {
             <NavDropdown key={item.name} item={item} />
           ))}
         </nav>
+{/* DESKTOP ACTIONS */}
+<div className="hidden md:flex items-center gap-4">
 
-        {/* CTA */}
-        {/* RIGHT SIDE */}
-       {/* RIGHT SIDE */}
-<div className="hidden md:flex items-center gap-3">
-
-  {/* Subscribe */}
-  <Link
-    href="/subscribe"
-    className="border border-[#C8A75B] text-[#C8A75B] px-5 py-2 rounded-md text-sm font-medium hover:bg-[#C8A75B] hover:text-black transition"
-  >
-    SUBSCRIBE
-  </Link>
-
-  {/* Login */}
-  <Link
-    href="/login"
-    className="border border-white/20 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-white hover:text-black transition"
-  >
-    LOGIN
-  </Link>
-
-  {/* CART */}
-  {totalItems > 0 && (
+  {/* Secondary actions: Login + Subscribe */}
+  <div className="flex items-center gap-4 pr-4 border-r border-white/10">
     <Link
-      href="/cart"
-      className="relative flex items-center gap-2 border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition"
+      href="/login"
+      className="text-sm font-medium text-gray-300 hover:text-white transition"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 text-white"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 6.2a1 1 0 001 .8h12.6"
-        />
-      </svg>
-
-      <span className="text-white text-sm font-medium">
-        Cart
-      </span>
-
-      <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#C8A75B] text-black text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-[#0B1C2C]">
-        {totalItems}
-      </div>
+      Login
     </Link>
-  )}
 
-  {/* Contact */}
-  <Link
-    href="/contact"
-    className="bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition"
-  >
-    CONTACT US
-  </Link>
+    <Link
+      href="/subscribe"
+      className="border border-[#C8A75B] text-[#C8A75B] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#C8A75B] hover:text-black transition"
+    >
+      Subscribe
+    </Link>
+  </div>
 
+  {/* Primary actions: Cart + Contact */}
+  <div className="flex items-center gap-3">
+    {totalItems > 0 && (
+      <Link
+        href="/cart"
+        className="relative flex items-center gap-2 border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 6.2a1 1 0 001 .8h12.6"
+          />
+        </svg>
+        <span className="text-white text-sm font-medium">Cart</span>
+        <div className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 bg-[#C8A75B] text-black text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-[#0B1C2C]">
+          {totalItems}
+        </div>
+      </Link>
+    )}
+
+    <Link
+      href="/contact"
+      className="bg-[#C8A75B] text-black px-5 py-2 rounded-md text-sm font-medium hover:opacity-90 transition"
+    >
+      Contact Us
+    </Link>
+  </div>
 </div>
-
         {/* MOBILE MENU BUTTON */}
         <button
           onClick={() => setOpen(!open)}
