@@ -11,7 +11,7 @@ import Topbar from "@/components/dashboard/Topbar";
 import StatCard from "@/components/dashboard/StatCard";
 import RevenueChart from "@/components/dashboard/RevenueChart";
 import OrdersTable from "@/components/dashboard/OrdersTable";
-import AudioTable from "@/components/dashboard/AudioTable";
+import AudioTable from "./AudioTable";
 import Books from "./Books";
 import QNA from "./Q&A";
 import Customers from "./Customers";
@@ -220,7 +220,7 @@ export default function DashboardPage() {
         return (
           <div className="mt-6">
 
-            <AudioTable />
+            <AudioTable/>
 
           </div>
         );

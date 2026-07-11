@@ -8,6 +8,8 @@ import {
     Lock,
     Pause,
     Play,
+    RotateCcw,
+    RotateCw,
     Search,
     Video as VideoIcon,
     X,
@@ -28,6 +30,8 @@ interface MediaType {
     series: string;
     createdAt: string;
 }
+
+const SKIP_SECONDS = 10;
 
 export default function MediaLibraryPage() {
 
@@ -224,12 +228,35 @@ export default function MediaLibraryPage() {
 
         const audio = audioRefs.current[id];
 
-        if (!audio) return;
+        if (!audio || !isFinite(audio.duration)) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
         const percent = (e.clientX - rect.left) / rect.width;
 
         audio.currentTime = percent * audio.duration;
+
+        setCurrentTimes((prev) => ({
+            ...prev,
+            [id]: audio.currentTime,
+        }));
+    };
+
+    // REWIND / FAST-FORWARD
+    const skipAudio = (id: string, delta: number) => {
+
+        const audio = audioRefs.current[id];
+
+        if (!audio || !isFinite(audio.duration)) return;
+
+        audio.currentTime = Math.min(
+            Math.max(audio.currentTime + delta, 0),
+            audio.duration
+        );
+
+        setCurrentTimes((prev) => ({
+            ...prev,
+            [id]: audio.currentTime,
+        }));
     };
 
     // =========================
@@ -477,12 +504,21 @@ export default function MediaLibraryPage() {
                                                     </p>
 
                                                     {/* PLAYER */}
-                                                    <div className="flex items-center gap-4 mt-8">
+                                                    <div className="flex items-center gap-3 mt-8">
+
+                                                        {/* REWIND 10s */}
+                                                        <button
+                                                            onClick={() => skipAudio(audio._id, -SKIP_SECONDS)}
+                                                            title="Back 10s"
+                                                            className="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-[#8a9bb0] hover:text-[#c9a84c] hover:bg-[#c9a84c]/10 transition-all"
+                                                        >
+                                                            <RotateCcw size={16} />
+                                                        </button>
 
                                                         <button
                                                             onClick={() => toggleAudio(audio._id)}
-                                                            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${isPlaying
-                                                                ? "bg-[#c9a84c] scale-105"
+                                                            className={`w-14 h-14 shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${isPlaying
+                                                                ? "bg-[#c9a84c] scale-105 shadow-[0_0_0_6px_rgba(201,168,76,0.15)]"
                                                                 : "bg-[#f5f0e8] hover:scale-105"
                                                                 }`}
                                                         >
@@ -493,7 +529,16 @@ export default function MediaLibraryPage() {
                                                             )}
                                                         </button>
 
-                                                        <div className="flex-1">
+                                                        {/* FAST-FORWARD 10s */}
+                                                        <button
+                                                            onClick={() => skipAudio(audio._id, SKIP_SECONDS)}
+                                                            title="Forward 10s"
+                                                            className="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-[#8a9bb0] hover:text-[#c9a84c] hover:bg-[#c9a84c]/10 transition-all"
+                                                        >
+                                                            <RotateCw size={16} />
+                                                        </button>
+
+                                                        <div className="flex-1 min-w-0">
 
                                                             <audio
                                                                 ref={(el) => {
