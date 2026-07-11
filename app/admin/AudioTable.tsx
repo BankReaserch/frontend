@@ -19,7 +19,10 @@ import {
   Loader2,
   RotateCcw,
   RotateCw,
+  Pencil,
 } from "lucide-react";
+
+import Modal from "@/components/utils/modal/FormModel";
 
 interface AudioItem {
   _id: string;
@@ -75,6 +78,33 @@ export default function AudioTable() {
   const audioRefs = useRef<{
     [key: string]: HTMLAudioElement | null;
   }>({});
+
+  // =========================
+  // EDIT MODAL STATE
+  // =========================
+  const [editOpen, setEditOpen] =
+    useState(false);
+
+  const [editingAudio, setEditingAudio] =
+    useState<AudioItem | null>(null);
+
+  const [editTitle, setEditTitle] =
+    useState("");
+
+  const [editArtist, setEditArtist] =
+    useState("");
+
+  const [editCategory, setEditCategory] =
+    useState("English");
+
+  const [editSeries, setEditSeries] =
+    useState("");
+
+  const [editFile, setEditFile] =
+    useState<File | null>(null);
+
+  const [savingEdit, setSavingEdit] =
+    useState(false);
 
   // =========================
   // FETCH AUDIOS
@@ -250,8 +280,123 @@ export default function AudioTable() {
             item._id !== id
         )
       );
+
+      if (editingAudio?._id === id) {
+        handleEditClose();
+      }
     } catch (error: any) {
       alert(error.message);
+    }
+  };
+
+  // =========================
+  // EDIT AUDIO
+  // =========================
+  const handleEditOpen = (
+    audio: AudioItem
+  ) => {
+    // stop playback before editing
+    const currentAudio =
+      audioRefs.current[audio._id];
+
+    if (currentAudio) {
+      currentAudio.pause();
+    }
+
+    if (playingId === audio._id) {
+      setPlayingId(null);
+    }
+
+    setEditingAudio(audio);
+    setEditTitle(audio.title);
+    setEditArtist(audio.artist);
+    setEditCategory(
+      audio.category || "English"
+    );
+    setEditSeries(audio.series || "");
+    setEditFile(null);
+
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+    setEditingAudio(null);
+    setEditFile(null);
+  };
+
+  const handleEditSave = async () => {
+    if (!editingAudio) return;
+
+    if (!editTitle.trim()) {
+      return alert(
+        "Please enter audio title"
+      );
+    }
+
+    try {
+      setSavingEdit(true);
+
+      const formData =
+        new FormData();
+
+      formData.append(
+        "title",
+        editTitle
+      );
+
+      formData.append(
+        "artist",
+        editArtist
+      );
+
+      formData.append(
+        "category",
+        editCategory
+      );
+
+      formData.append(
+        "series",
+        editSeries
+      );
+
+      if (editFile) {
+        formData.append(
+          "audio",
+          editFile
+        );
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}api/audio/${editingAudio._id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+          "Update failed"
+        );
+      }
+
+      await fetchAudios();
+
+      handleEditClose();
+
+      alert(
+        "Audio updated successfully"
+      );
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -793,6 +938,21 @@ export default function AudioTable() {
 
                       <div className="flex items-center justify-end gap-3">
 
+                        {/* EDIT */}
+                        <button
+                          onClick={() =>
+                            handleEditOpen(
+                              audio
+                            )
+                          }
+                          className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/5 hover:bg-[#c9a84c]/10 flex items-center justify-center transition"
+                        >
+                          <Pencil
+                            size={18}
+                            className="text-[#c9a84c]"
+                          />
+                        </button>
+
                         {/* DOWNLOAD */}
                         <a
                           href={`${process.env.NEXT_PUBLIC_API_URL}api/audio/download/${audio._id}`}
@@ -831,6 +991,154 @@ export default function AudioTable() {
           </tbody>
         </table>
       </div>
+
+      {/* EDIT MODAL */}
+      <Modal
+        open={editOpen}
+        onClose={handleEditClose}
+        title="Edit Audio"
+        description="Update the details for this audio"
+        size="md"
+        footer={
+          <>
+            <button
+              onClick={handleEditClose}
+              disabled={savingEdit}
+              className="px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 transition disabled:opacity-50"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleEditSave}
+              disabled={savingEdit}
+              className="px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#c9a84c] hover:bg-[#d4b567] text-[#0b1d2d] transition disabled:opacity-50 flex items-center gap-2"
+            >
+              {savingEdit ? (
+                <>
+                  <Loader2
+                    size={16}
+                    className="animate-spin"
+                  />
+                  Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </button>
+          </>
+        }
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          {/* TITLE */}
+          <input
+            type="text"
+            placeholder="Audio Name"
+            value={editTitle}
+            onChange={(e) =>
+              setEditTitle(
+                e.target.value
+              )
+            }
+            className="sm:col-span-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
+          />
+
+          {/* ARTIST */}
+          <input
+            type="text"
+            placeholder="Speaker / Artist"
+            value={editArtist}
+            onChange={(e) =>
+              setEditArtist(
+                e.target.value
+              )
+            }
+            className="sm:col-span-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
+          />
+
+          {/* CATEGORY */}
+          <select
+            value={editCategory}
+            onChange={(e) =>
+              setEditCategory(
+                e.target.value
+              )
+            }
+            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
+          >
+            <option value="English">
+              English
+            </option>
+            <option value="Hebrew">
+              Hebrew
+            </option>
+            <option value="Yiddish">
+              Yiddish
+            </option>
+          </select>
+
+          {/* SERIES */}
+          <select
+            value={editSeries}
+            onChange={(e) =>
+              setEditSeries(
+                e.target.value
+              )
+            }
+            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
+          >
+            <option value="">
+              Regular Shiur
+            </option>
+
+            <option value="5 Minute English Series">
+              5 Minute English Series
+            </option>
+
+            <option value="5 Minute Hebrew Series">
+              5 Minute Hebrew Series
+            </option>
+
+            <option value="5 Minute Yiddish Series">
+              5 Minute Yiddish Series
+            </option>
+          </select>
+
+          {/* REPLACE FILE (optional) */}
+          <label
+            htmlFor="edit-audio-upload"
+            className="sm:col-span-2 bg-gray-50 border border-dashed border-[#c9a84c]/40 rounded-xl px-4 py-3 cursor-pointer flex items-center gap-3 hover:bg-gray-100 transition"
+          >
+            <UploadCloud
+              size={18}
+              className="text-[#c9a84c]"
+            />
+
+            <span className="text-sm text-gray-500 truncate">
+              {editFile
+                ? editFile.name
+                : "Replace audio file (optional)"}
+            </span>
+
+            <input
+              id="edit-audio-upload"
+              type="file"
+              accept="audio/*"
+              hidden
+              onChange={(e) =>
+                setEditFile(
+                  e.target
+                    .files?.[0] ||
+                  null
+                )
+              }
+            />
+          </label>
+
+        </div>
+      </Modal>
+
     </div>
   );
 }
