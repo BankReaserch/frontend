@@ -442,7 +442,6 @@ export default function BanksPage() {
           </div>
         </section>
 
-        {/* ── REQUEST CTA ──────────────────────────────────────── */}
         <div className="mx-auto max-w-6xl px-6 pb-24" id="bankrequest">
           <div className="rounded-3xl bg-[#051933] px-8 py-9 md:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-7">
             <div>

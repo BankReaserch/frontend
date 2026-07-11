@@ -69,6 +69,10 @@ const menu = [
     name: "Investments",
     icon: HandCoins,
   },
+  {
+    name: "BankRequest",
+    icon: Landmark,
+  },
    {
     name: "Q&A",
     icon: CircleQuestionMark,
