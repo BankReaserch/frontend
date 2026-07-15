@@ -26,9 +26,11 @@ const Home = () => {
       <AskSection/>
       <HeterIskaSection/>
       <AboutSection/>
-      <StoreSection/>
+     
          <ProgramsHighlights/>
-      <section className="bg-[#0d1b2a] px-6 lg:px-16 py-20 relative overflow-hidden">
+      
+    <StoreSection/>
+    <section className="bg-[#0d1b2a] px-6 lg:px-16 py-20 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -54,7 +56,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-   
       <Footer/>
 
     </>
