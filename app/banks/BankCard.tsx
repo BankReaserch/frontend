@@ -98,6 +98,7 @@ import {
   Calendar,
   Globe,
   FileText,
+  MapPin,
   MessageSquarePlus,
   HelpCircle,
 } from "lucide-react";
@@ -152,6 +153,13 @@ export default function BankCard({ bank, onViewReport }: Props) {
             )}
           </div>
           <p className="text-[11px] text-[#94a3b8] mt-1">{bank.type}</p>
+
+          {bank.hq && (
+            <p className="mt-1.5 flex items-center gap-1 text-[11px] text-[#64748b]">
+              <MapPin className="h-3 w-3 shrink-0 text-[#c8a21a]/70" />
+              <span className="truncate">{bank.hq}</span>
+            </p>
+          )}
         </div>
 
         <div className="mb-3">
@@ -159,12 +167,6 @@ export default function BankCard({ bank, onViewReport }: Props) {
         </div>
 
         <div className="mt-3 border-t border-[#f1ede6] pt-3 space-y-2">
-          {bank.hq && (
-            <p className="text-[11px] text-[#64748b] truncate">
-              {bank.hq}
-            </p>
-          )}
-
           {bank.lastReviewed && (
             <div className="inline-flex items-center gap-1.5 rounded-full bg-[#faf6ea] border border-[#eadfb9] px-2.5 py-1 text-[10px] font-medium text-[#8b6b00]">
               <Calendar className="h-3 w-3" />
@@ -190,13 +192,13 @@ export default function BankCard({ bank, onViewReport }: Props) {
           </div>
         )}
 
-        {bank.publicInfo && bank.publicInfo !== bank.summary && (
+        {bank.notes && bank.notes !== bank.summary && (
           <div className="mt-3">
             <p className="mb-1 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-[#94a3b8]">
               Notes
             </p>
             <p className="text-[12px] leading-relaxed text-[#475569] line-clamp-3">
-              {bank.publicInfo}
+              {bank.notes}
             </p>
           </div>
         )}
