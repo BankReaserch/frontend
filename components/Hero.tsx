@@ -80,32 +80,27 @@ export default function Hero() {
         {/* LEFT */}
         <div>
 
-          {/* Badge */}
-          {/* <div className="inline-flex items-center gap-2 rounded-full border border-[#c8a75b] text-[#c8a75b] text-[10px] font-medium tracking-[0.1em] px-3.5 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c8a75b] shrink-0" />
-            Welcome To RIBIS
-          </div> */}
           <motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.8 }}
-  className="inline-flex items-center gap-2 rounded-full border border-[#c8a75b] text-[#c8a75b] text-[10px] font-medium tracking-[0.1em] px-3.5 py-1.5 mb-6 overflow-hidden"
->
-  <span className="w-1.5 h-1.5 rounded-full bg-[#c8a75b]" />
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="inline-flex items-center gap-2 rounded-full border border-[#c8a75b] text-[#c8a75b] text-[10px] font-medium tracking-[0.1em] px-3.5 py-1.5 mb-6 overflow-hidden"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c8a75b]" />
 
-  <motion.span
-    initial={{ width: 0 }}
-    animate={{ width: "100%" }}
-    transition={{
-      duration: 1.4,
-      delay: 0.3,
-      ease: [0.22, 1, 0.36, 1],
-    }}
-    className="overflow-hidden whitespace-nowrap"
-  >
-    WELCOME TO RIBIS
-  </motion.span>
-</motion.div>
+            <motion.span
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{
+                duration: 1.4,
+                delay: 0.3,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              WELCOME TO RIBIS
+            </motion.span>
+          </motion.div>
 
           {/* Eyebrow */}
           <p className="text-[#c8a75b] text-[10px] tracking-[0.25em] mb-5 uppercase">
@@ -186,7 +181,7 @@ export default function Hero() {
             </Link>
 
             <Link
-              href="/contact"
+              href="/bais-horaah"
               className="
                 inline-flex
                 items-center

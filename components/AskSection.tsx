@@ -119,7 +119,7 @@ export default function AskSection() {
           <div className="relative z-10 mt-12 text-center">
 
             <Link
-              href="/ask-a-shaalah"
+              href="/bais-horaah"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#C8A75B] text-[#0B1C2C] font-semibold hover:scale-[1.02] transition"
             >
 
