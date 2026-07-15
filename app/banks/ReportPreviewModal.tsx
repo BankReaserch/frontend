@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Crown, FileText, FileWarning, X } from "lucide-react";
+import { ArrowRight, Crown, FileText, FileWarning, Lock, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,12 +11,6 @@ interface Props {
 }
 
 type PreviewStatus = "loading" | "ready" | "unavailable";
-
-// Shown when a user without an active plan clicks "View Report".
-// Embeds the server-truncated (1-2 page) preview PDF and pins an
-// upgrade CTA over the bottom of it. The full report is never sent
-// to the browser here — the security boundary lives on the server,
-// this is purely presentation.
 export default function ReportPreviewModal({
   bankName,
   previewUrl,
@@ -27,11 +21,6 @@ export default function ReportPreviewModal({
 
   useEffect(() => {
     let cancelled = false;
-
-    // Check the endpoint before ever embedding it — if the preview
-    // hasn't been generated yet (older report predating this
-    // feature, or generation failed), the API returns JSON, not a
-    // PDF. We don't want that raw response showing up in an iframe.
     const checkPreview = async () => {
       try {
         const res = await fetch(previewUrl, { method: "HEAD" });
@@ -115,40 +104,45 @@ export default function ReportPreviewModal({
                 className="mt-2 inline-flex items-center gap-2 rounded-2xl bg-[#c8a21a] px-6 py-3 text-[13px] font-semibold text-[#051933] transition-all hover:-translate-y-0.5 hover:bg-[#d7b52f]"
               >
                 <Crown className="h-4 w-4" />
-                Unlock Full Report
+                Upgrade to View Full Report
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
           )}
 
           {status === "ready" && (
-            <>
+            <div className="relative h-full w-full">
               <iframe
-                src={`${previewUrl}#toolbar=0&navpanes=0`}
+                src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                 title="Report preview"
-                className="h-full w-full border-none"
+                tabIndex={-1}
+                className="pointer-events-none h-full w-full scale-105 select-none border-none blur-lg"
               />
+              <div className="absolute inset-0 bg-white/50" />
 
-              {/* Fade so the cutoff feels intentional, not broken */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/90 to-transparent" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#051933] shadow-lg">
+                  <Lock className="h-6 w-6 text-[#c8a21a]" />
+                </div>
 
-              <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 px-6 pb-6 pt-2">
-                <p className="max-w-sm text-center text-[12px] text-[#64748b]">
-                  You&apos;re viewing the first pages for free. Upgrade to
-                  Premium to read the full halachic research report and
-                  posek rulings.
-                </p>
-
+                <div>
+                  <p className="font-serif text-xl text-[#051933]">
+                    This report is locked
+                  </p>
+                  <p className="mt-2 max-w-sm whitespace-nowrap text-[13px] leading-relaxed text-[#475569]">
+                    Upgrade to Premium to read the full research report for {bankName}.
+                  </p>
+                </div>
                 <button
                   onClick={() => router.push("/plan")}
-                  className="pointer-events-auto inline-flex items-center gap-2 rounded-2xl bg-[#c8a21a] px-6 py-3 text-[13px] font-semibold text-[#051933] transition-all hover:-translate-y-0.5 hover:bg-[#d7b52f]"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-[#c8a21a] px-6 py-3 text-[13px] font-semibold text-[#051933] transition-all hover:-translate-y-0.5 hover:bg-[#d7b52f]"
                 >
                   <Crown className="h-4 w-4" />
-                  Unlock Full Report
+                  Upgrade to View Full Report
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

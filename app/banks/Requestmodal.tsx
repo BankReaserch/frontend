@@ -48,7 +48,7 @@ const RequestModal = ({
       setErrorMessage("");
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/bank-request`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/bank-requests`,
         {
           bankName: form.name,
           location: form.location,
