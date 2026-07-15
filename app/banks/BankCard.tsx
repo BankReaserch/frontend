@@ -184,7 +184,7 @@ export default function BankCard({ bank, onViewReport }: Props) {
         {bank.summary && (
           <div className="mt-3 border-t border-[#f1ede6] pt-3">
             <p className="mb-1 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-[#94a3b8]">
-              Public Information
+              Notes
             </p>
             <p className="text-[12px] leading-relaxed text-[#475569] line-clamp-3">
               {bank.summary}
