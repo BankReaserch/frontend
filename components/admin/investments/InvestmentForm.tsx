@@ -28,6 +28,8 @@ type Props = {
   saving: boolean;
 
   onSubmit: () => void;
+
+  onCancel: () => void;
 };
 
 export default function InvestmentForm({
@@ -38,6 +40,7 @@ export default function InvestmentForm({
   isEditing,
   saving,
   onSubmit,
+  onCancel,
 }: Props) {
 
   const onChangeHandler = (
@@ -70,7 +73,7 @@ export default function InvestmentForm({
 
         </div>
 
-        <div>
+        <div className="flex-1">
 
           <h2 className="text-2xl font-bold text-[#051933]">
 
@@ -88,6 +91,18 @@ export default function InvestmentForm({
 
         </div>
 
+        {isEditing && (
+
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-sm font-medium text-[#c8a21a] hover:underline"
+          >
+            Cancel
+          </button>
+
+        )}
+
       </div>
 
       <div className="space-y-4">
@@ -95,7 +110,7 @@ export default function InvestmentForm({
         <input
           required
           name="name"
-          value={formData.name}
+          value={formData.name ?? ""}
           onChange={onChangeHandler}
           placeholder="Investment Name"
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
@@ -104,7 +119,7 @@ export default function InvestmentForm({
         <input
           required
           name="provider"
-          value={formData.provider}
+          value={formData.provider ?? ""}
           onChange={onChangeHandler}
           placeholder="Provider"
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
@@ -113,7 +128,7 @@ export default function InvestmentForm({
         <input
           required
           name="type"
-          value={formData.type}
+          value={formData.type ?? ""}
           onChange={onChangeHandler}
           placeholder="Investment Type"
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
@@ -121,7 +136,7 @@ export default function InvestmentForm({
 
         <input
           name="minimumInvestment"
-          value={formData.minimumInvestment}
+          value={formData.minimumInvestment ?? ""}
           onChange={onChangeHandler}
           placeholder="Minimum Investment"
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
@@ -129,15 +144,37 @@ export default function InvestmentForm({
 
         <input
           name="website"
-          value={formData.website}
+          value={formData.website ?? ""}
           onChange={onChangeHandler}
           placeholder="Website"
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
         />
 
+        <div className="grid grid-cols-2 gap-4">
+
+          <input
+            type="tel"
+            name="phoneNumber"
+            value={formData.phoneNumber ?? ""}
+            onChange={onChangeHandler}
+            placeholder="Phone Number"
+            className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
+          />
+
+          <input
+            type="email"
+            name="email"
+            value={formData.email ?? ""}
+            onChange={onChangeHandler}
+            placeholder="Email Address"
+            className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
+          />
+
+        </div>
+
         <select
           name="riskLevel"
-          value={formData.riskLevel}
+          value={formData.riskLevel ?? "Low"}
           onChange={onChangeHandler}
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
         >
@@ -156,7 +193,7 @@ export default function InvestmentForm({
 
         <select
           name="status"
-          value={formData.status}
+          value={formData.status ?? "Approved"}
           onChange={onChangeHandler}
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
         >
@@ -176,7 +213,7 @@ export default function InvestmentForm({
         <textarea
           rows={5}
           name="description"
-          value={formData.description}
+          value={formData.description ?? ""}
           onChange={onChangeHandler}
           placeholder="Investment Summary..."
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 resize-none outline-none focus:border-[#c8a21a]"
@@ -253,42 +290,70 @@ export default function InvestmentForm({
 
         {/* SUBMIT */}
 
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={saving}
-          className="
-            w-full
-            h-12
-            rounded-2xl
-            bg-[#051933]
-            hover:bg-[#0b2447]
-            text-white
-            font-medium
-            flex
-            items-center
-            justify-center
-            gap-2
-            transition
-            disabled:opacity-60
-          "
-        >
+        <div className="flex gap-3">
 
-          {saving ? (
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={saving}
+            className="
+              flex-1
+              h-12
+              rounded-2xl
+              bg-[#051933]
+              hover:bg-[#0b2447]
+              text-white
+              font-medium
+              flex
+              items-center
+              justify-center
+              gap-2
+              transition
+              disabled:opacity-60
+            "
+          >
 
-            <Loader2 className="w-5 h-5 animate-spin" />
+            {saving ? (
 
-          ) : (
+              <Loader2 className="w-5 h-5 animate-spin" />
 
-            <Save size={18} />
+            ) : (
+
+              <Save size={18} />
+
+            )}
+
+            {isEditing
+              ? "Update Investment"
+              : "Save Investment"}
+
+          </button>
+
+          {isEditing && (
+
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={saving}
+              className="
+                h-12
+                px-6
+                rounded-2xl
+                border
+                border-[#e8e2d6]
+                text-[#051933]
+                font-medium
+                hover:bg-[#f7f3eb]
+                transition
+                disabled:opacity-60
+              "
+            >
+              Cancel
+            </button>
 
           )}
 
-          {isEditing
-            ? "Update Investment"
-            : "Save Investment"}
-
-        </button>
+        </div>
 
       </div>
 

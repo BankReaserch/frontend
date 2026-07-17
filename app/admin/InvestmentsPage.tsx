@@ -48,28 +48,16 @@ export default function InvestmentsPageAdmin() {
       riskLevel: "Low",
       status: "Approved",
       website: "",
+      phoneNumber: "",
+      email: "",
       description: "",
     });
-
-  /*
-  ========================================
-  API
-  ========================================
-  */
-
   const api = axios.create({
     baseURL:
       process.env
         .NEXT_PUBLIC_API_URL,
     withCredentials: true,
   });
-
-  /*
-  ========================================
-  FETCH
-  ========================================
-  */
-
   const fetchInvestments =
     async () => {
       try {
@@ -101,6 +89,37 @@ export default function InvestmentsPageAdmin() {
 
   /*
   ========================================
+  NORMALIZE
+  ========================================
+  Guarantees every field on Investment has a
+  defined value, so form inputs stay controlled
+  even if the API returns a record missing
+  newer fields (e.g. older investments saved
+  before phoneNumber/email existed).
+  */
+
+  const normalizeInvestment = (
+    investment: Partial<Investment>
+  ): Investment => ({
+    _id: investment._id,
+    name: investment.name || "",
+    provider: investment.provider || "",
+    type: investment.type || "",
+    minimumInvestment:
+      investment.minimumInvestment || "",
+    riskLevel: investment.riskLevel || "Low",
+    status: investment.status || "Approved",
+    website: investment.website || "",
+    phoneNumber: investment.phoneNumber || "",
+    email: investment.email || "",
+    description: investment.description || "",
+    reportUrl: investment.reportUrl,
+    createdAt: investment.createdAt,
+    reportAvailable: investment.reportAvailable,
+  });
+
+  /*
+  ========================================
   RESET
   ========================================
   */
@@ -118,15 +137,11 @@ export default function InvestmentsPageAdmin() {
       riskLevel: "Low",
       status: "Approved",
       website: "",
+      phoneNumber: "",
+      email: "",
       description: "",
     });
   };
-
-  /*
-  ========================================
-  CREATE
-  ========================================
-  */
 
   const createInvestment =
     async () => {
@@ -172,6 +187,16 @@ export default function InvestmentsPageAdmin() {
         );
 
         form.append(
+          "phoneNumber",
+          formData.phoneNumber
+        );
+
+        form.append(
+          "email",
+          formData.email
+        );
+
+        form.append(
           "description",
           formData.description
         );
@@ -197,12 +222,6 @@ export default function InvestmentsPageAdmin() {
         setSaving(false);
       }
     };
-
-  /*
-  ========================================
-  UPDATE
-  ========================================
-  */
 
   const updateInvestment =
     async () => {
@@ -248,6 +267,16 @@ export default function InvestmentsPageAdmin() {
         );
 
         form.append(
+          "phoneNumber",
+          formData.phoneNumber
+        );
+
+        form.append(
+          "email",
+          formData.email
+        );
+
+        form.append(
           "description",
           formData.description
         );
@@ -273,13 +302,6 @@ export default function InvestmentsPageAdmin() {
         setSaving(false);
       }
     };
-
-  /*
-  ========================================
-  EDIT
-  ========================================
-  */
-
   const handleEdit = (
     investment: Investment
   ) => {
@@ -289,16 +311,10 @@ export default function InvestmentsPageAdmin() {
 
     setIsEditing(true);
 
-    setFormData({
-      ...investment,
-    });
+    setFormData(
+      normalizeInvestment(investment)
+    );
   };
-
-  /*
-  ========================================
-  DELETE
-  ========================================
-  */
 
   const handleDelete =
     async (id: string) => {
@@ -358,6 +374,7 @@ export default function InvestmentsPageAdmin() {
               ? updateInvestment
               : createInvestment
           }
+          onCancel={resetForm}
         />
 
         <InvestmentTable
@@ -436,6 +453,26 @@ export default function InvestmentsPageAdmin() {
                 </p>
               </div>
 
+              <div>
+                <p className="text-xs text-gray-500">
+                  Phone Number
+                </p>
+
+                <p className="font-medium">
+                  {selected.phoneNumber || "—"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs text-gray-500">
+                  Email
+                </p>
+
+                <p className="font-medium">
+                  {selected.email || "—"}
+                </p>
+              </div>
+
             </div>
 
             <div>
@@ -446,20 +483,28 @@ export default function InvestmentsPageAdmin() {
 
               </p>
 
-              <a
-                href={
-                  selected.website.startsWith(
-                    "http"
-                  )
-                    ? selected.website
-                    : `https://${selected.website}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#c8a21a] hover:underline"
-              >
-                {selected.website}
-              </a>
+              {selected.website ? (
+
+                <a
+                  href={
+                    selected.website.startsWith(
+                      "http"
+                    )
+                      ? selected.website
+                      : `https://${selected.website}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#c8a21a] hover:underline"
+                >
+                  {selected.website}
+                </a>
+
+              ) : (
+
+                <p className="text-gray-400">—</p>
+
+              )}
 
             </div>
 

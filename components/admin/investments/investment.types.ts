@@ -2,22 +2,21 @@ export type Investment = {
   _id?: string;
 
   name: string;
-
+  phoneNumber: string;
   provider: string;
-
+  email: string;
   type: string;
-
   minimumInvestment: string;
 
   riskLevel:
-    | "Low"
-    | "Moderate"
-    | "High";
+  | "Low"
+  | "Moderate"
+  | "High";
 
   status:
-    | "Approved"
-    | "Under Review"
-    | "Restricted";
+  | "Approved"
+  | "Under Review"
+  | "Restricted";
 
   website: string;
 
