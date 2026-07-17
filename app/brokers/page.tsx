@@ -364,7 +364,9 @@ export default function BrokersPage() {
 
                         <Home size={13} />
 
-                        {broker.mortgageType || "Residential"}
+                        {broker.mortgageType === "Both"
+                          ? "Residential & Commercial"
+                          : broker.mortgageType || "Residential"}
 
                       </span>
 
