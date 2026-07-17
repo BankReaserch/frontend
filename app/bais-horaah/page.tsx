@@ -126,7 +126,6 @@ export default function AskAShaalahPage() {
           </div>
         </section>
 
-        {/* ABOUT */}
         <section className="py-24">
 
           <div className="max-w-6xl mx-auto px-6">
@@ -162,129 +161,7 @@ export default function AskAShaalahPage() {
           </div>
 
         </section>
-
-        {/* AREAS OF GUIDANCE */}
-        <section className="pb-24">
-
-          <div className="max-w-6xl mx-auto px-6">
-
-            <div className="text-center">
-
-              <p className="text-[#C8A75B] uppercase tracking-[0.35em] text-xs font-semibold">
-                Areas of Guidance
-              </p>
-
-              <h2 className="mt-5 font-serif text-5xl text-[#051933]">
-                Frequently Addressed Topics
-              </h2>
-
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
-
-              {topics.map((topic) => (
-                <div
-                  key={topic}
-                  className="
-                    bg-white
-                    rounded-3xl
-                    border border-[#E7DFD2]
-                    p-6
-                    text-center
-                    text-[#051933]
-                    font-medium
-                    hover:border-[#C8A75B]
-                    transition-all
-                  "
-                >
-                  {topic}
-                </div>
-              ))}
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* PROCESS */}
-        <section className="pb-24">
-
-          <div className="max-w-6xl mx-auto px-6">
-
-            <div className="rounded-[40px] bg-[#051933] overflow-hidden relative p-10 md:p-16">
-
-              <div className="absolute right-0 top-0 w-[400px] h-[400px] bg-[#C8A75B]/10 rounded-full blur-3xl" />
-
-              <div className="relative">
-
-                <p className="text-[#C8A75B] uppercase tracking-[0.35em] text-xs font-semibold">
-                  Process
-                </p>
-
-                <h2 className="mt-5 font-serif text-5xl text-white">
-                  How It Works
-                </h2>
-
-                <div className="grid md:grid-cols-3 gap-10 mt-16">
-
-                  <div>
-                    <div className="w-16 h-16 rounded-2xl bg-[#C8A75B] text-[#051933] flex items-center justify-center text-xl font-bold">
-                      1
-                    </div>
-
-                    <h3 className="text-white text-2xl mt-6">
-                      Submit
-                    </h3>
-
-                    <p className="text-[#94A3B8] mt-4 leading-8">
-                      Submit your question together with
-                      any relevant information or documents.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="w-16 h-16 rounded-2xl bg-[#C8A75B] text-[#051933] flex items-center justify-center text-xl font-bold">
-                      2
-                    </div>
-
-                    <h3 className="text-white text-2xl mt-6">
-                      Review
-                    </h3>
-
-                    <p className="text-[#94A3B8] mt-4 leading-8">
-                      The matter is reviewed carefully by
-                      the appropriate Rabbinical authority.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="w-16 h-16 rounded-2xl bg-[#C8A75B] text-[#051933] flex items-center justify-center text-xl font-bold">
-                      3
-                    </div>
-
-                    <h3 className="text-white text-2xl mt-6">
-                      Guidance
-                    </h3>
-
-                    <p className="text-[#94A3B8] mt-4 leading-8">
-                      Receive clear and practical halachic
-                      direction for your situation.
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* CONTACT OPTIONS */}
-        <section className="pb-24">
+         <section className="pb-24">
 
           <div className="max-w-6xl mx-auto px-6">
 
@@ -411,6 +288,122 @@ export default function AskAShaalahPage() {
 
                     </div>
                   ))}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+        <section className="pb-24">
+
+          <div className="max-w-6xl mx-auto px-6">
+
+            <div className="text-center">
+
+              <p className="text-[#C8A75B] uppercase tracking-[0.35em] text-xs font-semibold">
+                Areas of Guidance
+              </p>
+
+              <h2 className="mt-5 font-serif text-5xl text-[#051933]">
+                Frequently Addressed Topics
+              </h2>
+
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
+
+              {topics.map((topic) => (
+                <div
+                  key={topic}
+                  className="
+                    bg-white
+                    rounded-3xl
+                    border border-[#E7DFD2]
+                    p-6
+                    text-center
+                    text-[#051933]
+                    font-medium
+                    hover:border-[#C8A75B]
+                    transition-all
+                  "
+                >
+                  {topic}
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+        </section>
+        <section className="pb-24">
+
+          <div className="max-w-6xl mx-auto px-6">
+
+            <div className="rounded-[40px] bg-[#051933] overflow-hidden relative p-10 md:p-16">
+
+              <div className="absolute right-0 top-0 w-[400px] h-[400px] bg-[#C8A75B]/10 rounded-full blur-3xl" />
+
+              <div className="relative">
+
+                <p className="text-[#C8A75B] uppercase tracking-[0.35em] text-xs font-semibold">
+                  Process
+                </p>
+
+                <h2 className="mt-5 font-serif text-5xl text-white">
+                  How It Works
+                </h2>
+
+                <div className="grid md:grid-cols-3 gap-10 mt-16">
+
+                  <div>
+                    <div className="w-16 h-16 rounded-2xl bg-[#C8A75B] text-[#051933] flex items-center justify-center text-xl font-bold">
+                      1
+                    </div>
+
+                    <h3 className="text-white text-2xl mt-6">
+                      Submit
+                    </h3>
+
+                    <p className="text-[#94A3B8] mt-4 leading-8">
+                      Submit your question together with
+                      any relevant information or documents.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="w-16 h-16 rounded-2xl bg-[#C8A75B] text-[#051933] flex items-center justify-center text-xl font-bold">
+                      2
+                    </div>
+
+                    <h3 className="text-white text-2xl mt-6">
+                      Review
+                    </h3>
+
+                    <p className="text-[#94A3B8] mt-4 leading-8">
+                      The matter is reviewed carefully by
+                      the appropriate Rabbinical authority.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="w-16 h-16 rounded-2xl bg-[#C8A75B] text-[#051933] flex items-center justify-center text-xl font-bold">
+                      3
+                    </div>
+
+                    <h3 className="text-white text-2xl mt-6">
+                      Guidance
+                    </h3>
+
+                    <p className="text-[#94A3B8] mt-4 leading-8">
+                      Receive clear and practical halachic
+                      direction for your situation.
+                    </p>
+                  </div>
 
                 </div>
 
