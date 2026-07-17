@@ -296,7 +296,7 @@ export default function page() {
                 </section>
 
                 {/* ALERTS */}
-                <section className="pb-28" id="alerts">
+                <section className="pb-28 text-center" id="alerts">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
                         <div className="relative overflow-hidden rounded-[40px] bg-[#051933] px-10 py-16">
                             <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-[#c8a21a]/20 blur-3xl" />

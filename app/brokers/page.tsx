@@ -8,14 +8,26 @@ import axios from "axios";
 import {
   Building2,
   Globe,
+  Home,
+  Mail,
   MapPin,
   Phone,
+  ShieldCheck,
 } from "lucide-react";
 
 import {
   useEffect,
   useState,
 } from "react";
+
+type MortgageType =
+  | "Residential"
+  | "Commercial"
+  | "Both";
+
+type KosherStatus =
+  | "Totally Kosher"
+  | "Offers Kosher Line";
 
 type Broker = {
   _id: string;
@@ -28,7 +40,17 @@ type Broker = {
 
   phone: string;
 
+  email: string;
+
   website: string;
+
+  mortgageType: MortgageType;
+
+  kosherStatus: KosherStatus;
+
+  kosherLine?: string;
+
+  logoUrl?: string;
 };
 
 export default function BrokersPage() {
@@ -289,18 +311,30 @@ export default function BrokersPage() {
 
                   <div
                     key={broker._id}
-                    className="group h-[620px] rounded-[32px] border border-[#ece4d8] bg-white p-8 shadow-[0_10px_40px_rgba(5,25,51,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(5,25,51,0.08)] flex flex-col"
+                    className="group h-[700px] rounded-[32px] border border-[#ece4d8] bg-white p-8 shadow-[0_10px_40px_rgba(5,25,51,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(5,25,51,0.08)] flex flex-col"
                   >
 
                     {/* TOP */}
                     <div className="flex items-start justify-between mb-7 flex-shrink-0">
 
-                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#c8a21a]/10">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#c8a21a]/10 overflow-hidden">
 
-                        <Building2
-                          size={30}
-                          className="text-[#c8a21a]"
-                        />
+                        {broker.logoUrl ? (
+
+                          <img
+                            src={broker.logoUrl}
+                            alt={`${broker.name} logo`}
+                            className="h-full w-full object-cover"
+                          />
+
+                        ) : (
+
+                          <Building2
+                            size={30}
+                            className="text-[#c8a21a]"
+                          />
+
+                        )}
 
                       </div>
 
@@ -320,6 +354,39 @@ export default function BrokersPage() {
                         {broker.name}
 
                       </h3>
+
+                    </div>
+
+                    {/* BADGES */}
+                    <div className="flex flex-wrap gap-2 flex-shrink-0 mb-1">
+
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#051933]/5 px-3 py-1.5 text-xs font-semibold text-[#051933]">
+
+                        <Home size={13} />
+
+                        {broker.mortgageType || "Residential"}
+
+                      </span>
+
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+                          broker.kosherStatus ===
+                          "Totally Kosher"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-[#fbf1d9] text-[#9b7b16]"
+                        }`}
+                      >
+
+                        <ShieldCheck size={13} />
+
+                        {broker.kosherStatus ===
+                        "Totally Kosher"
+                          ? "Totally Kosher"
+                          : broker.kosherLine
+                          ? `Kosher Line: ${broker.kosherLine}`
+                          : "Offers Kosher Line"}
+
+                      </span>
 
                     </div>
 
@@ -388,6 +455,35 @@ export default function BrokersPage() {
                             {broker.phone}
 
                           </p>
+
+                        </div>
+
+                      </div>
+
+                      {/* EMAIL */}
+                      <div className="flex items-start gap-4 min-h-[52px]">
+
+                        <Mail
+                          size={18}
+                          className="mt-1 text-[#c8a21a] flex-shrink-0"
+                        />
+
+                        <div className="min-w-0">
+
+                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+
+                            Email
+
+                          </p>
+
+                          <a
+                            href={`mailto:${broker.email}`}
+                            className="mt-1 inline-block text-[#051933] font-medium hover:text-[#c8a21a] transition break-all"
+                          >
+
+                            {broker.email || "—"}
+
+                          </a>
 
                         </div>
 

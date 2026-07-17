@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -11,14 +10,27 @@ import axios from "axios";
 import {
   Building2,
   Globe,
+  Home,
+  Mail,
   MapPin,
   Pencil,
   Phone,
   Plus,
+  ShieldCheck,
   Trash2,
+  UploadCloud,
 } from "lucide-react";
 
 import Modal from "@/components/utils/modal/FormModel";
+
+type MortgageType =
+  | "Residential"
+  | "Commercial"
+  | "Both";
+
+type KosherStatus =
+  | "Totally Kosher"
+  | "Offers Kosher Line";
 
 type Broker = {
   _id: string;
@@ -31,7 +43,17 @@ type Broker = {
 
   phone: string;
 
+  email: string;
+
   website: string;
+
+  mortgageType: MortgageType;
+
+  kosherStatus: KosherStatus;
+
+  kosherLine?: string;
+
+  logoUrl?: string;
 };
 
 const initialForm = {
@@ -43,7 +65,17 @@ const initialForm = {
 
   phone: "",
 
+  email: "",
+
   website: "",
+
+  mortgageType:
+    "Residential" as MortgageType,
+
+  kosherStatus:
+    "Totally Kosher" as KosherStatus,
+
+  kosherLine: "",
 };
 
 export default function AdminBrokersPage() {
@@ -68,6 +100,17 @@ export default function AdminBrokersPage() {
     useState(
       initialForm
     );
+
+  const [logoFile, setLogoFile] =
+    useState<File | null>(
+      null
+    );
+
+  const [logoPreview, setLogoPreview] =
+    useState<string>("");
+
+  const [saving, setSaving] =
+    useState(false);
 
   /*
   ========================================
@@ -119,7 +162,11 @@ export default function AdminBrokersPage() {
 
   const handleChange =
     (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      e: React.ChangeEvent<
+        HTMLInputElement |
+        HTMLTextAreaElement |
+        HTMLSelectElement
+      >
     ) => {
 
       setForm({
@@ -128,6 +175,29 @@ export default function AdminBrokersPage() {
         [e.target.name]:
           e.target.value,
       });
+    };
+
+  /*
+  ========================================
+  HANDLE LOGO
+  ========================================
+  */
+
+  const handleLogoChange =
+    (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+
+      const file =
+        e.target.files?.[0] || null;
+
+      setLogoFile(file);
+
+      setLogoPreview(
+        file
+          ? URL.createObjectURL(file)
+          : ""
+      );
     };
 
   /*
@@ -146,6 +216,9 @@ export default function AdminBrokersPage() {
       setForm(
         initialForm
       );
+
+      setLogoFile(null);
+      setLogoPreview("");
 
       setOpen(true);
     };
@@ -178,9 +251,28 @@ export default function AdminBrokersPage() {
         phone:
           broker.phone,
 
+        email:
+          broker.email || "",
+
         website:
           broker.website,
+
+        mortgageType:
+          broker.mortgageType ||
+          "Residential",
+
+        kosherStatus:
+          broker.kosherStatus ||
+          "Totally Kosher",
+
+        kosherLine:
+          broker.kosherLine || "",
       });
+
+      setLogoFile(null);
+      setLogoPreview(
+        broker.logoUrl || ""
+      );
 
       setOpen(true);
     };
@@ -198,7 +290,78 @@ export default function AdminBrokersPage() {
 
       e.preventDefault();
 
+      if (
+        form.kosherStatus ===
+          "Offers Kosher Line" &&
+        !form.kosherLine.trim()
+      ) {
+        alert(
+          "Please specify the kosher line offered"
+        );
+        return;
+      }
+
       try {
+
+        setSaving(true);
+
+        const payload =
+          new FormData();
+
+        payload.append(
+          "name",
+          form.name
+        );
+
+        payload.append(
+          "location",
+          form.location
+        );
+
+        payload.append(
+          "info",
+          form.info
+        );
+
+        payload.append(
+          "phone",
+          form.phone
+        );
+
+        payload.append(
+          "email",
+          form.email
+        );
+
+        payload.append(
+          "website",
+          form.website
+        );
+
+        payload.append(
+          "mortgageType",
+          form.mortgageType
+        );
+
+        payload.append(
+          "kosherStatus",
+          form.kosherStatus
+        );
+
+        payload.append(
+          "kosherLine",
+          form.kosherStatus ===
+            "Offers Kosher Line"
+            ? form.kosherLine.trim()
+            : ""
+        );
+
+        if (logoFile) {
+          payload.append(
+            "logo",
+            logoFile
+          );
+        }
 
         if (
           editingBroker
@@ -206,7 +369,7 @@ export default function AdminBrokersPage() {
 
           await axios.put(
             `${process.env.NEXT_PUBLIC_API_URL}api/brokers/update/${editingBroker._id}`,
-            form,
+            payload,
             {
               withCredentials: true,
             }
@@ -216,7 +379,7 @@ export default function AdminBrokersPage() {
 
           await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}api/brokers/create`,
-            form,
+            payload,
             {
               withCredentials: true,
             }
@@ -232,6 +395,11 @@ export default function AdminBrokersPage() {
         console.error(
           error
         );
+
+      } finally {
+
+        setSaving(false);
+
       }
     };
 
@@ -343,18 +511,30 @@ export default function AdminBrokersPage() {
 
                <div
   key={broker._id}
-  className="bg-white rounded-[30px] border border-[#ece4d8] p-7 h-[650px] flex flex-col shadow-[0_10px_30px_rgba(5,25,51,0.04)] hover:shadow-[0_20px_50px_rgba(5,25,51,0.08)] transition-all duration-300"
+  className="bg-white rounded-[30px] border border-[#ece4d8] p-7 h-[720px] flex flex-col shadow-[0_10px_30px_rgba(5,25,51,0.04)] hover:shadow-[0_20px_50px_rgba(5,25,51,0.08)] transition-all duration-300"
 >
 
   {/* TOP */}
   <div className="flex items-start justify-between mb-6 flex-shrink-0">
 
-    <div className="w-16 h-16 rounded-3xl bg-[#f8f4ec] flex items-center justify-center">
+    <div className="w-16 h-16 rounded-3xl bg-[#f8f4ec] flex items-center justify-center overflow-hidden">
 
-      <Building2
-        size={30}
-        className="text-[#c8a21a]"
-      />
+      {broker.logoUrl ? (
+
+        <img
+          src={broker.logoUrl}
+          alt={`${broker.name} logo`}
+          className="w-full h-full object-cover"
+        />
+
+      ) : (
+
+        <Building2
+          size={30}
+          className="text-[#c8a21a]"
+        />
+
+      )}
 
     </div>
 
@@ -374,6 +554,39 @@ export default function AdminBrokersPage() {
       {broker.name}
 
     </h2>
+
+  </div>
+
+  {/* BADGES */}
+  <div className="flex flex-wrap gap-2 flex-shrink-0 mb-2">
+
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#051933]/5 px-3 py-1.5 text-xs font-semibold text-[#051933]">
+
+      <Home size={13} />
+
+      {broker.mortgageType || "Residential"}
+
+    </span>
+
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+        broker.kosherStatus ===
+        "Totally Kosher"
+          ? "bg-emerald-50 text-emerald-700"
+          : "bg-[#fbf1d9] text-[#9b7b16]"
+      }`}
+    >
+
+      <ShieldCheck size={13} />
+
+      {broker.kosherStatus ===
+      "Totally Kosher"
+        ? "Totally Kosher"
+        : broker.kosherLine
+        ? `Kosher Line: ${broker.kosherLine}`
+        : "Offers Kosher Line"}
+
+    </span>
 
   </div>
 
@@ -442,6 +655,35 @@ export default function AdminBrokersPage() {
           {broker.phone}
 
         </p>
+
+      </div>
+
+    </div>
+
+    {/* EMAIL */}
+    <div className="flex items-start gap-4 min-h-[54px]">
+
+      <Mail
+        size={18}
+        className="text-[#c8a21a] mt-1 flex-shrink-0"
+      />
+
+      <div className="min-w-0">
+
+        <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+
+          Email
+
+        </p>
+
+        <a
+          href={`mailto:${broker.email}`}
+          className="text-[#051933] font-medium mt-1 hover:text-[#c8a21a] transition break-all inline-block"
+        >
+
+          {broker.email || "—"}
+
+        </a>
 
       </div>
 
@@ -571,6 +813,31 @@ export default function AdminBrokersPage() {
 
           </div>
 
+          {/* EMAIL */}
+          <div>
+
+            <label className="text-sm font-medium text-[#051933]">
+
+              Email Address
+
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              value={
+                form.email
+              }
+              onChange={
+                handleChange
+              }
+              required
+              placeholder="broker@example.com"
+              className="w-full h-12 rounded-xl border border-[#ece4d8] bg-[#faf8f4] px-4 mt-2 outline-none focus:ring-2 focus:ring-[#c8a21a]"
+            />
+
+          </div>
+
           {/* LOCATION */}
           <div>
 
@@ -640,6 +907,194 @@ export default function AdminBrokersPage() {
 
           </div>
 
+          {/* MORTGAGE TYPE */}
+          <div>
+
+            <label className="text-sm font-medium text-[#051933]">
+
+              Mortgage Type
+
+            </label>
+
+            <select
+              name="mortgageType"
+              value={
+                form.mortgageType
+              }
+              onChange={
+                handleChange
+              }
+              required
+              className="w-full h-12 rounded-xl border border-[#ece4d8] bg-[#faf8f4] px-4 mt-2 outline-none focus:ring-2 focus:ring-[#c8a21a]"
+            >
+
+              <option value="Residential">
+
+                Residential
+
+              </option>
+
+              <option value="Commercial">
+
+                Commercial
+
+              </option>
+
+              <option value="Both">
+
+                Both
+
+              </option>
+
+            </select>
+
+          </div>
+
+          {/* KOSHER STATUS */}
+          <div>
+
+            <label className="text-sm font-medium text-[#051933]">
+
+              Kosher Status
+
+            </label>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+
+              <button
+                type="button"
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    kosherStatus:
+                      "Totally Kosher",
+                    kosherLine: "",
+                  })
+                }
+                className={`h-12 rounded-xl border text-sm font-medium transition ${
+                  form.kosherStatus ===
+                  "Totally Kosher"
+                    ? "border-[#c8a21a] bg-[#fbf1d9] text-[#9b7b16]"
+                    : "border-[#ece4d8] bg-[#faf8f4] text-[#64748b]"
+                }`}
+              >
+
+                Totally Kosher
+
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    kosherStatus:
+                      "Offers Kosher Line",
+                  })
+                }
+                className={`h-12 rounded-xl border text-sm font-medium transition ${
+                  form.kosherStatus ===
+                  "Offers Kosher Line"
+                    ? "border-[#c8a21a] bg-[#fbf1d9] text-[#9b7b16]"
+                    : "border-[#ece4d8] bg-[#faf8f4] text-[#64748b]"
+                }`}
+              >
+
+                Offers a Kosher Line
+
+              </button>
+
+            </div>
+
+            {form.kosherStatus ===
+              "Offers Kosher Line" && (
+
+              <input
+                name="kosherLine"
+                value={
+                  form.kosherLine
+                }
+                onChange={
+                  handleChange
+                }
+                required
+                placeholder="Name of the kosher line offered"
+                className="w-full h-12 rounded-xl border border-[#ece4d8] bg-[#faf8f4] px-4 mt-3 outline-none focus:ring-2 focus:ring-[#c8a21a]"
+              />
+
+            )}
+
+          </div>
+
+          {/* LOGO */}
+          <div>
+
+            <label className="text-sm font-medium text-[#051933]">
+
+              Broker Logo
+
+            </label>
+
+            <label
+              htmlFor="broker-logo"
+              className="mt-2 flex items-center gap-4 border-2 border-dashed border-[#ece4d8] rounded-2xl p-4 cursor-pointer bg-[#faf8f4] hover:border-[#c8a21a] transition"
+            >
+
+              <div className="w-14 h-14 rounded-xl bg-white border border-[#ece4d8] flex items-center justify-center overflow-hidden flex-shrink-0">
+
+                {logoPreview ? (
+
+                  <img
+                    src={logoPreview}
+                    alt="Logo preview"
+                    className="w-full h-full object-cover"
+                  />
+
+                ) : (
+
+                  <UploadCloud
+                    size={20}
+                    className="text-[#c8a21a]"
+                  />
+
+                )}
+
+              </div>
+
+              <div className="flex-1 min-w-0">
+
+                <p className="text-sm font-medium text-[#051933]">
+
+                  {logoFile
+                    ? logoFile.name
+                    : logoPreview
+                    ? "Replace logo"
+                    : "Upload broker logo"}
+
+                </p>
+
+                <p className="text-xs text-[#94a3b8] mt-0.5">
+
+                  PNG or JPG, optional
+
+                </p>
+
+              </div>
+
+              <input
+                id="broker-logo"
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={
+                  handleLogoChange
+                }
+              />
+
+            </label>
+
+          </div>
+
           {/* INFO */}
           <div>
 
@@ -674,7 +1129,8 @@ export default function AdminBrokersPage() {
                   false
                 )
               }
-              className="h-11 px-5 rounded-xl border border-[#ece4d8] text-[#64748b]"
+              disabled={saving}
+              className="h-11 px-5 rounded-xl border border-[#ece4d8] text-[#64748b] disabled:opacity-50"
             >
 
               Cancel
@@ -683,10 +1139,13 @@ export default function AdminBrokersPage() {
 
             <button
               type="submit"
-              className="h-11 px-6 rounded-xl bg-[#051933] text-white hover:opacity-90 transition"
+              disabled={saving}
+              className="h-11 px-6 rounded-xl bg-[#051933] text-white hover:opacity-90 transition disabled:opacity-60"
             >
 
-              {editingBroker
+              {saving
+                ? "Saving..."
+                : editingBroker
                 ? "Update Broker"
                 : "Create Broker"}
 
