@@ -6,12 +6,14 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 
 import {
+  BadgeCheck,
   Building2,
   Globe,
   Home,
   Mail,
   MapPin,
   Phone,
+  Quote,
   ShieldCheck,
 } from "lucide-react";
 
@@ -311,13 +313,13 @@ export default function BrokersPage() {
 
                   <div
                     key={broker._id}
-                    className="group h-[700px] rounded-[32px] border border-[#ece4d8] bg-white p-8 shadow-[0_10px_40px_rgba(5,25,51,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(5,25,51,0.08)] flex flex-col"
+                    className="group h-[700px] rounded-[32px] border border-[#ece4d8] bg-white p-8 shadow-[0_10px_40px_rgba(5,25,51,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#e5d9bc] hover:shadow-[0_24px_60px_rgba(5,25,51,0.09)] flex flex-col"
                   >
 
                     {/* TOP */}
-                    <div className="flex items-start justify-between mb-7 flex-shrink-0">
+                    <div className="flex items-start justify-between mb-6 flex-shrink-0">
 
-                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#c8a21a]/10 overflow-hidden">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#c8a21a]/10 ring-1 ring-[#c8a21a]/15 overflow-hidden">
 
                         {broker.logoUrl ? (
 
@@ -338,7 +340,9 @@ export default function BrokersPage() {
 
                       </div>
 
-                      <div className="rounded-full bg-[#f8f5ef] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#9b7b16]">
+                      <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#c8a21a]/15 to-[#c8a21a]/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#9b7b16] ring-1 ring-[#c8a21a]/20">
+
+                        <BadgeCheck size={14} />
 
                         Verified
 
@@ -349,7 +353,7 @@ export default function BrokersPage() {
                     {/* TITLE */}
                     <div className="flex-shrink-0">
 
-                      <h3 className="font-serif text-3xl leading-tight text-[#051933] min-h-[80px]">
+                      <h3 className="font-serif text-3xl leading-tight text-[#051933] min-h-[44px]">
 
                         {broker.name}
 
@@ -358,11 +362,11 @@ export default function BrokersPage() {
                     </div>
 
                     {/* BADGES */}
-                    <div className="flex flex-wrap gap-2 flex-shrink-0 mb-1">
+                    <div className="mt-4 flex flex-wrap gap-2 flex-shrink-0">
 
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#051933]/5 px-3 py-1.5 text-xs font-semibold text-[#051933]">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e2e8f0] bg-white px-3.5 py-1.5 text-xs font-semibold text-[#051933] shadow-sm">
 
-                        <Home size={13} />
+                        <Home size={13} className="text-[#c8a21a]" />
 
                         {broker.mortgageType === "Both"
                           ? "Residential & Commercial"
@@ -371,11 +375,11 @@ export default function BrokersPage() {
                       </span>
 
                       <span
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-sm ${
                           broker.kosherStatus ===
                           "Totally Kosher"
-                            ? "bg-emerald-50 text-emerald-700"
-                            : "bg-[#fbf1d9] text-[#9b7b16]"
+                            ? "border-emerald-100 bg-emerald-50 text-emerald-700"
+                            : "border-[#f0e2b3] bg-[#fbf1d9] text-[#9b7b16]"
                         }`}
                       >
 
@@ -392,41 +396,58 @@ export default function BrokersPage() {
 
                     </div>
 
-                    {/* SCROLLABLE INFO */}
-                    <div className="mt-5 flex-1 overflow-hidden">
+                    {/* INFO */}
+                    <div className="mt-5 flex-1 min-h-0">
 
-                      <div className="h-full overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="relative h-full rounded-2xl border border-[#f1eadf] bg-[#faf8f4]">
 
-                        <p className="text-[15px] leading-8 text-[#64748b]">
+                        <Quote
+                          size={26}
+                          className="absolute left-4 top-4 text-[#c8a21a]/25"
+                        />
 
-                          {broker.info}
+                        <div className="h-full overflow-y-auto custom-scrollbar px-5 py-4 pl-12">
 
-                        </p>
+                          <p className="text-[15px] italic leading-8 text-[#5f6b7a]">
+
+                            {broker.info}
+
+                          </p>
+
+                        </div>
+
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-2xl bg-gradient-to-t from-[#faf8f4] to-transparent" />
 
                       </div>
 
                     </div>
 
                     {/* FIXED FOOTER */}
-                    <div className="mt-7 border-t border-[#f1eadf] pt-7 space-y-5 flex-shrink-0">
+                    <div className="relative mt-7 pt-7 space-y-4 flex-shrink-0">
+
+                      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e8dfcf] to-transparent" />
 
                       {/* LOCATION */}
-                      <div className="flex items-start gap-4 min-h-[52px]">
+                      <div className="flex items-center gap-4">
 
-                        <MapPin
-                          size={18}
-                          className="mt-1 text-[#c8a21a] flex-shrink-0"
-                        />
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#c8a21a]/10">
 
-                        <div>
+                          <MapPin
+                            size={17}
+                            className="text-[#c8a21a]"
+                          />
 
-                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                        </div>
+
+                        <div className="min-w-0">
+
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8]">
 
                             Location
 
                           </p>
 
-                          <p className="mt-1 text-[#051933] font-medium">
+                          <p className="mt-0.5 text-[#051933] font-medium">
 
                             {broker.location}
 
@@ -437,22 +458,26 @@ export default function BrokersPage() {
                       </div>
 
                       {/* PHONE */}
-                      <div className="flex items-start gap-4 min-h-[52px]">
+                      <div className="flex items-center gap-4">
 
-                        <Phone
-                          size={18}
-                          className="mt-1 text-[#c8a21a] flex-shrink-0"
-                        />
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#c8a21a]/10">
 
-                        <div>
+                          <Phone
+                            size={17}
+                            className="text-[#c8a21a]"
+                          />
 
-                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                        </div>
+
+                        <div className="min-w-0">
+
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8]">
 
                             Telephone
 
                           </p>
 
-                          <p className="mt-1 text-[#051933] font-medium">
+                          <p className="mt-0.5 text-[#051933] font-medium">
 
                             {broker.phone}
 
@@ -463,16 +488,20 @@ export default function BrokersPage() {
                       </div>
 
                       {/* EMAIL */}
-                      <div className="flex items-start gap-4 min-h-[52px]">
+                      <div className="flex items-center gap-4">
 
-                        <Mail
-                          size={18}
-                          className="mt-1 text-[#c8a21a] flex-shrink-0"
-                        />
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#c8a21a]/10">
 
-                        <div className="min-w-0">
+                          <Mail
+                            size={17}
+                            className="text-[#c8a21a]"
+                          />
 
-                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8]">
 
                             Email
 
@@ -480,7 +509,7 @@ export default function BrokersPage() {
 
                           <a
                             href={`mailto:${broker.email}`}
-                            className="mt-1 inline-block text-[#051933] font-medium hover:text-[#c8a21a] transition break-all"
+                            className="mt-0.5 block truncate font-medium text-[#051933] hover:text-[#c8a21a] transition"
                           >
 
                             {broker.email || "—"}
@@ -492,16 +521,20 @@ export default function BrokersPage() {
                       </div>
 
                       {/* WEBSITE */}
-                      <div className="flex items-start gap-4 min-h-[60px]">
+                      <div className="flex items-center gap-4">
 
-                        <Globe
-                          size={18}
-                          className="mt-1 text-[#c8a21a] flex-shrink-0"
-                        />
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#c8a21a]/10">
 
-                        <div className="min-w-0">
+                          <Globe
+                            size={17}
+                            className="text-[#c8a21a]"
+                          />
 
-                          <p className="text-xs uppercase tracking-[0.2em] text-[#94a3b8]">
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8]">
 
                             Website
 
@@ -514,7 +547,7 @@ export default function BrokersPage() {
                             )}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="mt-1 inline-block text-[#051933] font-medium underline hover:text-[#c8a21a] transition break-words"
+                            className="mt-0.5 block truncate font-medium text-[#051933] underline decoration-[#e2e8f0] underline-offset-2 hover:text-[#c8a21a] hover:decoration-[#c8a21a] transition"
                           >
 
                             {broker.website}
