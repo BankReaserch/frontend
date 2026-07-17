@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 import Modal from "../../components/utils/modal/FormModel";
-
 import InvestmentForm from "@/components/admin/investments/InvestmentForm";
 import InvestmentTable from "@/components/admin/investments/InvestmentTable";
 
@@ -39,11 +37,14 @@ export default function InvestmentsPageAdmin() {
   const [isEditing, setIsEditing] =
     useState(false);
 
+  const [categoryFilter, setCategoryFilter] =
+    useState("All Investments");
+
   const [formData, setFormData] =
     useState<Investment>({
       name: "",
       provider: "",
-      type: "",
+      type: "All Investments",
       minimumInvestment: "",
       riskLevel: "Low",
       status: "Approved",
@@ -73,7 +74,7 @@ export default function InvestmentsPageAdmin() {
         ) {
           setInvestments(
             response.data.data ||
-              []
+            []
           );
         }
       } catch (error) {
@@ -87,24 +88,13 @@ export default function InvestmentsPageAdmin() {
     fetchInvestments();
   }, []);
 
-  /*
-  ========================================
-  NORMALIZE
-  ========================================
-  Guarantees every field on Investment has a
-  defined value, so form inputs stay controlled
-  even if the API returns a record missing
-  newer fields (e.g. older investments saved
-  before phoneNumber/email existed).
-  */
-
   const normalizeInvestment = (
     investment: Partial<Investment>
   ): Investment => ({
     _id: investment._id,
     name: investment.name || "",
     provider: investment.provider || "",
-    type: investment.type || "",
+    type: investment.type || "All Investments",
     minimumInvestment:
       investment.minimumInvestment || "",
     riskLevel: investment.riskLevel || "Low",
@@ -132,7 +122,7 @@ export default function InvestmentsPageAdmin() {
     setFormData({
       name: "",
       provider: "",
-      type: "",
+      type: "All Investments",
       minimumInvestment: "",
       riskLevel: "Low",
       status: "Approved",
@@ -336,30 +326,73 @@ export default function InvestmentsPageAdmin() {
       }
     };
 
+  const filteredInvestments =
+    categoryFilter === "All Investments"
+      ? investments
+      : investments.filter(
+        (investment) =>
+          investment.type === categoryFilter
+      );
+
   return (
     <div className="min-h-screen bg-[#f5f1ea] p-8">
 
       {/* HEADER */}
 
-      <div className="mb-8">
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
 
-        <h1 className="text-4xl font-bold text-[#051933]">
+        <div>
 
-          Investments
+          <h1 className="text-4xl font-bold text-[#051933]">
 
-        </h1>
+            Investments
 
-        <p className="text-gray-500 mt-2">
+          </h1>
 
-          Manage investment opportunities
-          and research reports
+          <p className="text-gray-500 mt-2">
 
-        </p>
+            Manage investment opportunities
+            and research reports
+
+          </p>
+
+        </div>
+
+        <div>
+
+          <label className="block text-xs font-medium text-gray-500 mb-1.5">
+
+            Filter by Category
+
+          </label>
+
+          <select
+            value={categoryFilter}
+            onChange={(e) =>
+              setCategoryFilter(
+                e.target.value
+              )
+            }
+            className="h-11 min-w-[220px] rounded-xl border border-[#ece4d8] bg-white px-4 text-[#051933] outline-none focus:ring-2 focus:ring-[#c8a21a]"
+          >
+
+            <option value="All Investments">
+
+              All Investments
+
+            </option>
+
+            <option value="High Yield Savings">
+
+              High Yield Savings
+
+            </option>
+
+          </select>
+
+        </div>
 
       </div>
-
-      {/* CONTENT */}
-
       <div className="grid xl:grid-cols-[420px_1fr] gap-8">
 
         <InvestmentForm
@@ -378,7 +411,7 @@ export default function InvestmentsPageAdmin() {
         />
 
         <InvestmentTable
-          investments={investments}
+          investments={filteredInvestments}
           onView={(investment) => {
             setSelected(
               investment
@@ -527,24 +560,24 @@ export default function InvestmentsPageAdmin() {
             </div>
             {selected.reportUrl && (
 
-  <div className="border-t pt-5">
+              <div className="border-t pt-5">
 
-    <p className="text-xs text-gray-500 mb-3">
+                <p className="text-xs text-gray-500 mb-3">
 
-      Research Report
+                  Research Report
 
-    </p>
+                </p>
 
-    <div className="flex gap-3">
+                <div className="flex gap-3">
 
-      <button
-        onClick={() =>
-          window.open(
-            `${process.env.NEXT_PUBLIC_API_URL}uploads/reports/${selected.reportUrl}`,
-            "_blank"
-          )
-        }
-        className="
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_API_URL}uploads/reports/${selected.reportUrl}`,
+                        "_blank"
+                      )
+                    }
+                    className="
           flex-1
           h-11
           rounded-xl
@@ -552,15 +585,15 @@ export default function InvestmentsPageAdmin() {
           text-white
           font-medium
         "
-      >
-        View Report
-      </button>
+                  >
+                    View Report
+                  </button>
 
-      <a
-        href={`${process.env.NEXT_PUBLIC_API_URL}api/investments/download-report/${selected._id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_API_URL}api/investments/download-report/${selected._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
           flex-1
           h-11
           rounded-xl
@@ -572,15 +605,15 @@ export default function InvestmentsPageAdmin() {
           items-center
           justify-center
         "
-      >
-        Download Report
-      </a>
+                  >
+                    Download Report
+                  </a>
 
-    </div>
+                </div>
 
-  </div>
+              </div>
 
-)}
+            )}
 
           </div>
 

@@ -125,14 +125,37 @@ export default function InvestmentForm({
           className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
         />
 
-        <input
-          required
-          name="type"
-          value={formData.type ?? ""}
-          onChange={onChangeHandler}
-          placeholder="Investment Type"
-          className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
-        />
+        <div>
+
+          <label className="block text-xs font-medium text-gray-500 mb-1.5 px-1">
+
+            Investment Category
+
+          </label>
+
+          <select
+            required
+            name="type"
+            value={formData.type || "All Investments"}
+            onChange={onChangeHandler}
+            className="w-full rounded-2xl border bg-[#f7f3eb] px-4 py-3 outline-none focus:border-[#c8a21a]"
+          >
+
+            <option value="All Investments">
+
+              All Investments
+
+            </option>
+
+            <option value="High Yield Savings">
+
+              High Yield Savings
+
+            </option>
+
+          </select>
+
+        </div>
 
         <input
           name="minimumInvestment"
