@@ -36,6 +36,19 @@ interface AudioItem {
 
 const SKIP_SECONDS = 10;
 
+const CATEGORY_SUGGESTIONS = [
+  "English",
+  "Hebrew",
+  "Yiddish",
+];
+
+const SERIES_SUGGESTIONS = [
+  "Regular Shiur",
+  "5 Minute English Series",
+  "5 Minute Hebrew Series",
+  "5 Minute Yiddish Series",
+];
+
 export default function AudioTable() {
   const [playingId, setPlayingId] =
     useState<string | null>(null);
@@ -334,6 +347,12 @@ export default function AudioTable() {
       );
     }
 
+    if (!editCategory.trim()) {
+      return alert(
+        "Please enter a category"
+      );
+    }
+
     try {
       setSavingEdit(true);
 
@@ -352,12 +371,12 @@ export default function AudioTable() {
 
       formData.append(
         "category",
-        editCategory
+        editCategory.trim()
       );
 
       formData.append(
         "series",
-        editSeries
+        editSeries.trim()
       );
 
       if (editFile) {
@@ -416,6 +435,12 @@ export default function AudioTable() {
       );
     }
 
+    if (!category.trim()) {
+      return alert(
+        "Please enter a category"
+      );
+    }
+
     try {
       setUploading(true);
 
@@ -438,12 +463,12 @@ export default function AudioTable() {
       );
       formData.append(
         "category",
-        category
+        category.trim()
       );
 
       formData.append(
         "series",
-        series
+        series.trim()
       );
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}api/audio/upload`,
@@ -570,46 +595,31 @@ export default function AudioTable() {
           }
           className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white"
         />
-        <select
+
+        {/* CATEGORY — pick a suggestion or type your own */}
+        <input
+          type="text"
+          list="category-suggestions"
+          placeholder="Category (e.g. English)"
           value={category}
           onChange={(e) =>
             setCategory(e.target.value)
           }
-          className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white"
-        >
-          <option value="English">
-            English
-          </option>
-          <option value="Hebrew">
-            Hebrew
-          </option>
-          <option value="Yiddish">
-            Yiddish
-          </option>
-        </select>
-        <select
+          className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-[#6f8296]"
+        />
+
+        {/* SERIES — pick a suggestion or type your own */}
+        <input
+          type="text"
+          list="series-suggestions"
+          placeholder="Series (e.g. 5 Minute English Series)"
           value={series}
           onChange={(e) =>
             setSeries(e.target.value)
           }
-          className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white"
-        >
-          <option value="">
-            Regular Shiur
-          </option>
+          className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-[#6f8296]"
+        />
 
-          <option value="5 Minute English Series">
-            5 Minute English Series
-          </option>
-
-          <option value="5 Minute Hebrew Series">
-            5 Minute Hebrew Series
-          </option>
-
-          <option value="5 Minute Yiddish Series">
-            5 Minute Yiddish Series
-          </option>
-        </select>
         {/* FILE */}
         <label
           htmlFor="audio-upload"
@@ -663,6 +673,29 @@ export default function AudioTable() {
           )}
         </button>
       </div>
+
+      {/* SHARED CATEGORY / SERIES SUGGESTIONS */}
+      <datalist id="category-suggestions">
+        {CATEGORY_SUGGESTIONS.map(
+          (option) => (
+            <option
+              key={option}
+              value={option}
+            />
+          )
+        )}
+      </datalist>
+
+      <datalist id="series-suggestions">
+        {SERIES_SUGGESTIONS.map(
+          (option) => (
+            <option
+              key={option}
+              value={option}
+            />
+          )
+        )}
+      </datalist>
 
       {/* TABLE */}
       <div className="overflow-x-auto">
@@ -800,7 +833,7 @@ export default function AudioTable() {
                     </td>
                     <td className="py-5 text-white text-sm">
                       {
-                        audio.series || "Regular"
+                        audio.series || "Regular Shiur"
                       }
                     </td>
 
@@ -1057,8 +1090,11 @@ export default function AudioTable() {
             className="sm:col-span-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
           />
 
-          {/* CATEGORY */}
-          <select
+          {/* CATEGORY — pick a suggestion or type your own */}
+          <input
+            type="text"
+            list="category-suggestions"
+            placeholder="Category (e.g. English)"
             value={editCategory}
             onChange={(e) =>
               setEditCategory(
@@ -1066,20 +1102,13 @@ export default function AudioTable() {
               )
             }
             className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
-          >
-            <option value="English">
-              English
-            </option>
-            <option value="Hebrew">
-              Hebrew
-            </option>
-            <option value="Yiddish">
-              Yiddish
-            </option>
-          </select>
+          />
 
-          {/* SERIES */}
-          <select
+          {/* SERIES — pick a suggestion or type your own */}
+          <input
+            type="text"
+            list="series-suggestions"
+            placeholder="Series (e.g. 5 Minute English Series)"
             value={editSeries}
             onChange={(e) =>
               setEditSeries(
@@ -1087,23 +1116,7 @@ export default function AudioTable() {
               )
             }
             className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-[#c9a84c]/60"
-          >
-            <option value="">
-              Regular Shiur
-            </option>
-
-            <option value="5 Minute English Series">
-              5 Minute English Series
-            </option>
-
-            <option value="5 Minute Hebrew Series">
-              5 Minute Hebrew Series
-            </option>
-
-            <option value="5 Minute Yiddish Series">
-              5 Minute Yiddish Series
-            </option>
-          </select>
+          />
 
           {/* REPLACE FILE (optional) */}
           <label
