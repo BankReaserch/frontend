@@ -559,23 +559,6 @@ export default function InvestmentsPage() {
 
                       </div>
 
-                      <button
-                        onClick={() => setSelected(investment)}
-                        className="
-          mt-4
-          w-full
-          h-12
-          rounded-xl
-          bg-[#051933]
-          text-white
-          font-semibold
-          hover:bg-[#0b2440]
-          transition-colors
-        "
-                      >
-                        View Full Details
-                      </button>
-
                     </div>
                   </div>
                 ))}
