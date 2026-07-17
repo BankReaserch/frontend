@@ -269,6 +269,10 @@ export default function MediaLibraryPage() {
         ...new Set(dataset.map((item) => item.category)),
     ].filter(Boolean);
 
+    const seriesList = [
+        ...new Set(dataset.map((item) => item.series)),
+    ].filter(Boolean);
+
     const filtered = dataset.filter((item) => {
         const keyword = search.toLowerCase();
 
@@ -289,6 +293,7 @@ export default function MediaLibraryPage() {
     const handleTabChange = (tab: MediaTab) => {
         setActiveTab(tab);
         setSelectedCategory("");
+        setSelectedSeries("");
     };
 
     return (
@@ -447,6 +452,22 @@ export default function MediaLibraryPage() {
                             {categories.map((category) => (
                                 <option key={category} value={category}>
                                     {category}
+                                </option>
+                            ))}
+
+                        </select>
+
+                        {/* SERIES */}
+                        <select
+                            value={selectedSeries}
+                            onChange={(e) => setSelectedSeries(e.target.value)}
+                            className="h-14 px-5 rounded-xl border border-[#d9d2c6] bg-white outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                        >
+                            <option value="">All Series</option>
+
+                            {seriesList.map((series) => (
+                                <option key={series} value={series}>
+                                    {series}
                                 </option>
                             ))}
 
