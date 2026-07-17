@@ -8,6 +8,8 @@ import {
   ArrowRight,
   Phone,
   Mail,
+  MessageCircle,
+  MapPin,
   BookOpen,
 } from "lucide-react";
 
@@ -20,6 +22,29 @@ const topics = [
   "Employment Agreements",
   "Vendor Financing",
   "Profit Sharing",
+];
+
+const contactInfo = [
+  {
+    icon: Mail,
+    label: "General Email",
+    value: "info@ribis.org",
+  },
+  {
+    icon: MessageCircle,
+    label: "Rabbinical Guidance",
+    value: "halacha@ribis.org",
+  },
+  {
+    icon: Phone,
+    label: "Telephone",
+    value: "(732) 806-5409",
+  },
+  {
+    icon: MapPin,
+    label: "Location",
+    value: "Lakewood, NJ",
+  },
 ];
 
 export default function AskAShaalahPage() {
@@ -328,6 +353,66 @@ export default function AskAShaalahPage() {
                   For more complex financial matters
                   requiring additional discussion.
                 </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* CONTACT INFORMATION */}
+        <section className="pb-24">
+
+          <div className="max-w-6xl mx-auto px-6">
+
+            <div className="rounded-[40px] bg-[#051933] overflow-hidden relative p-10 md:p-16">
+
+              <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(135deg,#ffffff_1px,transparent_1px)] bg-[size:28px_28px]" />
+
+              <div className="absolute left-0 bottom-0 w-[420px] h-[420px] bg-[#C8A75B]/10 rounded-full blur-3xl" />
+
+              <div className="relative grid lg:grid-cols-[0.9fr_1.1fr] gap-14 items-center">
+
+                <div>
+                  <p className="text-[#C8A75B] uppercase tracking-[0.35em] text-xs font-semibold">
+                    Get In Touch
+                  </p>
+
+                  <h2 className="mt-5 font-serif text-5xl text-white leading-tight">
+                    Contact Information
+                  </h2>
+
+                  <p className="mt-6 text-[#94A3B8] leading-8 max-w-md">
+                    Reach our Bais Hora'ah through any of the
+                    channels below. All inquiries are handled
+                    with discretion and care.
+                  </p>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-x-10 gap-y-10">
+
+                  {contactInfo.map(({ icon: Icon, label, value }) => (
+                    <div key={label} className="flex items-start gap-5">
+
+                      <div className="w-14 h-14 shrink-0 rounded-2xl border border-[#C8A75B]/30 bg-[#C8A75B]/5 flex items-center justify-center">
+                        <Icon className="text-[#C8A75B]" size={22} />
+                      </div>
+
+                      <div>
+                        <p className="text-[#C8A75B] uppercase tracking-[0.25em] text-xs font-semibold">
+                          {label}
+                        </p>
+                        <p className="mt-2 text-white text-xl font-medium">
+                          {value}
+                        </p>
+                      </div>
+
+                    </div>
+                  ))}
+
+                </div>
 
               </div>
 
