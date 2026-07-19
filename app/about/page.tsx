@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import QuoteCard from "@/components/utils/card/QuoteCard";
 import Link from "next/link";
@@ -55,7 +56,16 @@ const VALUES = [
 ];
 
 // ── Team hierarchy ──
-// Ordered top-down: Leadership → Rabbinical Guidance → operating departments.
+// Ordered top-down: Sponsors → Leadership → Rabbinical Guidance → operating departments.
+const SPONSORS = [
+  "Harav Yitzchok Zilberstein",
+  "Harav Shriel Rosenberg",
+  "Harav Menachem Mendel Shafran",
+  "Harav Naftali Nusbaum",
+  "Harav Shamai Kehas Gross",
+  "Harav Shlomo Zafrani",
+];
+
 const LEADERSHIP = {
   role: "Founder & Director",
   name: "Rabbi Yaakov Yitzchok Jacob",
@@ -304,9 +314,9 @@ export default function page() {
             <h2 className="text-[#0d1b2a] font-serif text-4xl mb-4">Our team</h2>
             <p className="text-[#8a9bb0] text-sm max-w-xl leading-relaxed">
               A dedicated hierarchy of Torah scholars, researchers, and administrators — spanning halachic guidance, research, and community education.
+              
             </p>
           </div>
-
           {/* Leadership — top of hierarchy */}
           <div className="mb-8">
             <p className="text-[#8a9bb0] text-xs font-semibold tracking-[0.2em] uppercase mb-3 pl-1">Leadership</p>
@@ -323,25 +333,42 @@ export default function page() {
               </div>
             </div>
           </div>
-
           {/* Rabbinical Guidance */}
           <div className="mb-10">
             <p className="text-[#8a9bb0] text-xs font-semibold tracking-[0.2em] uppercase mb-3 pl-1">Rabbinical Guidance</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {RABBINICAL_GUIDANCE.map((r) => (
-                <div key={r.name} className="bg-white border border-[#e5ddd0] rounded-xl p-6 flex items-center gap-4 hover:border-[#c9a84c]/40 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 rounded-lg bg-[#1a2e42] text-[#c9a84c] flex items-center justify-center flex-shrink-0 font-bold text-sm font-serif">
+                <div key={r.name} className="bg-[#0d1b2a] rounded-2xl px-6 py-5 flex items-center gap-4 relative overflow-hidden shadow-sm">
+                  <div className="absolute right-0 top-0 bottom-0 flex items-center pr-4 select-none pointer-events-none">
+                    <span className="text-[70px] font-serif text-[#c9a84c] opacity-[0.06] leading-none">ר</span>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-[#c9a84c] flex items-center justify-center flex-shrink-0 font-bold text-sm font-serif text-[#0d1b2a] relative z-10">
                     {getInitials(r.name)}
                   </div>
-                  <div>
-                    <p className="text-[#0d1b2a] font-serif text-base leading-snug">{r.name}</p>
-                    <p className="text-[#c9a84c] text-xs font-semibold mt-0.5">{r.role}</p>
+                  <div className="relative z-10">
+                    <p className="text-[#c9a84c] text-xs font-semibold tracking-[0.2em] uppercase mb-1">{r.role}</p>
+                    <p className="text-white font-serif text-base leading-snug">{r.name}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
+      <div className="mb-10">
+            <p className="text-[#8a9bb0] text-xs font-semibold tracking-[0.2em] uppercase mb-3 pl-1">Endorsed By</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {SPONSORS.map((name) => (
+                <div key={name} className="bg-[#0d1b2a] rounded-2xl px-6 py-5 flex items-center gap-4 relative overflow-hidden shadow-sm">
+                  <div className="absolute right-0 top-0 bottom-0 flex items-center pr-4 select-none pointer-events-none">
+                    <span className="text-[70px] font-serif text-[#c9a84c] opacity-[0.06] leading-none">ר</span>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-[#c9a84c] flex items-center justify-center flex-shrink-0 font-bold text-sm font-serif text-[#0d1b2a] relative z-10">
+                    {getInitials(name)}
+                  </div>
+                  <p className="text-white font-serif text-base leading-snug relative z-10">{name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           {/* Departments */}
           <div className="relative">
             <div className="absolute left-[13px] top-2 bottom-2 w-px bg-[#e5ddd0] hidden sm:block" />
@@ -378,55 +405,8 @@ export default function page() {
           </div>
         </div>
       </section>
-
-      {/* ── Poskim Board ── */}
-      <section className="bg-white border-y border-[#e5ddd0] px-6 lg:px-16 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase font-semibold mb-4">Halachic oversight</p>
-              <h2 className="text-[#0d1b2a] font-serif text-4xl mb-5">Our Rabbinical Board</h2>
-              <p className="text-[#6b5e4e] text-sm leading-relaxed">
-                All halachic rulings, bank ratings, and educational content on Ribis.org are reviewed and endorsed by our Rabbinical Board — composed of leading poskim from across the Torah world.
-              </p>
-            </div>
-            <div className="space-y-3">
-              {POSKIM.map((p) => (
-                <div key={p.name} className="flex items-center gap-5 p-4 border border-[#e5ddd0] rounded-xl hover:border-[#c9a84c]/40 transition-all">
-                  <div className="w-10 h-10 rounded-lg bg-[#0d1b2a] flex items-center justify-center flex-shrink-0">
-                    <span className="text-[#c9a84c] font-serif text-sm">
-                      {p.name.split(" ").slice(-1)[0].charAt(0)}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-[#0d1b2a] text-sm font-semibold font-serif">{p.name}</p>
-                    <p className="text-[#8a9bb0] text-xs">{p.institution}</p>
-                  </div>
-                  <div className="ml-auto">
-                    <span className="bg-[#f5f0e8] text-[#6b5e4e] text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded-full">Posek</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-      <footer className="bg-[#0a1520] border-t border-white/8 px-6 lg:px-16 py-10">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-[#c9a84c] rounded-md flex items-center justify-center">
-              <span className="text-[#0d1b2a] font-bold text-xs font-serif">ר</span>
-            </div>
-            <span className="text-white text-sm font-semibold">Ribis.org</span>
-          </div>
-          <p className="text-[#8a9bb0] text-xs">© 2025 Ribis.org. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            {["Privacy", "Terms", "Contact"].map((l) => (
-              <Link key={l} href="#" className="text-[#8a9bb0] hover:text-white text-xs transition">{l}</Link>
-            ))}
-          </div>
-        </div>
-      </footer>
+      <Footer/>
+     
     </div>
   );
 }
