@@ -344,15 +344,14 @@ export default function page() {
 
                             <div className="mt-10 rounded-[28px] border border-[#eadfcb] bg-white p-7 shadow-sm">
                                 <h3 className="text-xl font-semibold text-[#051933]">
-                                   Feature Boxes
+                                   Highlights
                                 </h3>
-
                                 <div className="mt-6 space-y-4">
                                     {[
                                         "Shimush Under Leading Poskim",
-                                        "Contemporary Halachic Topics",
-                                        "Practical Guidance",
-                                        "Community Distribution",
+                                        "Advanced Halachic Training",
+                                        "Practical Psak Development",
+                                        "Worldwide Alumni Network",
                                     ].map((item) => (
                                         <div key={item} className="flex items-start gap-4">
                                             <div className="mt-2 h-2.5 w-2.5 rounded-full bg-[#c8a21a]" />
