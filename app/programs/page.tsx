@@ -63,15 +63,15 @@ export default function page() {
                 </section>
 
                 {/* SCHOOL & COMMUNITY */}
-                <section className="pb-24" id="school-program">
+                <section className="pb-24 scroll-mt-28" id="school-program">
                     <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* IMAGE */}
                         <div className="relative">
                             <div className="absolute -left-8 top-10 h-40 w-40 rounded-full bg-[#c8a21a]/15 blur-3xl" />
 
-                            <div className="overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)]">
+                            <div className="overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)] transition-transform duration-300 hover:-translate-y-1">
                                 <img
-                                    src="/assets/classroom.webp"
+                                    src="/assets/classroom.jpg"
                                     alt="School & Community Shiurim"
                                     className="h-full w-full rounded-[24px] object-cover"
                                 />
@@ -107,7 +107,7 @@ export default function page() {
                                 ].map((item) => (
                                     <div
                                         key={item}
-                                        className="rounded-2xl border border-[#ece3d5] bg-white p-5"
+                                        className="rounded-2xl border border-[#ece3d5] bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8a21a]/40 hover:shadow-md"
                                     >
                                         <div className="flex items-center gap-3">
                                             <div className="h-3 w-3 rounded-full bg-[#c8a21a]" />
@@ -120,10 +120,41 @@ export default function page() {
                             </div>
                         </div>
                     </div>
+
+                    {/* SCHOOLS SERVED */}
+                    <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
+                        <div className="rounded-[32px] border border-[#eadfcb] bg-white p-8 shadow-sm md:p-10">
+                            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+                                <div>
+                                    <div className="mb-3 inline-flex rounded-full border border-[#eadfcb] bg-[#faf7f2] px-4 py-2 text-sm font-medium text-[#9b7b16]">
+                                        Our Reach
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-[#051933] sm:text-3xl">
+                                        Schools We've Served
+                                    </h3>
+                                </div>
+                                <span className="text-sm font-medium text-[#7b8794]">
+                                    {schools.length} institutions and counting
+                                </span>
+                            </div>
+
+                            <div className="flex flex-wrap gap-3">
+                                {schools.map((school) => (
+                                    <div
+                                        key={school}
+                                        className="inline-flex items-center gap-2.5 rounded-full border border-[#f0e7d9] bg-[#fcfaf6] px-5 py-2.5 text-sm font-medium text-[#051933] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8a21a]/50 hover:bg-white hover:shadow-sm"
+                                    >
+                                        <span className="h-1.5 w-1.5 rounded-full bg-[#c8a21a]" />
+                                        {school}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 {/* BUSINESS OUTREACH */}
-                <section className="pb-24" id="rabbinical-training">
+                <section className="pb-24 scroll-mt-28" id="rabbinical-training">
                     <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* CONTENT */}
                         <div className="order-2 lg:order-1" id="investments">
@@ -173,7 +204,7 @@ export default function page() {
                         <div className="relative order-1 lg:order-2">
                             <div className="absolute -right-10 top-10 h-40 w-40 rounded-full bg-[#c8a21a]/15 blur-3xl" />
 
-                            <div className="overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)]">
+                            <div className="overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)] transition-transform duration-300 hover:-translate-y-1">
                                 <img
                                     src="/assets/businesspersons.jpg"
                                     alt="Business Outreach"
@@ -210,123 +241,151 @@ export default function page() {
                                         compliance.
                                     </p>
 
-                                    <button className="mt-10 rounded-2xl bg-[#051933] px-7 py-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#0a274b]">
+                                    <button className="mt-10 rounded-2xl bg-[#051933] px-7 py-4 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0a274b] hover:shadow-md">
                                         Request Assessment
                                     </button>
                                 </div>
 
-                                <div className="grid gap-5">
+                                <div className="relative">
+                                    <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[#c8a21a]/15 blur-3xl" />
+
+                                    <div className="overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)] transition-transform duration-300 hover:-translate-y-1">
+                                        <img
+                                            src="/assets/business_assessment.jpeg"
+                                            alt="Business Assessment & Compliance"
+                                            className="h-full w-full rounded-[24px] object-cover"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* NEWSLETTERS & GILYONOS */}
+                <section className="pb-24 scroll-mt-28" id="gilyonos">
+                    <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
+                        {/* IMAGE */}
+                        <div className="relative">
+                            <div className="absolute -left-8 top-10 h-40 w-40 rounded-full bg-[#c8a21a]/15 blur-3xl" />
+
+                            <div className="overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)] transition-transform duration-300 hover:-translate-y-1">
+                                <img
+                                    src="/assets/newletter.jpg"
+                                    alt="Newsletters & Gilyonos"
+                                    className="h-full w-full min-h-[360px] rounded-[24px] object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        {/* CONTENT */}
+                        <div>
+                            <div className="mb-4 inline-flex rounded-full border border-[#eadfcb] bg-white px-4 py-2 text-sm font-medium text-[#9b7b16]">
+                                Published Articles
+                            </div>
+
+                            <h2 className="text-4xl font-bold text-[#051933]">
+                                Newsletters & Gilyonos
+                            </h2>
+
+                            <p className="mt-6 text-lg leading-8 text-[#5f6b7a]">
+                                We publish regular newsletters and gilyonos that bring practical
+                                hilchos ribis to life—covering real-world scenarios in banking,
+                                business, and everyday finance.
+                            </p>
+
+                            <p className="mt-5 text-base leading-8 text-[#7b8794]">
+                                Each publication is reviewed by our Rabbanim before release and
+                                shared with the community, giving families and businesses
+                                ongoing access to clear, practical halachic guidance.
+                            </p>
+
+                            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                                {[
+                                    "Real-World Case Studies",
+                                    "Reviewed by Poskim",
+                                    "Distributed Community-Wide",
+                                    "Published on an Ongoing Basis",
+                                ].map((item) => (
+                                    <div
+                                        key={item}
+                                        className="rounded-2xl border border-[#ece3d5] bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8a21a]/40 hover:shadow-md"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-3 w-3 rounded-full bg-[#c8a21a]" />
+                                            <span className="text-sm font-medium text-[#051933]">
+                                                {item}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* TRAINING PROGRAMS */}
+                <section className="pb-24 scroll-mt-28" id="training-programs">
+                    <div className="mx-auto grid max-w-7xl items-stretch gap-16 px-6 lg:grid-cols-2 lg:px-8">
+                        {/* CONTENT */}
+                        <div className="order-2 lg:order-1">
+                            <div className="mb-4 inline-flex rounded-full border border-[#eadfcb] bg-white px-4 py-2 text-sm font-medium text-[#9b7b16]">
+                                Professional Development
+                            </div>
+
+                            <h2 className="text-4xl font-bold text-[#051933]">
+                                Training Programs
+                            </h2>
+
+                            <p className="mt-6 text-lg leading-8 text-[#5f6b7a]">
+                                Our advanced training program prepares the next generation of Talmidei Chachamim through intensive shimush under some of today's foremost Poskim. Participants receive rigorous guidance, practical experience, and the tools to develop into future halachic authorities.
+                                Graduates of the program serve communities around the world, providing leadership, education, and practical halachic guidance in the field of ribbis.
+                            </p>
+
+                            <div className="mt-10 rounded-[28px] border border-[#eadfcb] bg-white p-7 shadow-sm">
+                                <h3 className="text-xl font-semibold text-[#051933]">
+                                   Feature Boxes
+                                </h3>
+
+                                <div className="mt-6 space-y-4">
                                     {[
-                                        "Ownership Review",
-                                        "Governance Evaluation",
-                                        "Financial Structure Analysis",
-                                        "Practical Compliance Guidance",
+                                        "Shimush Under Leading Poskim",
+                                        "Contemporary Halachic Topics",
+                                        "Practical Guidance",
+                                        "Community Distribution",
                                     ].map((item) => (
-                                        <div
-                                            key={item}
-                                            className="rounded-3xl border border-[#ece3d5] bg-[#fcfaf6] p-6"
-                                        >
-                                            <div className="flex items-start gap-4">
-                                                <div className="mt-1 flex h-7 w-7 items-center justify-center rounded-full bg-[#c8a21a]/15">
-                                                    <div className="h-3 w-3 rounded-full bg-[#c8a21a]" />
-                                                </div>
+                                        <div key={item} className="flex items-start gap-4">
+                                            <div className="mt-2 h-2.5 w-2.5 rounded-full bg-[#c8a21a]" />
 
-                                                <div>
-                                                    <h3 className="font-semibold text-[#051933]">
-                                                        {item}
-                                                    </h3>
-
-                                                    <p className="mt-2 text-sm leading-7 text-[#7b8794]">
-                                                        Practical review and guidance tailored to your
-                                                        organization’s financial activities and structures.
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <p className="text-sm leading-7 text-[#5f6b7a]">
+                                                {item}
+                                            </p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
 
-                {/* SCHOOLS + RABBANIM */}
-                <section className="pb-24">
-                    <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-2 lg:px-8">
-                        {/* Schools */}
-                        <div className="rounded-[32px] border border-[#eadfcb] bg-white p-8 shadow-sm">
-                            <h2 className="text-3xl font-bold text-[#051933]">
-                                Schools Served
-                            </h2>
+                        {/* IMAGE — main photo with an overlapping inset, collage-style */}
+                        <div className="relative order-1 mb-10 pb-6 pr-6 lg:order-2 lg:mb-0 lg:h-full lg:pb-10 lg:pr-10">
+                            <div className="absolute -right-10 top-10 h-40 w-40 rounded-full bg-[#c8a21a]/15 blur-3xl" />
 
-                            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                                {schools.map((school) => (
-                                    <div
-                                        key={school}
-                                        className="rounded-2xl border border-[#f0e7d9] bg-[#fcfaf6] px-5 py-4 text-sm font-medium text-[#5f6b7a]"
-                                    >
-                                        {school}
-                                    </div>
-                                ))}
+                            {/* Main image */}
+                            <div className="h-full overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)] transition-transform duration-300 hover:-translate-y-1">
+                                <img
+                                    src="/assets/rabbinical-training.jpg"
+                                    alt="Rabbinical Training Programs"
+                                    className="h-full w-full rounded-[24px] object-cover"
+                                />
                             </div>
-                        </div>
 
-                        {/* Rabbanim */}
-                        <div className="rounded-[32px] border border-[#eadfcb] bg-white p-8 shadow-sm">
-                            <h2 className="text-3xl font-bold text-[#051933]">
-                                Program Rabbanim
-                            </h2>
-
-                            <div className="mt-8 space-y-4">
-                                {rabbanim.map((rav) => (
-                                    <div
-                                        key={rav}
-                                        className="flex items-center gap-4 rounded-2xl border border-[#f0e7d9] bg-[#fcfaf6] px-5 py-4"
-                                    >
-                                        <div className="h-3 w-3 rounded-full bg-[#c8a21a]" />
-
-                                        <span className="text-sm font-medium text-[#5f6b7a]">
-                                            {rav}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* ALERTS */}
-                <section className="pb-28 text-center" id="alerts">
-                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                        <div className="relative overflow-hidden rounded-[40px] bg-[#051933] px-10 py-16">
-                            <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-[#c8a21a]/20 blur-3xl" />
-
-                            <div className="relative max-w-3xl">
-                                <div className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[#d7b52f] backdrop-blur">
-                                    Timely Updates
-                                </div>
-
-                                <h2 className="text-5xl font-bold leading-tight text-white">
-                                    Ribis Alerts
-                                </h2>
-
-                                <p className="mt-7 text-lg leading-8 text-[#c8d2df]">
-                                    Stay informed with timely updates on developments in ribis and
-                                    financial halacha.
-                                </p>
-
-                                <p className="mt-5 text-base leading-8 text-[#b0bcc9]">
-                                    Our alerts highlight key changes, emerging issues, and practical
-                                    considerations—helping you remain aware and navigate an evolving
-                                    financial landscape with clarity and confidence.
-                                </p>
-
-                                <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                                    <button className="rounded-2xl bg-[#c8a21a] px-7 py-4 text-sm font-semibold text-[#051933] transition-all duration-200 hover:bg-[#d7b52f]">
-                                        Subscribe to Alerts
-                                    </button>
-
-                                </div>
+                            {/* Inset image — TODO: replace with a second photo (e.g. a smicha/certificate presentation shot) */}
+                            <div className="absolute bottom-0 right-0 w-2/5 min-w-[140px] max-w-[220px] overflow-hidden rounded-[20px] border-4 border-[#f8f5ef] bg-white shadow-[0_20px_50px_rgba(5,25,51,0.2)] transition-transform duration-300 hover:-translate-y-1">
+                                <img
+                                    src="/assets/rabbinical-training-inset.jpg"
+                                    alt="Training Program Certification"
+                                    className="aspect-square w-full object-cover"
+                                />
                             </div>
                         </div>
                     </div>

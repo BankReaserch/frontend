@@ -151,7 +151,7 @@ const MILESTONES = [
   { year: "2023", event: "Bank directory expanded to 3,000+ US financial institutions" },
   { year: "2024", event: "Expanded to 80 branches across Israel" },
   { year: "2025", event: "Kosher Brokers and Investments departments launched" },
-  { year: "2026", event: "Launched the website to widespread acclaim." },
+  { year: "2026", event: "Launched ribis.com website to widespread acclaim." },
 ];
 
 export default function page() {
