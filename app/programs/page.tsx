@@ -241,9 +241,30 @@ export default function page() {
                                         compliance.
                                     </p>
 
-                                    <button className="mt-10 rounded-2xl bg-[#051933] px-7 py-4 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0a274b] hover:shadow-md">
-                                        Request Assessment
-                                    </button>
+                                    <p className="mt-10 text-sm font-semibold uppercase tracking-wide text-[#9b7b16]">
+                                        Benefits
+                                    </p>
+
+                                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                                        {[
+                                            "Verified Certification",
+                                            "Ongoing Training",
+                                            "Community Recognition",
+                                            "Rabbinic Oversight",
+                                        ].map((item) => (
+                                            <div
+                                                key={item}
+                                                className="rounded-2xl border border-[#ece3d5] bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8a21a]/40 hover:shadow-md"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-3 w-3 rounded-full bg-[#c8a21a]" />
+                                                    <span className="text-sm font-medium text-[#051933]">
+                                                        {item}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
 
                                 <div className="relative">
@@ -364,8 +385,6 @@ export default function page() {
                                 </div>
                             </div>
                         </div>
-
-                        {/* IMAGE — main photo with an overlapping inset, collage-style */}
                         <div className="relative order-1 mb-10 pb-6 pr-6 lg:order-2 lg:mb-0 lg:h-full lg:pb-10 lg:pr-10">
                             <div className="absolute -right-10 top-10 h-40 w-40 rounded-full bg-[#c8a21a]/15 blur-3xl" />
 
