@@ -1,13 +1,14 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
+import QuoteCard from "@/components/utils/card/QuoteCard";
 import Link from "next/link";
 
 const STATS = [
-  { value: "3000+", label: "USA Banks Researched" },
-  { value: "2000+", label: "People Serviced" },
-  { value: "1000+", label: "Hours of Research" },
-  { value: "10", label: "Poskim Available" },
+  { value: "300+", label: "Banks Listed" },
+  { value: "1,500+", label: "Hours Researched" },
+  { value: "10+", label: "Poskim Guiding" },
+  { value: "2,000+", label: "People Served" },
 ];
 
 const VALUES = [
@@ -53,56 +54,76 @@ const VALUES = [
   },
 ];
 
-const TEAM = [
+// ── Team hierarchy ──
+// Ordered top-down: Leadership → Rabbinical Guidance → operating departments.
+const LEADERSHIP = {
+  role: "Founder & Director",
+  name: "Rabbi Yaakov Yitzchok Jacob",
+};
+
+const RABBINICAL_GUIDANCE = [
+  { role: "General Guidance", name: "Harav Pinchos Vind" },
+  { role: "Bank Research", name: "Harav Ari Marberger" },
+];
+
+const DEPARTMENTS = [
   {
-    initials: "RY",
-    name: "Rabbi Yosef Greenfeld",
-    title: "Founder & Rosh HaKollel",
-    department: "Halachic Authority",
-    bio: "Founding posek and visionary behind Ribis.org. Over 20 years of experience in financial halacha, with extensive responsa published in leading Torah journals.",
-    color: "bg-[#1a2e42] text-[#c9a84c]",
+    title: "Bais Hora'ah",
+    members: [
+      "Rabbi Baruch Moses",
+      "Rabbi Shmuel Poltman",
+      "Rabbi Yechiel Blum",
+      "Rabbi Moskowitz",
+      "Rabbi Ginsberg",
+      "Rabbi Elenbogen",
+      "Rabbi Tzvi Smoke",
+      "Rabbi Yaakov Yitzchok Jacob",
+      "Rabbi Yehuda Framowitz",
+      "Rabbi Lipshitz",
+    ],
   },
   {
-    initials: "DM",
-    name: "Dayan Moshe Eisenstein",
-    title: "Senior Posek",
-    department: "Halachic Authority",
-    bio: "Trained under leading Dayonim in Eretz Yisrael and America. Specializes in corporate and real-estate ribis questions.",
-    color: "bg-[#1a2e42] text-[#c9a84c]",
+    title: "Research Team",
+    members: ["Rabbi Aharon Pollack", "Rabbi Yerucham Man", "Rabbi Dovid Barasch"],
   },
   {
-    initials: "AS",
-    name: "Avigdor Schwartz",
-    title: "Director of Research",
-    department: "Research",
-    bio: "Leads the bank directory research team. Former compliance officer with deep expertise in US financial regulation and halachic due diligence.",
-    color: "bg-[#f5f0e8] text-[#6b3a1a]",
+    title: "Genealogy Department",
+    members: ["Rabbi Aharon Hamaoui"],
   },
   {
-    initials: "CL",
-    name: "Chana Lichtenstein",
-    title: "Head of Education",
-    department: "Education",
-    bio: "Develops our shiur curriculum, bulletins, and community outreach programs. Previously taught at Bais Yaakov institutions for over a decade.",
-    color: "bg-[#f5f0e8] text-[#6b3a1a]",
+    title: "Committee Members",
+    members: [
+      "R’ Yosef Shneur Posen",
+      "R’ Shmuel Chaim Fink",
+      "R’ Yisroel Dovid Teren",
+      "R’ Baruch Dovid Moses",
+    ],
   },
   {
-    initials: "NB",
-    name: "Nachum Berger",
-    title: "Technology Lead",
-    department: "Technology",
-    bio: "Architected the Ribis.org platform from the ground up. Passionate about making halachic resources accessible through thoughtful product design.",
-    color: "bg-[#f5f0e8] text-[#6b3a1a]",
-  },
-  {
-    initials: "RK",
-    name: "Rabbi Pinchas Kohn",
-    title: "Community Liaison",
-    department: "Outreach",
-    bio: "Bridges Ribis.org with kehillos across North America. Organizes speaking programs, community Q&A sessions, and askan training workshops.",
-    color: "bg-[#1a2e42] text-[#c9a84c]",
+    title: "Educational Program",
+    members: [
+      "Rabbi Bernath",
+      "Rabbi Michoel Shmesh",
+      "Rabbi Moshe Lenchis",
+      "Rabbi Moskat",
+      "Rabbi Nison Moses",
+      "Rabbi Shmuel Poltman",
+      "Rabbi Shabsai Zebrouski",
+    ],
   },
 ];
+
+function getInitials(name: string) {
+  const cleaned = name
+    .replace(/^R[’']\s*/i, "")
+    .replace(/^Rabbi\s+/i, "")
+    .replace(/^Harav\s+/i, "")
+    .replace(/^Dayan\s+/i, "");
+  const parts = cleaned.split(" ").filter(Boolean);
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 const POSKIM = [
   { name: "Harav Y. Feinstein", institution: "Yeshiva of Staten Island" },
@@ -112,18 +133,21 @@ const POSKIM = [
 ];
 
 const MILESTONES = [
+  { year: "2011", event: "Opened the first branch in Israel" },
   { year: "2015", event: "Ribis.org founded with an initial directory of 50 banks" },
   { year: "2017", event: "Launched the Sha'alah submission system with 3 resident poskim" },
   { year: "2019", event: "Reached 1,000 registered community members" },
   { year: "2021", event: "Audio shiur library launched — over 120 hours of content" },
   { year: "2023", event: "Bank directory expanded to 3,000+ US financial institutions" },
+  { year: "2024", event: "Expanded to 80 branches across Israel" },
   { year: "2025", event: "Kosher Brokers and Investments departments launched" },
+  { year: "2026", event: "Launched the website to widespread acclaim." },
 ];
 
 export default function page() {
   return (
     <div className="min-h-screen bg-[#f5f0e8]">
-      <Navbar/>
+      <Navbar />
 
       {/* ── Hero ── */}
       <section className="bg-[#0d1b2a] relative overflow-hidden pt-32">
@@ -134,20 +158,48 @@ export default function page() {
             backgroundSize: "40px 40px",
           }}
         />
-        {/* large decorative Hebrew letter */}
         <div className="absolute right-0 top-0 bottom-0 flex items-center pr-16 select-none pointer-events-none">
           <span className="text-[220px] font-serif text-[#c9a84c] opacity-[0.04] leading-none">ר</span>
         </div>
+        <div className="relative z-10 px-6 lg:px-16 py-20">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <div>
+              <p className="text-[#c9a84c] text-xs tracking-[0.3em] uppercase font-semibold mb-4">
+                About Ribis.org
+              </p>
 
-        <div className="relative z-10 px-6 lg:px-16 py-20 max-w-3xl">
-          <p className="text-[#c9a84c] text-xs tracking-[0.3em] uppercase font-semibold mb-4">About Ribis.org</p>
-          <h1 className="text-white font-serif text-5xl lg:text-6xl leading-tight mb-6">
-            Standing at the<br />intersection of{" "}
-            <em className="text-[#c9a84c] not-italic">Torah</em><br />and finance.
-          </h1>
-          <p className="text-[#8a9bb0] text-base leading-relaxed max-w-xl">
-            Ribis.org was founded to give every Jew — whether a businessman, homeowner, or student — the halachic clarity they need to navigate modern financial life with integrity.
-          </p>
+              <h1 className="text-white font-serif text-5xl lg:text-6xl leading-tight mb-6">
+                Standing at the
+                <br />
+                intersection of{" "}
+                <span className="text-[#c9a84c]">Torah</span>
+                <br />
+                and finance.
+              </h1>
+
+              <p className="text-[#8a9bb0] text-base leading-relaxed max-w-xl">
+                Ribis.org was founded to give every Jew — whether a businessman,
+                homeowner, or student — the halachic clarity they need to navigate
+                modern financial life with integrity.
+              </p>
+            </div>
+
+            {/* Right Quote */}
+            <div className="hidden lg:flex justify-end">
+              <div className="w-full max-w-md">
+                <QuoteCard
+                  description="ומי האיש החפץ חיים ולקום בתחיית המתים ישאל פי חכם בעשותו הלואה כזו וימלט נפשו הרע."
+                  name="Ya'aros Devash"
+                  backgroundColor="bg-[#132234]"
+                  textColor="text-white"
+                  nameColor="text-[#c9a84c]"
+                  border="border-[#c9a84c]/20"
+                  borderColor="border-l-[#c9a84c]"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -187,30 +239,6 @@ export default function page() {
             </div>
           </div>
 
-          {/* Hebrew quote card */}
-          <div className="bg-[#0d1b2a] rounded-2xl p-10 relative overflow-hidden">
-            <div
-              className="absolute inset-0 opacity-[0.04]"
-              style={{
-                backgroundImage: `linear-gradient(#c9a84c 1px, transparent 1px), linear-gradient(90deg, #c9a84c 1px, transparent 1px)`,
-                backgroundSize: "32px 32px",
-              }}
-            />
-            <div className="relative z-10">
-              <div className="w-10 h-10 border border-[#c9a84c]/40 rounded-md flex items-center justify-center mb-8">
-                <span className="text-[#c9a84c] font-serif text-lg">"</span>
-              </div>
-              <p className="text-white font-serif text-xl leading-relaxed text-right mb-6" dir="rtl">
-                "ומי האיש החפץ חיים ולקום בתחיית המתים ישאל פי חכם בעשותו הלואה כזו וימלט נפשו הרע."
-              </p>
-              <p className="text-[#c9a84c] text-sm text-right">— יערות דבש, חלק ב דרוש ה</p>
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <p className="text-[#8a9bb0] text-sm leading-relaxed">
-                  "Whoever desires life and to arise at the revival of the dead — let him ask a Torah scholar when making such a loan, and he will save his soul from evil."
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -250,7 +278,6 @@ export default function page() {
             <h2 className="text-white font-serif text-4xl">A decade of growth</h2>
           </div>
           <div className="relative">
-            {/* vertical line */}
             <div className="absolute left-[68px] top-0 bottom-0 w-px bg-[#c9a84c]/20" />
             <div className="space-y-8">
               {MILESTONES.map((m, i) => (
@@ -259,7 +286,6 @@ export default function page() {
                     <span className="text-[#c9a84c] text-sm font-bold">{m.year}</span>
                   </div>
                   <div className="relative flex-1 pl-6">
-                    {/* dot */}
                     <div className="absolute -left-[5px] top-[5px] w-2.5 h-2.5 rounded-full bg-[#0d1b2a] border-2 border-[#c9a84c]/50 group-hover:border-[#c9a84c] transition-colors" />
                     <p className="text-[#cbd5e1] text-sm leading-relaxed">{m.event}</p>
                   </div>
@@ -273,34 +299,82 @@ export default function page() {
       {/* ── Team ── */}
       <section className="px-6 lg:px-16 py-20 bg-[#f5f0e8]" id="team">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-12">
+          <div className="mb-14">
             <p className="text-[#c9a84c] text-xs tracking-[0.25em] uppercase font-semibold mb-3">The people behind Ribis.org</p>
             <h2 className="text-[#0d1b2a] font-serif text-4xl mb-4">Our team</h2>
             <p className="text-[#8a9bb0] text-sm max-w-xl leading-relaxed">
-              A dedicated group of Torah scholars, researchers, educators, and technologists — united by a shared mission to make halachic financial guidance accessible to all.
+              A dedicated hierarchy of Torah scholars, researchers, and administrators — spanning halachic guidance, research, and community education.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {TEAM.map((member) => (
-              <div key={member.name} className="bg-white border border-[#e5ddd0] rounded-xl p-6 hover:border-[#c9a84c]/40 transition-all">
-                <div className="flex items-center gap-4 mb-5">
-                  {/* Initials avatar — no photo */}
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-lg font-serif ${member.color}`}>
-                    {member.initials}
+
+          {/* Leadership — top of hierarchy */}
+          <div className="mb-8">
+            <p className="text-[#8a9bb0] text-xs font-semibold tracking-[0.2em] uppercase mb-3 pl-1">Leadership</p>
+            <div className="bg-[#0d1b2a] rounded-2xl px-8 py-7 flex items-center gap-5 relative overflow-hidden shadow-sm">
+              <div className="absolute right-0 top-0 bottom-0 flex items-center pr-6 select-none pointer-events-none">
+                <span className="text-[100px] font-serif text-[#c9a84c] opacity-[0.06] leading-none">ר</span>
+              </div>
+              <div className="w-16 h-16 rounded-xl bg-[#c9a84c] flex items-center justify-center flex-shrink-0 font-bold text-xl font-serif text-[#0d1b2a] relative z-10">
+                {getInitials(LEADERSHIP.name)}
+              </div>
+              <div className="relative z-10">
+                <p className="text-[#c9a84c] text-xs font-semibold tracking-[0.2em] uppercase mb-1">{LEADERSHIP.role}</p>
+                <p className="text-white font-serif text-2xl">{LEADERSHIP.name}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Rabbinical Guidance */}
+          <div className="mb-10">
+            <p className="text-[#8a9bb0] text-xs font-semibold tracking-[0.2em] uppercase mb-3 pl-1">Rabbinical Guidance</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {RABBINICAL_GUIDANCE.map((r) => (
+                <div key={r.name} className="bg-white border border-[#e5ddd0] rounded-xl p-6 flex items-center gap-4 hover:border-[#c9a84c]/40 hover:shadow-md transition-all">
+                  <div className="w-12 h-12 rounded-lg bg-[#1a2e42] text-[#c9a84c] flex items-center justify-center flex-shrink-0 font-bold text-sm font-serif">
+                    {getInitials(r.name)}
                   </div>
                   <div>
-                    <p className="text-[#0d1b2a] font-serif text-base leading-snug">{member.name}</p>
-                    <p className="text-[#c9a84c] text-xs font-semibold mt-0.5">{member.title}</p>
+                    <p className="text-[#0d1b2a] font-serif text-base leading-snug">{r.name}</p>
+                    <p className="text-[#c9a84c] text-xs font-semibold mt-0.5">{r.role}</p>
                   </div>
                 </div>
-                <div className="mb-4">
-                  <span className="inline-block bg-[#f5f0e8] text-[#6b5e4e] text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full border border-[#e5ddd0]">
-                    {member.department}
-                  </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Departments */}
+          <div className="relative">
+            <div className="absolute left-[13px] top-2 bottom-2 w-px bg-[#e5ddd0] hidden sm:block" />
+            <div className="space-y-6">
+              {DEPARTMENTS.map((dept) => (
+                <div key={dept.title} className="relative sm:pl-10">
+                  <div className="absolute left-0 top-6 w-[27px] h-[27px] rounded-full bg-[#f5f0e8] border-2 border-[#c9a84c]/50 hidden sm:flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-[#c9a84c]" />
+                  </div>
+                  <div className="bg-white border border-[#e5ddd0] rounded-xl p-6 hover:border-[#c9a84c]/40 transition-all">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-[#0d1b2a] font-serif text-lg">{dept.title}</h3>
+                      <span className="text-[#8a9bb0] text-[11px] font-semibold uppercase tracking-wide">
+                        {dept.members.length} {dept.members.length === 1 ? "member" : "members"}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {dept.members.map((name) => (
+                        <span
+                          key={name}
+                          className="inline-flex items-center gap-2 bg-[#f5f0e8] border border-[#e5ddd0] rounded-full pl-1.5 pr-4 py-1.5 text-sm text-[#3c3226] hover:border-[#c9a84c]/50 transition-colors"
+                        >
+                          <span className="w-6 h-6 rounded-full bg-[#1a2e42] text-[#c9a84c] flex items-center justify-center text-[10px] font-bold font-serif flex-shrink-0">
+                            {getInitials(name)}
+                          </span>
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <p className="text-[#6b5e4e] text-sm leading-relaxed">{member.bio}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -337,11 +411,6 @@ export default function page() {
           </div>
         </div>
       </section>
-
-      {/* ── CTA ── */}
-      
-
-      {/* ── Footer ── */}
       <footer className="bg-[#0a1520] border-t border-white/8 px-6 lg:px-16 py-10">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">

@@ -1,8 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { frankRuhl } from "@/app/fonts";
 import Counter from "./utils/ui/Counter";
+import QuoteCard from "./utils/card/QuoteCard";
 
 export default function Hero() {
   const stats = [
@@ -133,7 +133,6 @@ export default function Hero() {
             </span>
           </h1>
 
-          {/* Description */}
           <p className="max-w-[420px] text-[#7a8fa3] text-sm leading-7 mb-9">
             Standing at the intersection of intricate laws of ribis and the
             growing complexity of modern finance, Ribis.org brings halachic
@@ -244,32 +243,14 @@ export default function Hero() {
 
             </div>
           </div>
-
-          {/* Quote Card */}
-          <div className="bg-white/5 border border-white/10 border-l-[3px] border-l-[#c8a75b] rounded-[14px] p-7">
-
-            <div dir="rtl">
-
-              <p
-                className={`${frankRuhl.className} text-[16px] text-white leading-6 text-right mb-4`}
-              >
-                ״עוד ראיתי לעורר שמאד נצרך לברר ה"באנק" השייכין
-                לישראלים ולפרסם הרשימות של ה"באנקים" שיש עליהן
-                חשש רבית למנוע הרבים ממכשול הרבית, ומה מאד הי'
-                ראוי למנות ע"ז אנשים מוכשרים הידועין לברר ענין זה,
-                ושכרם יהי' הרבה מאד ובכלל מזכי רבים יחשבו״
-              </p>
-
-              <p
-                dir="ltr"
-                className="text-xs text-[#c8a75b] text-left"
-              >
-                — HaRav Yechezkel Roth
-              </p>
-
-            </div>
-
-          </div>
+          <QuoteCard
+            description={`״עוד ראיתי לעורר שמאד נצרך לברר ה"באנק" השייכין
+לישראלים ולפרסם הרשימות של ה"באנקים" שיש עליהן
+חשש רבית למנוע הרבים ממכשול הרבית, ומה מאד הי'
+ראוי למנות ע"ז אנשים מוכשרים הידועין לברר ענין זה,
+ושכרם יהי' הרבה מאד ובכלל מזכי רבים יחשבו״`}
+            name="HaRav Yechezkel Roth"
+          />
 
         </div>
       </div>
