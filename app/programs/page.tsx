@@ -373,7 +373,7 @@ export default function page() {
                             {/* Main image */}
                             <div className="h-full overflow-hidden rounded-[32px] border border-[#eadfcb] bg-white p-3 shadow-[0_20px_60px_rgba(5,25,51,0.08)] transition-transform duration-300 hover:-translate-y-1">
                                 <img
-                                    src="/assets/rabbinical-training.jpg"
+                                    src="/assets/program.JPG"
                                     alt="Rabbinical Training Programs"
                                     className="h-full w-full rounded-[24px] object-cover"
                                 />
@@ -382,7 +382,7 @@ export default function page() {
                             {/* Inset image — TODO: replace with a second photo (e.g. a smicha/certificate presentation shot) */}
                             <div className="absolute bottom-0 right-0 w-2/5 min-w-[140px] max-w-[220px] overflow-hidden rounded-[20px] border-4 border-[#f8f5ef] bg-white shadow-[0_20px_50px_rgba(5,25,51,0.2)] transition-transform duration-300 hover:-translate-y-1">
                                 <img
-                                    src="/assets/rabbinical-training-inset.jpg"
+                                    src="/assets/rabbinical-training.jpg"
                                     alt="Training Program Certification"
                                     className="aspect-square w-full object-cover"
                                 />
