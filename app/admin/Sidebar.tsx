@@ -8,6 +8,7 @@ import {
   CircleAlert,
   HandCoins,
   Users,
+  Handshake,
   BookSearch,
   Landmark,
   UsersRound,
@@ -60,10 +61,9 @@ const menu = [
     name: "Article",
     icon: BookSearch,
   },
-  
-  {
-    name: "Alerts",
-    icon: CircleAlert,
+   {
+    name: "Businessess",
+    icon: Handshake,
   },
    {
     name: "Investments",
@@ -72,6 +72,10 @@ const menu = [
   {
     name: "BankRequest",
     icon: Landmark,
+  },
+   {
+    name: "Alerts",
+    icon: CircleAlert,
   },
    {
     name: "Q&A",

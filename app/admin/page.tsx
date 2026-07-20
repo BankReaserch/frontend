@@ -23,6 +23,7 @@ import InvestmentsPageAdmim from "./InvestmentsPage";
 import AdminSubscriptionsPage from "./subscribers";
 import VideoTable from "./VideoTable";
 import BankRequestsTable from "./BankRequestTable";
+import BusinessesAdminPage from "./BusinessesAdminPage";
 
 export default function DashboardPage() {
 
@@ -246,7 +247,13 @@ export default function DashboardPage() {
             <AdminArticlesPage />
           </div>
         );
+         case "Businessess":
 
+        return (
+          <div className="mt-6">
+            <BusinessesAdminPage />
+          </div>
+        );
       case "Alerts":
         return (
           <div className="mt-6">
