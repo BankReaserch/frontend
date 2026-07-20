@@ -24,6 +24,7 @@ import AdminSubscriptionsPage from "./subscribers";
 import VideoTable from "./VideoTable";
 import BankRequestsTable from "./BankRequestTable";
 import BusinessesAdminPage from "./BusinessesAdminPage";
+import TemplatesAdminPage from "./TemplatesAdminPage";
 
 export default function DashboardPage() {
 
@@ -238,6 +239,13 @@ export default function DashboardPage() {
         return (
           <div className="mt-6">
             <Books />
+          </div>
+        );   
+         case "Templates - Heter Iska":
+
+        return (
+          <div className="mt-6">
+            <TemplatesAdminPage />
           </div>
         );
       case "Article":

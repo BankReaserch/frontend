@@ -14,6 +14,7 @@ import {
   UsersRound,
   CircleQuestionMark,
   BookUser,
+  LayoutTemplate
 } from "lucide-react";
 
 interface SidebarProps {
@@ -72,6 +73,10 @@ const menu = [
   {
     name: "BankRequest",
     icon: Landmark,
+  },
+  {
+    name: "Templates - Heter Iska",
+    icon: LayoutTemplate,
   },
    {
     name: "Alerts",

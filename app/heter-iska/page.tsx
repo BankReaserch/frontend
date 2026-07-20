@@ -1,48 +1,39 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { ArrowRight, FileText } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import TemplateCard from "./TemplateCard";
 
-const templates = [
-    {
-        title: "Heter Iska for Borrowed Credit Card Use",
-        description:
-            "For situations where one party utilizes another individual's credit facility.",
-    },
-    {
-        title: "היתר עיסקא ברית כנסת (משולב)",
-        description:
-            "Integrated synagogue heter iska agreement.",
-    },
-    {
-        title: "Heter Iska for Co-Signer / Co-Borrower",
-        description:
-            "Designed for guarantor and co-borrower arrangements.",
-    },
-    {
-        title: "Standard Heter Iska (פלגא מלוה ופלגא פקדון)",
-        description:
-            "Traditional half-loan, half-investment structure.",
-    },
-    {
-        title: "Standard Heter Iska (כולו פקדון)",
-        description:
-            "Investment-based heter iska structure.",
-    },
-];
+type Template = {
+    _id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+};
 
-export default function HeterIskaPage() {
+async function getTemplates(): Promise<Template[]> {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/templates`, {
+            next: { revalidate: 60 },
+        });
+        if (!res.ok) return [];
+        const json = await res.json();
+        return json.data ?? [];
+    } catch {
+        return [];
+    }
+}
+
+export default async function HeterIskaPage() {
+    const templates = await getTemplates();
+
     return (
         <>
             <div className="bg-[#0B1C2C] text-white pt-20 pb-10">
-
                 <Navbar />
-
             </div>
 
             <main className="bg-[#F4F1EC] min-h-screen">
-                {/* HERO */}
                 <section className="relative overflow-hidden pt-36 pb-24">
                     <div className="absolute inset-0 opacity-[0.03]">
                         <div
@@ -90,7 +81,7 @@ export default function HeterIskaPage() {
 
                                 <div className="absolute -bottom-8 -left-8 bg-[#0B1C2C] text-white rounded-2xl p-6 shadow-2xl">
                                     <div className="text-[#C8A75B] text-3xl font-serif">
-                                        10+
+                                        {templates.length}+
                                     </div>
 
                                     <div className="mt-2 font-medium">
@@ -106,7 +97,6 @@ export default function HeterIskaPage() {
                     </div>
                 </section>
 
-                {/* TEMPLATES */}
                 <section className="pb-28">
                     <div className="max-w-7xl mx-auto px-6">
                         <div className="mb-12">
@@ -119,19 +109,30 @@ export default function HeterIskaPage() {
                             </h2>
                         </div>
 
-                        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {templates.map((template) => (
-                                <TemplateCard
-                                    key={template.title}
-                                    title={template.title}
-                                    description={template.description}
-                                />
-                            ))}
-                        </div>
+                        {templates.length > 0 ? (
+                            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                                {templates.map((template) => (
+                                    <TemplateCard
+                                        key={template._id}
+                                        title={template.title}
+                                        description={template.description}
+                                        imageUrl={template.imageUrl}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="rounded-[28px] border border-dashed border-[#E7E2D9] bg-white py-20 text-center">
+                                <p className="text-lg font-medium text-[#1A2B3C]">
+                                    No templates available yet
+                                </p>
+                                <p className="mt-2 text-sm text-slate-500">
+                                    Check back soon as we add new resources.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </section>
 
-                {/* INFO SECTION */}
                 <section className="pb-28">
                     <div className="max-w-7xl mx-auto px-6">
                         <div className="bg-white border border-[#E7E2D9] rounded-[32px] p-10 md:p-14">
@@ -155,7 +156,6 @@ export default function HeterIskaPage() {
                     </div>
                 </section>
 
-                {/* CTA */}
                 <section className="pb-32">
                     <div className="max-w-6xl mx-auto px-6">
                         <div className="rounded-[36px] bg-gradient-to-r from-[#0B1C2C] to-[#16304D] p-14 text-center text-white">
@@ -187,54 +187,6 @@ export default function HeterIskaPage() {
     );
 }
 
-function TemplateCard({
-    title,
-    description,
-}: {
-    title: string;
-    description: string;
-}) {
-    return (
-        <div
-            className="
-      group
-      bg-white
-      rounded-[28px]
-      border border-[#E7E2D9]
-      p-8
-      h-full
-      flex flex-col
-      hover:shadow-xl
-      hover:-translate-y-1
-      transition-all
-      duration-300
-    "
-        >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#C8A75B]">
-                <FileText className="h-4 w-4" />
-                Template
-            </div>
-
-            <div className="flex-1 mt-6">
-                <h3 className="text-[#1A2B3C] font-semibold text-xl leading-snug">
-                    {title}
-                </h3>
-
-                <p className="mt-3 text-slate-500 text-sm">
-                    {description}
-                </p>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-[#F0ECE4] flex items-center justify-between">
-                <span className="text-sm text-slate-500">
-                    Download PDF
-                </span>
-
-                <ArrowRight className="h-5 w-5 text-[#C8A75B] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </div>
-        </div>
-    );
-}
 function InfoCard({
     title,
     text,
