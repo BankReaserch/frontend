@@ -117,8 +117,7 @@ export default function SubscribersPage() {
                         </div>
 
                         <p className="text-[#94A3B8] mt-2">
-                            Manage newsletter and alert
-                            subscribers.
+                            Manage and alert.
                         </p>
                     </div>
 
