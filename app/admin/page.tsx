@@ -241,13 +241,13 @@ export default function DashboardPage() {
             <Books />
           </div>
         );   
-         case "Templates - Heter Iska":
+        //  case "Templates - Heter Iska":
 
-        return (
-          <div className="mt-6">
-            <TemplatesAdminPage />
-          </div>
-        );
+        // return (
+        //   <div className="mt-6">
+        //     <TemplatesAdminPage />
+        //   </div>
+        // );
       case "Article":
 
         return (

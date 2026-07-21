@@ -15,16 +15,6 @@ export default function page() {
         "Yeshiva Yesodei HaTorah",
     ];
 
-    const rabbanim = [
-        "Rabbi ? Bernath",
-        "Rabbi Michoel Shmesh",
-        "Rabbi Moshe Lenchis",
-        "Rabbi ? Moskat",
-        "Rabbi Nison Moses",
-        "Rabbi Shmuel Poltman",
-        "Rabbi Shabsai Zebrouski",
-    ];
-
     return (
         <>
             <main className="bg-[#f8f5ef]">
@@ -61,8 +51,6 @@ export default function page() {
                         </div>
                     </div>
                 </section>
-
-                {/* SCHOOL & COMMUNITY */}
                 <section className="pb-24 scroll-mt-28" id="school-program">
                     <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* IMAGE */}
@@ -77,8 +65,6 @@ export default function page() {
                                 />
                             </div>
                         </div>
-
-                        {/* CONTENT */}
                         <div>
                             <div className="mb-4 inline-flex rounded-full border border-[#eadfcb] bg-white px-4 py-2 text-sm font-medium text-[#9b7b16]">
                                 Educational Outreach
@@ -121,7 +107,6 @@ export default function page() {
                         </div>
                     </div>
 
-                    {/* SCHOOLS SERVED */}
                     <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
                         <div className="rounded-[32px] border border-[#eadfcb] bg-white p-8 shadow-sm md:p-10">
                             <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -199,8 +184,6 @@ export default function page() {
                                 </div>
                             </div>
                         </div>
-
-                        {/* IMAGE */}
                         <div className="relative order-1 lg:order-2">
                             <div className="absolute -right-10 top-10 h-40 w-40 rounded-full bg-[#c8a21a]/15 blur-3xl" />
 
@@ -214,8 +197,6 @@ export default function page() {
                         </div>
                     </div>
                 </section>
-
-                {/* BUSINESS ASSESSMENT */}
                 <section className="pb-24">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
                         <div className="overflow-hidden rounded-[40px] border border-[#eadfcb] bg-white/70 p-10 shadow-[0_20px_60px_rgba(5,25,51,0.06)] backdrop-blur">
@@ -282,8 +263,6 @@ export default function page() {
                         </div>
                     </div>
                 </section>
-
-                {/* NEWSLETTERS & GILYONOS */}
                 <section className="pb-24 scroll-mt-28" id="gilyonos">
                     <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* IMAGE */}
@@ -344,8 +323,6 @@ export default function page() {
                         </div>
                     </div>
                 </section>
-
-                {/* TRAINING PROGRAMS */}
                 <section className="pb-24 scroll-mt-28" id="training-programs">
                     <div className="mx-auto grid max-w-7xl items-stretch gap-16 px-6 lg:grid-cols-2 lg:px-8">
                         {/* CONTENT */}

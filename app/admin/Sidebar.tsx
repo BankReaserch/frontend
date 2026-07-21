@@ -74,10 +74,10 @@ const menu = [
     name: "BankRequest",
     icon: Landmark,
   },
-  {
-    name: "Templates - Heter Iska",
-    icon: LayoutTemplate,
-  },
+  // {
+  //   name: "Templates - Heter Iska",
+  //   icon: LayoutTemplate,
+  // },
    {
     name: "Alerts",
     icon: CircleAlert,
